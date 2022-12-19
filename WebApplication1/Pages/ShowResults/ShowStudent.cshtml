@@ -1,0 +1,77 @@
+﻿@page "{index}"
+@model WebApplication1.Pages.ShowResults.ShowStudentModel
+@{
+    ViewData["Title"] = "Student to show";
+}
+
+<p>
+    <a asp-page="/Index">Return</a>
+</p>
+
+<h1>Personal data: </h1>
+@await Html.PartialAsync("_ShowPersonPartial", Model.StudentToShow.PersonalData)
+
+<h1>Student data: </h1>
+<table class="table">
+    <tr>
+        <td>
+            Index
+        </td>
+        <td>
+            @Model.StudentToShow.Index
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Average
+        </td>
+        <td>
+            @Model.StudentToShow.Average
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Beginning of studies
+        </td>
+        <td>
+            @Model.StudentToShow.BeginningOfStudying.ToShortDateString()
+        </td>
+    </tr>
+</table>
+
+<br />
+<p><b>Student's courses (number of courses: @Model.StudentToShow.Courses.Count())</b></p>
+<br />
+
+@*@await Html.PartialAsync("_ShowCoursesListPartial", Model.StudentToShow.Courses)*@
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Code
+        </th>
+        <th></th>
+    </tr>
+
+
+
+    @foreach (var course in Model.StudentToShow.Courses)
+    {
+        <tr>
+            <td>
+                @course.Name
+            </td>
+            <td>
+                @course.CourseCode
+            </td>
+            <td>
+                <a asp-page="/EditElement/EditCourse" asp-route-courseCode="@course.CourseCode">Edit</a> |
+                <a asp-page="/ShowResults/ShowCourse" asp-route-courseCode="@course.CourseCode">Details</a> |
+                <a asp-page="/ShowResults/ShowStudent" asp-page-handler="delete" asp-route-index="@Model.StudentToShow.Index" asp-route-courseCode="@course.CourseCode">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

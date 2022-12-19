@@ -1,0 +1,44 @@
+﻿@model Services.People.PersonalData
+
+<table class="table">
+    <tr>
+        <td>
+            First name
+        </td>
+        <td>
+            @Model.FirstName
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Last name
+        </td>
+        <td>
+            @Model.LastName
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PESEL
+        </td>
+        <td>
+            @Model.PESEL
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Birthday
+        </td>
+        <td>
+            @Model.Birthday.ToShortDateString()
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Motherland
+        </td>
+        <td>
+            @Model.Motherland
+        </td>
+    </tr>
+</table>

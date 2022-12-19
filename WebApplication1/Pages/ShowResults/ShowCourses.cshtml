@@ -1,0 +1,10 @@
+﻿@page
+@model WebApplication1.Pages.ShowResults.ShowCoursesModel
+@{
+}
+
+<p>
+    <a asp-page="/Index">Return</a>
+</p>
+
+@await Html.PartialAsync("_ShowCoursesListPartial", Model.CreatedCourses) 

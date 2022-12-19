@@ -1,0 +1,77 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using WebApplication1.DataBase;
+using WebApplication1.Services.CourseOps;
+using WebApplication1.Services.PeopleOps;
+using WebApplication1.Services.ProfessorOps;
+using WebApplication1.Services.StudentOps;
+
+namespace WebApplication1
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddRazorPages();
+
+            services.AddScoped<ICreateCourseOp, CreateCourseOp>();
+            services.AddScoped<IDeleteCourseOp, DeleteCourseOp>();
+            services.AddScoped<IReadCourseOp, ReadCourseOp>();
+            services.AddScoped<IUpdateCourseOp, UpdateCourseOp>();
+
+            services.AddScoped<ICreateProfessorOp, CreateProfessorOp>();
+            services.AddScoped<IDeleteProfessorOp, DeleteProfessorOp>();
+            services.AddScoped<IReadProfessorOp, ReadProfessorOp>();
+            services.AddScoped<IUpdateProfessorOp, UpdateProfessorOp>();
+
+            services.AddScoped<ICreateStudentOp, CreateStudentOp>();
+            services.AddScoped<IDeleteStudentOp, DeleteStudentOp>();
+            services.AddScoped<IReadStudentOp, ReadStudentOp>();
+            services.AddScoped<IUpdateStudentOp, UpdateStudentOp>();
+
+            services.AddScoped<IReadPeopleOp, ReadPeopleOp>();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            //app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+            });
+        }
+    }
+}

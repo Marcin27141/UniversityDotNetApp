@@ -1,0 +1,29 @@
+﻿@page
+@model WebApplication1.Pages.NewPerson.NewProfessorModel
+@{
+    Layout = "_FormLayout";
+    ViewData["Title"] = "New Professor";
+}
+
+@await Html.PartialAsync("_PersonalDataPartial", Model.PersonalData) 
+
+<div class="form-group">
+    <label asp-for="Professor.IdCode"></label>
+    <input class="form-control" asp-for="Professor.IdCode" />
+    <span asp-validation-for="Professor.IdCode"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Professor.Subject"></label>
+    <input class="form-control" asp-for="Professor.Subject" />
+    <span asp-validation-for="Professor.Subject"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Professor.FirstDayAtJob"></label>
+    <input class="form-control" type="date" asp-for="Professor.FirstDayAtJob" />
+    <span asp-validation-for="Professor.FirstDayAtJob"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Professor.Salary"></label>
+    <input class="form-control" asp-for="Professor.Salary" />
+    <span asp-validation-for="Professor.Salary"></span>
+</div>

@@ -1,0 +1,11 @@
+﻿@page "{results=0}"
+@model WebApplication1.Pages.ShowResults.ShowPeopleModel
+@{
+    
+}
+
+<p>
+    <a asp-page="/Index">Return</a>
+</p>
+
+@await Html.PartialAsync("_ShowPeopleListPartial", Model.PeopleToShow) 

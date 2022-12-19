@@ -1,0 +1,33 @@
+﻿@page "{index}"
+@model WebApplication1.Pages.EditElement.EditPerson.EditStudentModel
+@{
+    Layout = "_FormLayout";
+    ViewData["Title"] = "Edit Student";
+}
+
+@await Html.PartialAsync("_PersonalDataPartial", Model.PersonalData)
+
+<div class="form-group">
+    <label asp-for="Student.Index"></label>
+    <div>
+        @Html.TextBoxFor(m => m.Student.Index, new { @readonly = "readonly" })
+    </div>
+</div>
+<div class="form-group">
+    <div>
+            <select asp-for="SelectedCourses" asp-items="Model.AvailableCourses">
+               <option value="" disabled>Choose courses</option>
+            </select>
+        </div>
+    <a asp-page="/NewElement/NewCourse">create a new course</a>
+</div>
+<div class="form-group">
+    <label asp-for="Student.BeginningOfStudying"></label>
+    <input class="form-control" type="date" asp-for="Student.BeginningOfStudying" />
+    <span asp-validation-for="Student.BeginningOfStudying"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Student.Average"></label>
+    <input class="form-control" asp-for="Student.Average" />
+    <span asp-validation-for="Student.Average"></span>
+</div>

@@ -1,0 +1,53 @@
+﻿@page "{courseCode}"
+@model WebApplication1.Pages.ShowResults.ShowCourseModel
+@{
+    ViewData["Title"] = "Course result";
+}
+
+@*<partial name="_ShowCoursePartial" model="@Model.ResultDicitonary" />*@
+
+<p>
+    <a asp-page="/Index">Return</a>
+</p>
+<table class="table">
+    <tr>
+        <td>
+            Name
+        </td>
+        <td>
+            @Model.CourseToShow.Name
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Code
+        </td>
+        <td>
+            @Model.CourseToShow.CourseCode
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Professor
+        </td>
+        <td>
+            @Model.CourseToShow.Professor.ToString()
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ECTS
+        </td>
+        <td>
+            @Model.CourseToShow.ECTS
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Is finished with exam?
+        </td>
+        <td>
+            @Model.CourseToShow.IsFinishedWithExam
+        </td>
+    </tr>
+</table>

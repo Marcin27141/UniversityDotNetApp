@@ -1,0 +1,48 @@
+﻿@page "{idCode}"
+@model WebApplication1.Pages.ShowResults.ProfessorToShowModel
+@{
+    ViewData["Title"] = "Professor to show";
+}
+
+<p>
+    <a asp-page="/Index">Return</a>
+</p>
+
+<h1>Personal data: </h1>
+@await Html.PartialAsync("_ShowPersonPartial", Model.ProfessorToShow.PersonalData)
+
+<h1>Professor data: </h1>
+<table class="table">
+    <tr>
+        <td>
+            Id code
+        </td>
+        <td>
+            @Model.ProfessorToShow.IdCode
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Subject
+        </td>
+        <td>
+            @Model.ProfessorToShow.Subject
+        </td>
+    </tr>
+    <tr>
+        <td>
+            First day at job
+        </td>
+        <td>
+            @Model.ProfessorToShow.FirstDayAtJob.ToShortDateString()
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Salary
+        </td>
+        <td>
+            @Model.ProfessorToShow.Salary
+        </td>
+    </tr>
+</table> 
