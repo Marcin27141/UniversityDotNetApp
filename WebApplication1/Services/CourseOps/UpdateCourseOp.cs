@@ -29,6 +29,7 @@ namespace WebApplication1.Services.CourseOps
         {
             var entityProfessor = _context.Professors.Include(p => p.PersonalData).SingleOrDefault(p => p.IdCode.Equals(updatedCourse.Professor.IdCode));
             var updatedEntity = updatedCourse.ToEntityCourse(entityProfessor);
+            CourseToUpdate = _context.Courses.SingleOrDefault(c => c.CourseCode.Equals(updatedEntity.CourseCode));
             UpdateCourse(updatedEntity);
             await _context.SaveChangesAsync();
             return CourseToUpdate.CourseCode;

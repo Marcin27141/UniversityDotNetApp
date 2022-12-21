@@ -37,7 +37,6 @@ namespace WebApplication1.Pages.EditElement
         {
             Course = _updateCourseOp.GetCourseToUpdateByCode(courseCode);
             ProfessorId = Course?.Professor.IdCode;
-            //CreatedProfessors = _readProfessorOp.GetAllProfessors().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Subject, Value = p.IdCode });
         }
 
         public async Task<IActionResult> OnPost()
@@ -46,7 +45,7 @@ namespace WebApplication1.Pages.EditElement
                 return Page();
             var editedCourse = CreateCourse();
             string courseCode = await _updateCourseOp.UpdateCourseAsync(editedCourse);
-            return RedirectToPage("/ShowResults/ShowCourse", new { courseCode = courseCode });
+            return RedirectToPage("/ShowResults/ShowCourse", new { courseCode });
         }
 
         private Course CreateCourse()

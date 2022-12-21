@@ -12,7 +12,6 @@ namespace WebApplication1.Services.StudentOps
     {
         private readonly AppDbContext _context;
         public DataBase.Entities.Student StudentToUpdate { get; private set; }
-        public Dictionary<string, DataBase.Entities.Course> AvailableCoursesByCode { get; private set; }
 
         public UpdateStudentOp(AppDbContext context) => _context = context;
 
@@ -22,24 +21,20 @@ namespace WebApplication1.Services.StudentOps
                 .Include(s => s.PersonalData)
                 .Include(s => s.Courses)
                 .ThenInclude(sc => sc.Course)
+                .ThenInclude(c => c.Professor)
+                .ThenInclude(p => p.PersonalData)
                 .SingleOrDefault(s => s.StudentIndex.Equals(index));
             if (StudentToUpdate == null) return null;
             return Student.FromEntityStudent(StudentToUpdate);
         }
 
-        public List<Course> GetAvailableCourses()
-        {
-            AvailableCoursesByCode = _context.Courses.AsNoTracking().ToDictionary(c => c.CourseCode, c => c);
-            return AvailableCoursesByCode.Values.Select(c => Course.FromEntityCourse(c)).ToList();
-        }
-
         public async Task<string> UpdateStudentAsync(Student updatedStudent, IEnumerable<string> coursesCodes)
         {
             var updatedCourses = coursesCodes
-                .Where(c => AvailableCoursesByCode.ContainsKey(c))
-                .Select(c => AvailableCoursesByCode[c])
+                .Select(c => _context.Courses.SingleOrDefault(o => o.CourseCode.Equals(c)))
                 .ToList();
             var updatedEntity = updatedStudent.ToEntityStudent(updatedCourses);
+            StudentToUpdate = _context.Students.Include(s => s.PersonalData).Include(s => s.Courses).SingleOrDefault(s => s.StudentIndex.Equals(updatedStudent.Index));
             UpdateStudent(updatedEntity);
             await _context.SaveChangesAsync();
             return StudentToUpdate.StudentIndex;
@@ -55,6 +50,7 @@ namespace WebApplication1.Services.StudentOps
 
             StudentToUpdate.Average = updatedStudent.Average;
             StudentToUpdate.BeginningOfStudying = updatedStudent.BeginningOfStudying;
+            StudentToUpdate.Courses = updatedStudent.Courses;
         }
 
         public async Task<bool> RemoveStudentCourseAsync(string index, string courseCode)
@@ -69,7 +65,6 @@ namespace WebApplication1.Services.StudentOps
     public interface IUpdateStudentOp
     {
         Student GetStudentToUpdateByIndex(string index);
-        List<Course> GetAvailableCourses();
         Task<bool> RemoveStudentCourseAsync(string index, string courseCode);
         Task<string> UpdateStudentAsync(Student updatedStudent, IEnumerable<string> coursesCodes);
     }

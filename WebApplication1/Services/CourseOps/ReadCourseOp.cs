@@ -29,7 +29,10 @@ namespace WebApplication1.Services.CourseOps
 
         public List<Course> GetAllCourses()
         {
-            return _context.Courses.AsNoTracking().Include(c => c.Professor).ThenInclude(p => p.PersonalData)
+            return _context.Courses
+                .AsNoTracking()
+                .Include(c => c.Professor)
+                .ThenInclude(p => p.PersonalData)
                 .Select(c => Course.FromEntityCourse(c))
                 .ToList();
         }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using WebApplication1.DataBase.Entities;
 using WebApplication1.Services.PeopleOps;
+using WebApplication1.Services.StudentOps;
 
 namespace WebApplication1.Services.People
 {
@@ -11,9 +12,11 @@ namespace WebApplication1.Services.People
     {
         public PersonalData PersonalData { get; set; }
 
+        [Required]
         [RegularExpression(@"\d{6}", ErrorMessage = "Please use a 6 digit index")]
         public string Index { get; set; }
 
+        [Range(2.0, 5.0, ErrorMessage = "Average must be between 2,0 and 5,0")]
         public float Average { get; set; }
 
         [DataType(DataType.Date)]

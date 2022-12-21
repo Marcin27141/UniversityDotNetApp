@@ -12,16 +12,10 @@ namespace WebApplication1.Services.CourseOps
     public class CreateCourseOp : ICreateCourseOp
     {
         private readonly AppDbContext _context;
-        private readonly IReadProfessorOp _readProfessorOp;
         public CreateCourseOp(AppDbContext context, IReadProfessorOp readProfessorOp)
         {
             _context = context;
-            _readProfessorOp = readProfessorOp;
         }
-
-        public List<Professor> GetAllProfessors() => _readProfessorOp.GetAllProfessors();
-
-        public Professor GetProfessorByIdCode(string idCode) => _readProfessorOp.GetProfessorByIdCode(idCode);
 
         public async Task<string> AddCourseAsync(Course course)
         {
@@ -47,9 +41,5 @@ namespace WebApplication1.Services.CourseOps
     public interface ICreateCourseOp
     {
         Task<string> AddCourseAsync(Course course);
-
-        List<Professor> GetAllProfessors();
-
-        Professor GetProfessorByIdCode(string idCode);
     }
 }

@@ -17,6 +17,7 @@ namespace WebApplication1.DataBase.Entities
         //----------
         //relationships
 
+        //TODO Profesor for course optional?
         public int ProfessorID { get; set; }
         public Professor Professor { get; set; }
 

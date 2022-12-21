@@ -31,7 +31,7 @@ namespace WebApplication1.Pages.EditElement.EditPerson
                 return Page();
             var editedProfessor = CreateProfessor();
             var idCode = await _updateProfessorOp.UpdateProfessorAsync(editedProfessor);
-            return RedirectToPage("/ShowResults/ShowProfessor", new { id = idCode });
+            return RedirectToPage("/ShowResults/ShowProfessor", new { idCode });
         }
 
         private Professor CreateProfessor()

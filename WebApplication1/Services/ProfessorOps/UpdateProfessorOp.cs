@@ -25,6 +25,7 @@ namespace WebApplication1.Services.ProfessorOps
         public async Task<string> UpdateProfessorAsync(Professor updatedProfessor)
         {
             var updatedEntity = updatedProfessor.ToEntityProfessor();
+            ProfessorToUpdate = _context.Professors.Include(p => p.PersonalData).SingleOrDefault(p => p.IdCode.Equals(updatedProfessor.IdCode));
             UpdateProfessor(updatedEntity);
             await _context.SaveChangesAsync();
             return ProfessorToUpdate.IdCode;

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WebApplication1.Services.CourseOps;
 using WebApplication1.Services.People;
 using WebApplication1.Services.StudentOps;
 
@@ -14,6 +15,7 @@ namespace WebApplication1.Pages.EditElement.EditPerson
     public class EditStudentModel : PageModel
     {
         private readonly IUpdateStudentOp _updateStudentOp;
+        private readonly IReadCourseOp _readCourseOp;
 
         public IEnumerable<SelectListItem> AvailableCourses { get; set; }
 
@@ -26,14 +28,18 @@ namespace WebApplication1.Pages.EditElement.EditPerson
         [BindProperty]
         public IEnumerable<string> SelectedCourses { get; set; }
 
-        public EditStudentModel(IUpdateStudentOp updateStudentOp) => _updateStudentOp = updateStudentOp;
+        public EditStudentModel(IUpdateStudentOp updateStudentOp, IReadCourseOp readCourseOp)
+        {
+            _updateStudentOp = updateStudentOp;
+            _readCourseOp = readCourseOp;
+            AvailableCourses = _readCourseOp.GetAllCourses().Select(i => new SelectListItem() { Text = i.ToString(), Value = i.CourseCode.ToString() });
+        }
 
         public void OnGet(string index)
         {
             Student = _updateStudentOp.GetStudentToUpdateByIndex(index);
             PersonalData = Student?.PersonalData;
             SelectedCourses = Student.Courses.Select(i => i.CourseCode.ToString());
-            AvailableCourses = _updateStudentOp.GetAvailableCourses().Select(i => new SelectListItem() { Text = i.ToString(), Value = i.CourseCode.ToString() });
         }
 
         public async Task<IActionResult> OnPost()

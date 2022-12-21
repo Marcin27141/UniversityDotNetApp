@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using WebApplication1.Services.CourseOps;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Services
@@ -15,10 +17,8 @@ namespace WebApplication1.Services
  
         public Professor Professor { get; set; }
 
-        [Required]
         public int ECTS { get; set; }
 
-        [Required]
         [Display(Name="Is finished with exam?")]
         public bool IsFinishedWithExam { get; set; }
 
@@ -47,6 +47,5 @@ namespace WebApplication1.Services
                 IsFinishedWithExam = entityCourse.IsFinishedWithExam
             };
         }
-
     }
 }

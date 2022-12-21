@@ -14,7 +14,6 @@ namespace WebApplication1.Pages.NewPerson
         private readonly ICreateProfessorOp _createProfessorOp;
         private readonly IReadProfessorOp _readProfessorOp;
 
-        [Required]
         [BindProperty]
         public PersonalData PersonalData { get; set; }
         [BindProperty]

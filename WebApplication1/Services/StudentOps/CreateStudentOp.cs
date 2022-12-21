@@ -14,15 +14,6 @@ namespace WebApplication1.Services.StudentOps
 
         public CreateStudentOp(AppDbContext context) => _context = context;
 
-        public List<Course> GetAvailableCourses()
-        {
-            return _context.Courses
-                .Include(c => c.Professor)
-                .ThenInclude(p => p.PersonalData)
-                .AsNoTracking()
-                .Select(c => Course.FromEntityCourse(c))
-                .ToList();
-        }
         public async Task<string> AddStudentAsync(Student student, IEnumerable<string> coursesCodes)
         {
             var codeToCourseDictionary = _context.Courses.Include(c => c.Professor).ThenInclude(p => p.PersonalData).ToDictionary(c => c.CourseCode, c => c);
@@ -50,8 +41,7 @@ namespace WebApplication1.Services.StudentOps
     }
 
     public interface ICreateStudentOp
-    {
-        List<Course> GetAvailableCourses();
+    { 
         Task<string> AddStudentAsync(Student student, IEnumerable<string> coursesIds);
     }
 }
