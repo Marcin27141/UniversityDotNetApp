@@ -12,6 +12,7 @@ namespace WebApplication1.Pages.NewPerson
     public class NewProfessorModel : PageModel
     {
         private readonly ICreateProfessorOp _createProfessorOp;
+        private readonly IReadProfessorOp _readProfessorOp;
 
         [Required]
         [BindProperty]
@@ -19,7 +20,10 @@ namespace WebApplication1.Pages.NewPerson
         [BindProperty]
         public Professor Professor { get; set; }
 
-        public NewProfessorModel(ICreateProfessorOp createProfessorOp) => _createProfessorOp = createProfessorOp;
+        public NewProfessorModel(ICreateProfessorOp createProfessorOp, IReadProfessorOp readProfessorOp) {
+            _createProfessorOp = createProfessorOp;
+            _readProfessorOp = readProfessorOp;
+        }
 
 
         public void OnGet()
@@ -28,6 +32,8 @@ namespace WebApplication1.Pages.NewPerson
 
         public async Task<IActionResult> OnPost()
         {
+            if (_readProfessorOp.GetProfessorByIdCode(Professor.IdCode) != null)
+                ModelState.AddModelError("Professor.IdCode", "Professor with given id is already added");
             if (!ModelState.IsValid)
                 return Page();
             Professor professor = CreateProfessor();

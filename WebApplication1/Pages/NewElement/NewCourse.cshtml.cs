@@ -16,7 +16,8 @@ namespace WebApplication1.Pages
     public class NewCourseModel : PageModel
     {
         private readonly ICreateCourseOp _createCourseOp;
-        /*private readonly IReadProfessorOp _readProfessorOp;*/
+        private readonly IReadProfessorOp _readProfessorOp;
+        private readonly IReadCourseOp _readCourseOp;
 
         [BindProperty]
         public Course CreatedCourse { get; set; }
@@ -26,12 +27,12 @@ namespace WebApplication1.Pages
         public string ProfessorIdCode { get; set; }
         public IEnumerable<SelectListItem> CreatedProfessors { get; set; }
 
-        public NewCourseModel(ICreateCourseOp createCourseOp/*, IReadProfessorOp readProfessorOp*/)
+        public NewCourseModel(ICreateCourseOp createCourseOp, IReadProfessorOp readProfessorOp, IReadCourseOp readCourseOp)
         {
             _createCourseOp = createCourseOp;
-            /*_readProfessorOp = readProfessorOp;*/
-            //CreatedProfessors = _readProfessorOp.GetAllProfessors().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Subject, Value = p.IdCode });
-            CreatedProfessors = _createCourseOp.GetAllProfessors().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Subject, Value = p.IdCode });
+            _readProfessorOp = readProfessorOp;
+            _readCourseOp = readCourseOp;
+            CreatedProfessors = _readProfessorOp.GetAllProfessors().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Subject, Value = p.IdCode });
         }
 
         public void OnGet()
@@ -53,8 +54,7 @@ namespace WebApplication1.Pages
             {
                 Name = CreatedCourse.Name,
                 CourseCode = CreatedCourse.CourseCode,
-                //Professor = _readProfessorOp.GetProfessorByIdCode(ProfessorIdCode),
-                Professor = _createCourseOp.GetProfessorByIdCode(ProfessorIdCode),
+                Professor = _readProfessorOp.GetProfessorByIdCode(ProfessorIdCode),
                 ECTS = CreatedCourse.ECTS,
                 IsFinishedWithExam = CreatedCourse.IsFinishedWithExam
             };
