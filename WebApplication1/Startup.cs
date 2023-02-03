@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplication1.DataBase;
+using WebApplication1.DataBase.Entities;
 using WebApplication1.Services.CourseOps;
 using WebApplication1.Services.PeopleOps;
 using WebApplication1.Services.ProfessorOps;
@@ -26,6 +27,9 @@ namespace WebApplication1
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddRazorPages();
 
@@ -66,7 +70,8 @@ namespace WebApplication1
 
             app.UseRouting();
 
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
