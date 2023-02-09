@@ -50,6 +50,9 @@ namespace WebApplication1.Areas.Identity.Pages.Account
             [Required]
             public string Name { get; set; }
 
+            [Display(Name = "Is Admin?")]
+            public bool HasAdminRights { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -85,9 +88,14 @@ namespace WebApplication1.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var claim = new Claim("FullName", Input.Name);
-                    await _userManager.AddClaimAsync(user, claim);
-
+                    var nameClaim = new Claim("FullName", Input.Name);
+                    await _userManager.AddClaimAsync(user, nameClaim);
+                    if (Input.HasAdminRights)
+                    {
+                        var adminClaim = new Claim("IsAdmin", Input.HasAdminRights.ToString());
+                        await _userManager.AddClaimAsync(user, adminClaim);
+                    }
+                    
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

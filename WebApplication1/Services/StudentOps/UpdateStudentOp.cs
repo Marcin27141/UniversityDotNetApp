@@ -19,6 +19,7 @@ namespace WebApplication1.Services.StudentOps
         {
             StudentToUpdate = _context.Students
                 .Include(s => s.PersonalData)
+                .ThenInclude(pd => pd.ApplicationUser)
                 .Include(s => s.Courses)
                 .ThenInclude(sc => sc.Course)
                 .ThenInclude(c => c.Professor)

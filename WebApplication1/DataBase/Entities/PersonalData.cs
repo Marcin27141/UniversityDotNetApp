@@ -8,6 +8,9 @@ namespace WebApplication1.DataBase.Entities
 {
     public class PersonalData
     {
+#nullable enable
+        public ApplicationUser? ApplicationUser { get; set; }
+#nullable disable
         public int PersonalDataID { get; set; }
         public int PersonTypeID { get; set; }
         public string SpecificId { get; set; }

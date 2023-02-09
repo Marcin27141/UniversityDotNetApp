@@ -10,6 +10,10 @@ using WebApplication1.Services.CourseOps;
 using WebApplication1.Services.PeopleOps;
 using WebApplication1.Services.ProfessorOps;
 using WebApplication1.Services.StudentOps;
+using WebApplication1.Policies.Requirements;
+using Microsoft.AspNetCore.Authorization;
+using WebApplication1.Policies.Handlers;
+using WebApplication1.Services.UserOps;
 
 namespace WebApplication1
 {
@@ -33,6 +37,21 @@ namespace WebApplication1
 
             services.AddRazorPages();
 
+            //policies
+            services.AddScoped<IAuthorizationHandler, HasAdminRightsHandler>();
+            services.AddScoped<IAuthorizationHandler, StudentEditorIsOwnerHandler>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("HasAdminRights", policyBuilder =>
+                    policyBuilder.RequireClaim("IsAdmin"));
+                options.AddPolicy("CanEditStudent", policyBuilder =>
+                    policyBuilder.AddRequirements(new CanEditStudentRequrement()));
+            }
+            );
+
+            //custom services
+
             services.AddScoped<ICreateCourseOp, CreateCourseOp>();
             services.AddScoped<IDeleteCourseOp, DeleteCourseOp>();
             services.AddScoped<IReadCourseOp, ReadCourseOp>();
@@ -49,6 +68,9 @@ namespace WebApplication1
             services.AddScoped<IUpdateStudentOp, UpdateStudentOp>();
 
             services.AddScoped<IReadPeopleOp, ReadPeopleOp>();
+            services.AddScoped<IReadUserOp, ReadUserOp>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

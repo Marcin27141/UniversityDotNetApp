@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -9,6 +10,7 @@ using WebApplication1.Services.ProfessorOps;
 
 namespace WebApplication1.Pages.NewPerson
 {
+    [Authorize("HasAdminRights")]
     public class NewProfessorModel : PageModel
     {
         private readonly ICreateProfessorOp _createProfessorOp;

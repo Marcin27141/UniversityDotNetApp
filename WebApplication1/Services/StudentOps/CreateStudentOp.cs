@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApplication1.DataBase;
+using WebApplication1.DataBase.Entities;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Services.StudentOps
@@ -12,9 +15,12 @@ namespace WebApplication1.Services.StudentOps
     {
         private readonly AppDbContext _context;
 
-        public CreateStudentOp(AppDbContext context) => _context = context;
+        public CreateStudentOp(AppDbContext context, UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+        }
 
-        public async Task<string> AddStudentAsync(Student student, IEnumerable<string> coursesCodes)
+        public async Task<string> AddStudentAsync(People.Student student, IEnumerable<string> coursesCodes, ClaimsPrincipal appUser)
         {
             var codeToCourseDictionary = _context.Courses.Include(c => c.Professor).ThenInclude(p => p.PersonalData).ToDictionary(c => c.CourseCode, c => c);
             var chosenCourses = coursesCodes
@@ -42,6 +48,6 @@ namespace WebApplication1.Services.StudentOps
 
     public interface ICreateStudentOp
     { 
-        Task<string> AddStudentAsync(Student student, IEnumerable<string> coursesIds);
+        Task<string> AddStudentAsync(People.Student student, IEnumerable<string> coursesIds, ClaimsPrincipal user);
     }
 }

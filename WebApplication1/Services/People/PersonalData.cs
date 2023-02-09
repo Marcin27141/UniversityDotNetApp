@@ -1,11 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using WebApplication1.DataBase.Entities;
 using WebApplication1.Services.PeopleOps;
 
 namespace WebApplication1.Services.People
 {
     public class PersonalData
     {
+        public ApplicationUser ApplicationUser { get; set; }
+
         [Required]
         [Display(Name = "First name")]
         public string FirstName { get; set; }
@@ -28,6 +31,7 @@ namespace WebApplication1.Services.People
         {
             return new DataBase.Entities.PersonalData()
             {
+                ApplicationUser = this.ApplicationUser,
                 SpecificId = specificId,
                 PersonTypeID = (int)personType,
                 FirstName = this.FirstName,
@@ -42,6 +46,7 @@ namespace WebApplication1.Services.People
         {
             return new PersonalData
             {
+                ApplicationUser = entityPersonalData.ApplicationUser,
                 FirstName = entityPersonalData.FirstName,
                 LastName = entityPersonalData.LastName,
                 PESEL = entityPersonalData.PESEL,
