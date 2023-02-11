@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +22,10 @@ namespace WebApplication1.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
+        private const string PROFESSOR_MAIL_PATTERN = @"^[\w\.]+@edu.com";
+        private const string STUDENT_MAIL_PATTERN = @"^[\w\.]+@student.edu.com";
+        private const string ADMIN_MAIL_PATTERN = @"^[\w\.]+@admin.edu.com";
+
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
@@ -88,13 +93,21 @@ namespace WebApplication1.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    //Name claim
                     var nameClaim = new Claim("FullName", Input.Name);
                     await _userManager.AddClaimAsync(user, nameClaim);
+
+                    //IsAdmin claim
                     if (Input.HasAdminRights)
                     {
                         var adminClaim = new Claim("IsAdmin", Input.HasAdminRights.ToString());
                         await _userManager.AddClaimAsync(user, adminClaim);
                     }
+
+                    //Status claim {Admin/Student/Professor}
+                    var statusClaim = GetStatusString();
+                    if (statusClaim != null)
+                        await _userManager.AddClaimAsync(user, new Claim("Status", statusClaim));
                     
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -125,6 +138,18 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private string GetStatusString()
+        {
+            string status = Input.HasAdminRights ? "Admin" : null;
+            if (string.IsNullOrEmpty(status)) {
+                if (Regex.IsMatch(Input.Email, STUDENT_MAIL_PATTERN))
+                    status = "Student";
+                else if (Regex.IsMatch(Input.Email, PROFESSOR_MAIL_PATTERN))
+                    status = "Professor";
+            }
+            return status;
         }
     }
 }
