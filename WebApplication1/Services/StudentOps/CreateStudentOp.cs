@@ -15,12 +15,12 @@ namespace WebApplication1.Services.StudentOps
     {
         private readonly AppDbContext _context;
 
-        public CreateStudentOp(AppDbContext context, UserManager<ApplicationUser> userManager)
+        public CreateStudentOp(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<string> AddStudentAsync(People.Student student, IEnumerable<string> coursesCodes, ClaimsPrincipal appUser)
+        public async Task<string> AddStudentAsync(People.Student student, IEnumerable<string> coursesCodes)
         {
             var codeToCourseDictionary = _context.Courses.Include(c => c.Professor).ThenInclude(p => p.PersonalData).ToDictionary(c => c.CourseCode, c => c);
             var chosenCourses = coursesCodes
@@ -48,6 +48,6 @@ namespace WebApplication1.Services.StudentOps
 
     public interface ICreateStudentOp
     { 
-        Task<string> AddStudentAsync(People.Student student, IEnumerable<string> coursesIds, ClaimsPrincipal user);
+        Task<string> AddStudentAsync(People.Student student, IEnumerable<string> coursesIds);
     }
 }

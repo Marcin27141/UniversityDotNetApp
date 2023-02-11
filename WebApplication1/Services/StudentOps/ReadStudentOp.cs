@@ -46,6 +46,20 @@ namespace WebApplication1.Services.StudentOps
             return Student.FromEntityStudent(student);
         }
 
+        public Student GetStudentByUser(string userId)
+        {
+            var student = _context.Students
+                .Include(s => s.PersonalData)
+                .ThenInclude(pd => pd.ApplicationUser)
+                .Include(s => s.Courses)
+                .ThenInclude(sc => sc.Course)
+                .ThenInclude(c => c.Professor)
+                .ThenInclude(p => p.PersonalData)
+                .SingleOrDefault(s => s.PersonalData.ApplicationUser.Id.Equals(userId));
+            if (student == null) return null;
+            return Student.FromEntityStudent(student);
+        }
+
         public List<Course> GetStudentCourses(string studentIndex)
         {
             return _context.Students.Include(st => st.Courses).ThenInclude(sc => sc.Course)
@@ -58,5 +72,6 @@ namespace WebApplication1.Services.StudentOps
     public interface IReadStudentOp
     {
         Student GetStudentByIndex(string index);
+        Student GetStudentByUser(string userId);
     }
 }

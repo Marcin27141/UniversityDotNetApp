@@ -46,20 +46,22 @@ namespace WebApplication1.Pages
             _readStudentOp = readStudentOp;
             _readUserOp = readUserOp;
             ApplicationUsers = readUserOp.GetAllUsers().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
+            AvailableCourses = _readCourseOp.GetAllCourses().Select(c => new SelectListItem() { Text = c.ToString(), Value = c.CourseCode });
         }
         public void OnGet()
         {
-            AvailableCourses = _readCourseOp.GetAllCourses().Select(c => new SelectListItem() { Text = c.ToString(), Value = c.CourseCode });
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (_readStudentOp.GetStudentByIndex(Student.Index) != null)
                 ModelState.AddModelError("Student.Index", "Student with given index is already added");
+            if (_readStudentOp.GetStudentByUser(ApplicationUserId) != null)
+                ModelState.AddModelError("ApplicationUserId", "There already is a connected account");
             if (!ModelState.IsValid)
                 return Page();
             Student student = CreateStudent();
-            var index = await _createStudentOp.AddStudentAsync(student, SelectedCourses.Where(c => c != null), User);
+            var index = await _createStudentOp.AddStudentAsync(student, SelectedCourses.Where(c => c != null));
             return RedirectToPage("/ShowResults/ShowStudent", new { index = index });
         }
 

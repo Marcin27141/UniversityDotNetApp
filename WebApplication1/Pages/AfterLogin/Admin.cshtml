@@ -1,0 +1,29 @@
+﻿@page
+@model WebApplication1.Pages.AfterLogin.AdminModel
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="text-center">
+    <p><a asp-page="/NewElement/NewPerson/NewStudent">Create a new student</a>.</p>
+</div>
+
+<div class="text-center">
+    <p><a asp-page="/NewElement/NewPerson/NewProfessor">Create a new professor</a>.</p>
+</div>
+
+<div class="text-center">
+    <p><a asp-page="/NewElement/NewCourse">Create a new course</a>.</p>
+</div>
+
+<div class="text-center">
+    <p><a asp-page="/ShowResults/ShowPeople">Show list of people</a>.</p>
+</div>
+
+<div class="text-center">
+    <p><a asp-page="/ShowResults/ShowCourses">Show list of courses</a>.</p>
+</div>
+
+<div class="text-center">
+    <p><a asp-page="/FindElements/FindPeople">Find people</a>.</p>
+</div>

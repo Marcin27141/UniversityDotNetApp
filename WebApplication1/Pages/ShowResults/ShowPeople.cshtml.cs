@@ -24,6 +24,7 @@ namespace WebApplication1.Pages.ShowResults
             _deleteProfessorOp = deleteProfessorOp;
         }
 
+        //authorization?
         //results=0 => all people; results=1 => selected people from TempData["PeopleList"]
         public void OnGet(int results)
         {

@@ -37,7 +37,17 @@ namespace WebApplication1.Services.ProfessorOps
 
         public Professor GetProfessorByIdCode(string idCode)
         {
-            var professor = _context.Professors.AsNoTracking().Include(p => p.PersonalData).SingleOrDefault(p => p.IdCode == idCode);
+            var professor = _context.Professors.AsNoTracking().Include(p => p.PersonalData).SingleOrDefault(p => p.IdCode.Equals(idCode));
+            if (professor == null) return null;
+            return Professor.FromEntityProfessor(professor);
+        }
+
+        public Professor GetProfessorByUser(string userId)
+        {
+            var professor = _context.Professors.AsNoTracking()
+                .Include(p => p.PersonalData)
+                .ThenInclude(pd => pd.ApplicationUser)
+                .SingleOrDefault(p => p.PersonalData.ApplicationUser.Id.Equals(userId));
             if (professor == null) return null;
             return Professor.FromEntityProfessor(professor);
         }
@@ -54,5 +64,6 @@ namespace WebApplication1.Services.ProfessorOps
         List<Professor> GetAllProfessors();
 
         Professor GetProfessorByIdCode(string idCode);
+        Professor GetProfessorByUser(string userId);
     }
 }

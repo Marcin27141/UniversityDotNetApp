@@ -17,7 +17,10 @@ namespace WebApplication1.Services.ProfessorOps
 
         public Professor GetProfessorToUpdateByIdCode(string idCode)
         {
-            ProfessorToUpdate = _context.Professors.Include(p => p.PersonalData).SingleOrDefault(p => p.IdCode.Equals(idCode));
+            ProfessorToUpdate = _context.Professors
+                .Include(p => p.PersonalData)
+                .ThenInclude(pd => pd.ApplicationUser)
+                .SingleOrDefault(p => p.IdCode.Equals(idCode));
             if (ProfessorToUpdate == null) return null;
             return Professor.FromEntityProfessor(ProfessorToUpdate);
         }

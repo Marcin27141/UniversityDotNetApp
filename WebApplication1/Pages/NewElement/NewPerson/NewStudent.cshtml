@@ -5,13 +5,15 @@
     ViewData["Title"] = "New Student";
 }
 
-@await Html.PartialAsync("_PersonalDataPartial", Model.PersonalData) 
-
 <div class="form-group">
     <div>
         @Html.DropDownListFor(model => model.ApplicationUserId, Model.ApplicationUsers, "choose account")
     </div>
+    <span asp-validation-for="ApplicationUserId"></span>
 </div>
+
+@await Html.PartialAsync("_PersonalDataPartial", Model.PersonalData) 
+
 <div class="form-group">
     <label asp-for="Student.Index"></label>
     <input class="form-control" asp-for="Student.Index" />

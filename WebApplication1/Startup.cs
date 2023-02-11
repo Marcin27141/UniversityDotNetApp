@@ -40,6 +40,7 @@ namespace WebApplication1
             //policies
             services.AddScoped<IAuthorizationHandler, HasAdminRightsHandler>();
             services.AddScoped<IAuthorizationHandler, StudentEditorIsOwnerHandler>();
+            services.AddScoped<IAuthorizationHandler, ProfessorEditorIsOwnerHandler>();
 
             services.AddAuthorization(options =>
             {
@@ -47,6 +48,9 @@ namespace WebApplication1
                     policyBuilder.RequireClaim("IsAdmin"));
                 options.AddPolicy("CanEditStudent", policyBuilder =>
                     policyBuilder.AddRequirements(new CanEditStudentRequrement()));
+                options.AddPolicy("CanEditProfessor", policyBuilder =>
+                    policyBuilder.AddRequirements(new CanEditProfessorRequirement()));
+
             }
             );
 

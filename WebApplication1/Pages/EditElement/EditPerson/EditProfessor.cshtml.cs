@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebApplication1.Services.People;
@@ -11,6 +12,7 @@ namespace WebApplication1.Pages.EditElement.EditPerson
     public class EditProfessorModel : PageModel
     {
         private readonly IUpdateProfessorOp _updateProfessorOp;
+        private readonly IAuthorizationService _authService;
 
         [Required]
         [BindProperty]
@@ -18,11 +20,22 @@ namespace WebApplication1.Pages.EditElement.EditPerson
         [BindProperty]
         public Professor Professor { get; set; }
 
-        public EditProfessorModel(IUpdateProfessorOp updateProfessorOp) => _updateProfessorOp = updateProfessorOp;
-        public void OnGet(string idCode)
+        public EditProfessorModel(IUpdateProfessorOp updateProfessorOp, IAuthorizationService authService)
+        {
+            _updateProfessorOp = updateProfessorOp;
+            _authService = authService;
+        }
+        public async Task<IActionResult> OnGet(string idCode)
         {
             Professor = _updateProfessorOp.GetProfessorToUpdateByIdCode(idCode);
             PersonalData = Professor?.PersonalData;
+
+            var authResult = await _authService.AuthorizeAsync(User, Professor, "CanEditProfessor");
+            if (!authResult.Succeeded)
+            {
+                return new ForbidResult();
+            }
+            return Page();
         }
 
         public async Task<IActionResult> OnPost()
