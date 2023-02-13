@@ -22,13 +22,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/AfterLogin/Student">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/AfterLogin/Student">Show Profile</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ShowResults/ShowStudent" asp-route-index="@User.FindFirst("Index")?.Value">Show Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/AfterLogin/Student">Edit Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/AfterLogin/Student">Send a message</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/EditElement/EditPerson/EditStudent" asp-route-index="@User.FindFirst("Index")?.Value">Edit Profile</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

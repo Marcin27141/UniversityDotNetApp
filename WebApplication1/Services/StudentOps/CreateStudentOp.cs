@@ -14,10 +14,12 @@ namespace WebApplication1.Services.StudentOps
     public class CreateStudentOp : ICreateStudentOp
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CreateStudentOp(AppDbContext context)
+        public CreateStudentOp(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<string> AddStudentAsync(People.Student student, IEnumerable<string> coursesCodes)
@@ -42,6 +44,13 @@ namespace WebApplication1.Services.StudentOps
 
             _context.Add(entityStudent);
             await _context.SaveChangesAsync();
+
+            var entityIdClaim = new Claim("EntityId", _context.Students.SingleOrDefault(s => s.StudentIndex.Equals(student.Index)).StudentID.ToString());
+            _userManager.AddClaimAsync(student.PersonalData.ApplicationUser, entityIdClaim);
+
+            var indexClaim = new Claim("Index", student.Index);
+            _userManager.AddClaimAsync(student.PersonalData.ApplicationUser, indexClaim);
+
             return entityStudent.StudentIndex;
         }
     }

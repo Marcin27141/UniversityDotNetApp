@@ -28,13 +28,6 @@
                 <td>
                     @Html.CreateEditLinkForPerson(triplet.Type, triplet.Key) |
                     @Html.CreateDetailsLinkForPerson(triplet.Type, triplet.Key) |
-                    @*@{
-                        var dict = new Dictionary<string, string>
-                        {
-                            { "personType", ((int)triplet.Type) },
-                            { "id", triplet.Key }
-                        };
-                    }*@
                     <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-personType="@((int)triplet.Type)" asp-route-id="@triplet.Key">Delete</a>
                 </td>
             </tr>

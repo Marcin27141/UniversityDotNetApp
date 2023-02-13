@@ -5,17 +5,9 @@
 }
 
 <div class="text-center">
-    <p><a asp-page="/AfterLogin/Student">Show Profile</a>.</p>
+    <p><a asp-page="/ShowResults/ShowStudent" asp-route-index="@Model.Student.Index">Show Profile</a>.</p>
 </div>
 
 <div class="text-center">
-    <p><a asp-page="/AfterLogin/Student">Edit Profile</a>.</p>
-</div>
-
-<div class="text-center">
-    <p><a asp-page="/AfterLogin/Student">Show courses</a>.</p>
-</div>
-
-<div class="text-center">
-    <p><a asp-page="/AfterLogin/Student">Send a message</a>.</p>
+    <p><a asp-page="/EditElement/EditPerson/EditStudent" asp-route-index="@Model.Student.Index">Edit Profile</a>.</p>
 </div>

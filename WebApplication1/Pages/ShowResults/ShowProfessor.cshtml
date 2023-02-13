@@ -4,10 +4,6 @@
     ViewData["Title"] = "Professor to show";
 }
 
-<p>
-    <a asp-page="/Index">Return</a>
-</p>
-
 <h1>Personal data: </h1>
 @await Html.PartialAsync("_ShowPersonPartial", Model.ProfessorToShow.PersonalData)
 

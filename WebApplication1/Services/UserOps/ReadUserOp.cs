@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApplication1.DataBase;
 using WebApplication1.DataBase.Entities;
+using WebApplication1.Services.People;
 
 namespace WebApplication1.Services.UserOps
 {
@@ -24,7 +25,7 @@ namespace WebApplication1.Services.UserOps
             return output;
         }
 
-        public ApplicationUser GetUserById(string id)
+        public DataBase.Entities.ApplicationUser GetUserById(string id)
         {
             return _context.Users.Find(id);
         }

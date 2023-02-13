@@ -5,17 +5,9 @@
 }
 
 <div class="text-center">
-    <p><a asp-page="/AfterLogin/Professor">Show Profile</a>.</p>
+    <p><a asp-page="/ShowResults/ShowProfessor" asp-route-idCode="@Model.Professor.IdCode">Show Profile</a>.</p>
 </div>
 
 <div class="text-center">
-    <p><a asp-page="/AfterLogin/Professor">Edit Profile</a>.</p>
-</div>
-
-@*<div class="text-center">
-    <p><a asp-page="/AfterLogin/Professor">Show courses</a>.</p>
-</div>*@
-
-<div class="text-center">
-    <p><a asp-page="/AfterLogin/Professor">Send a message</a>.</p>
+    <p><a asp-page="/EditElement/EditPerson/EditProfessor" asp-route-idCode="@Model.Professor.IdCode">Edit Profile</a>.</p>
 </div>

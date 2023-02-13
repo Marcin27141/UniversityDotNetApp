@@ -43,7 +43,7 @@ namespace WebApplication1.Pages.EditElement.EditPerson
         {
             Student = _updateStudentOp.GetStudentToUpdateByIndex(index);
             PersonalData = Student?.PersonalData;
-            SelectedCourses = Student.Courses.Select(i => i.CourseCode.ToString());
+            SelectedCourses = Student?.Courses.Select(i => i.CourseCode.ToString());
 
             var authResult = await _authService.AuthorizeAsync(User, Student, "CanEditStudent");
             if (!authResult.Succeeded)
