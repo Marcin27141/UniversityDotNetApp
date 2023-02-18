@@ -6,14 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplication1.DataBase;
 using WebApplication1.DataBase.Entities;
-using WebApplication1.Services.CourseOps;
-using WebApplication1.Services.PeopleOps;
-using WebApplication1.Services.ProfessorOps;
-using WebApplication1.Services.StudentOps;
 using WebApplication1.Policies.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication1.Policies.Handlers;
-using WebApplication1.Services.UserOps;
+
 
 namespace WebApplication1
 {
@@ -56,25 +52,11 @@ namespace WebApplication1
 
             //custom services
 
-            services.AddScoped<ICreateCourseOp, CreateCourseOp>();
-            services.AddScoped<IDeleteCourseOp, DeleteCourseOp>();
-            services.AddScoped<IReadCourseOp, ReadCourseOp>();
-            services.AddScoped<IUpdateCourseOp, UpdateCourseOp>();
-
-            services.AddScoped<ICreateProfessorOp, CreateProfessorOp>();
-            services.AddScoped<IDeleteProfessorOp, DeleteProfessorOp>();
-            services.AddScoped<IReadProfessorOp, ReadProfessorOp>();
-            services.AddScoped<IUpdateProfessorOp, UpdateProfessorOp>();
-
-            services.AddScoped<ICreateStudentOp, CreateStudentOp>();
-            services.AddScoped<IDeleteStudentOp, DeleteStudentOp>();
-            services.AddScoped<IReadStudentOp, ReadStudentOp>();
-            services.AddScoped<IUpdateStudentOp, UpdateStudentOp>();
-
-            services.AddScoped<IReadPeopleOp, ReadPeopleOp>();
-            services.AddScoped<IReadUserOp, ReadUserOp>();
-
-
+            services.Scan(scan => scan
+                .FromAssemblyOf<Startup>()
+                .AddClasses(classes => classes.Where(c => c.Namespace.Contains("Services") && !c.Namespace.EndsWith("People")))
+                .AsMatchingInterface()
+                .WithScopedLifetime());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
