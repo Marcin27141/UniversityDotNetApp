@@ -7,7 +7,7 @@ using WebApplication1.Services.People;
 
 namespace WebApplication1.Policies.Handlers
 {
-    public class StudentEditorIsOwnerHandler : AuthorizationHandler<CanEditStudentRequrement, Services.People.Student>
+    public class StudentEditorIsOwnerHandler : AuthorizationHandler<CanEditStudentRequrement, Student>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         public StudentEditorIsOwnerHandler(UserManager<ApplicationUser> userManager)
@@ -16,7 +16,7 @@ namespace WebApplication1.Policies.Handlers
         }
 
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, CanEditStudentRequrement requirement, Services.People.Student resource)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, CanEditStudentRequrement requirement, Student resource)
         {
             var appUser = await _userManager.GetUserAsync(context.User);
             if (appUser == null)

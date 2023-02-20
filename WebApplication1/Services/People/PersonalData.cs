@@ -27,9 +27,9 @@ namespace WebApplication1.Services.People
 
         public override string ToString() => $"{FirstName} {LastName}";
 
-        public DataBase.Entities.PersonalData ToEntityPersonalData(string specificId, PersonType personType)
+        public EntityPersonalData ToEntityPersonalData(string specificId, PersonType personType)
         {
-            return new DataBase.Entities.PersonalData()
+            return new EntityPersonalData()
             {
                 ApplicationUser = this.ApplicationUser,
                 SpecificId = specificId,
@@ -42,7 +42,7 @@ namespace WebApplication1.Services.People
             };
         }
 
-        public static PersonalData FromEntityPersonalData(DataBase.Entities.PersonalData entityPersonalData)
+        public static PersonalData FromEntityPersonalData(EntityPersonalData entityPersonalData)
         {
             return new PersonalData
             {

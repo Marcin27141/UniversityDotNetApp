@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.DataBase.Entities
 {
-    public class Professor
+    public class EntityProfessor
     {
-        public int ProfessorID { get; set; }
+        public int EntityProfessorID { get; set; }
         public string IdCode { get; set; }
         public string Subject { get; set; }
         public DateTime FirstDayAtJob { get; set; }
@@ -17,6 +17,6 @@ namespace WebApplication1.DataBase.Entities
         //----------------
         //relationships
         public int PersonalDataID { get; set; }
-        public PersonalData PersonalData { get; set; }
+        public EntityPersonalData PersonalData { get; set; }
     }
 }

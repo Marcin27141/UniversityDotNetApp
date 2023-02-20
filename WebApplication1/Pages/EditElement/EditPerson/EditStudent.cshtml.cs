@@ -69,7 +69,6 @@ namespace WebApplication1.Pages.EditElement.EditPerson
                 PersonalData = PersonalData,
                 Index = Student.Index,
                 BeginningOfStudying = Student.BeginningOfStudying,
-                Average = Student.Average
             };
         }
     }

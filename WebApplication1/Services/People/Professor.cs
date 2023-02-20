@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebApplication1.DataBase.Entities;
 using WebApplication1.Services.PeopleOps;
 using WebApplication1.Services.ProfessorOps;
 
@@ -29,9 +30,9 @@ namespace WebApplication1.Services.People
 
         public override string ToString() => PersonalData.ToString();
 
-        public DataBase.Entities.Professor ToEntityProfessor()
+        public EntityProfessor ToEntityProfessor()
         {
-            return new DataBase.Entities.Professor()
+            return new EntityProfessor()
             {
                 IdCode = this.IdCode,
                 PersonalData = this.PersonalData.ToEntityPersonalData(this.IdCode,PersonType.Professor),
@@ -41,7 +42,7 @@ namespace WebApplication1.Services.People
             };
         }
 
-        public static Professor FromEntityProfessor(DataBase.Entities.Professor entityProfessor)
+        public static Professor FromEntityProfessor(EntityProfessor entityProfessor)
         {
             return new Professor
             {

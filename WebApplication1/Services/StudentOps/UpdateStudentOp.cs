@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.DataBase;
+using WebApplication1.DataBase.Entities;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Services.StudentOps
@@ -11,7 +12,7 @@ namespace WebApplication1.Services.StudentOps
     public class UpdateStudentOp : IUpdateStudentOp
     {
         private readonly AppDbContext _context;
-        public DataBase.Entities.Student StudentToUpdate { get; private set; }
+        public EntityStudent StudentToUpdate { get; private set; }
 
         public UpdateStudentOp(AppDbContext context) => _context = context;
 
@@ -34,14 +35,13 @@ namespace WebApplication1.Services.StudentOps
             var updatedCourses = coursesCodes
                 .Select(c => _context.Courses.SingleOrDefault(o => o.CourseCode.Equals(c)))
                 .ToList();
-            var updatedEntity = updatedStudent.ToEntityStudent(updatedCourses);
             StudentToUpdate = _context.Students.Include(s => s.PersonalData).Include(s => s.Courses).SingleOrDefault(s => s.StudentIndex.Equals(updatedStudent.Index));
-            UpdateStudent(updatedEntity);
+            UpdateStudent(updatedStudent, updatedCourses);
             await _context.SaveChangesAsync();
             return StudentToUpdate.StudentIndex;
         }
 
-        private void UpdateStudent(DataBase.Entities.Student updatedStudent)
+        private void UpdateStudent(Student updatedStudent, List<EntityCourse> updatedCourses)
         {
             StudentToUpdate.PersonalData.FirstName = updatedStudent.PersonalData.FirstName;
             StudentToUpdate.PersonalData.LastName = updatedStudent.PersonalData.LastName;
@@ -49,9 +49,12 @@ namespace WebApplication1.Services.StudentOps
             StudentToUpdate.PersonalData.Birthday = updatedStudent.PersonalData.Birthday;
             StudentToUpdate.PersonalData.Motherland = updatedStudent.PersonalData.Motherland;
 
-            StudentToUpdate.Average = updatedStudent.Average;
             StudentToUpdate.BeginningOfStudying = updatedStudent.BeginningOfStudying;
-            StudentToUpdate.Courses = updatedStudent.Courses;
+            StudentToUpdate.Courses = updatedCourses.Select(c => new StudentCourse()
+            {
+                Student = StudentToUpdate,
+                Course = c,
+            }).ToList();
         }
 
         public async Task<bool> RemoveStudentCourseAsync(string index, string courseCode)

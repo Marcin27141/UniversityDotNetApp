@@ -22,7 +22,7 @@ namespace WebApplication1.Services.StudentOps
             _userManager = userManager;
         }
 
-        public async Task<string> AddStudentAsync(People.Student student, IEnumerable<string> coursesCodes)
+        public async Task<string> AddStudentAsync(Student student, IEnumerable<string> coursesCodes)
         {
             var codeToCourseDictionary = _context.Courses.Include(c => c.Professor).ThenInclude(p => p.PersonalData).ToDictionary(c => c.CourseCode, c => c);
             var chosenCourses = coursesCodes
@@ -45,7 +45,7 @@ namespace WebApplication1.Services.StudentOps
             _context.Add(entityStudent);
             await _context.SaveChangesAsync();
 
-            var entityIdClaim = new Claim("EntityId", _context.Students.SingleOrDefault(s => s.StudentIndex.Equals(student.Index)).StudentID.ToString());
+            var entityIdClaim = new Claim("EntityId", _context.Students.SingleOrDefault(s => s.StudentIndex.Equals(student.Index)).EntityStudentID.ToString());
             _userManager.AddClaimAsync(student.PersonalData.ApplicationUser, entityIdClaim);
 
             var indexClaim = new Claim("Index", student.Index);
@@ -57,6 +57,6 @@ namespace WebApplication1.Services.StudentOps
 
     public interface ICreateStudentOp
     { 
-        Task<string> AddStudentAsync(People.Student student, IEnumerable<string> coursesIds);
+        Task<string> AddStudentAsync(Student student, IEnumerable<string> coursesIds);
     }
 }

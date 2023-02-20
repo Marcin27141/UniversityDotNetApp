@@ -30,7 +30,7 @@ namespace WebApplication1.Services.ProfessorOps
 
         public Professor GetProfessorByKey(int professorID)
         {
-            var professor = _context.Professors.AsNoTracking().Include(p => p.PersonalData).SingleOrDefault(p => p.ProfessorID == professorID);
+            var professor = _context.Professors.AsNoTracking().Include(p => p.PersonalData).SingleOrDefault(p => p.EntityProfessorID == professorID);
             if (professor == null) return null;
             return Professor.FromEntityProfessor(professor);
         }

@@ -20,7 +20,7 @@ namespace WebApplication1.Services.ProfessorOps
             _userManager = userManager;
         }
 
-        public async Task<string> AddProfessorAsync(People.Professor professor)
+        public async Task<string> AddProfessorAsync(Professor professor)
         {
             var entityProfessor = professor.ToEntityProfessor();
             var professorWithSameIdCode = _context.Professors.IgnoreQueryFilters().SingleOrDefault(p => p.IdCode.Equals(entityProfessor.IdCode));
@@ -37,7 +37,7 @@ namespace WebApplication1.Services.ProfessorOps
             _context.Add(entityProfessor);
             await _context.SaveChangesAsync();
 
-            var entityIdClaim = new Claim("EntityId", _context.Professors.SingleOrDefault(p => p.IdCode.Equals(professor.IdCode)).ProfessorID.ToString());
+            var entityIdClaim = new Claim("EntityId", _context.Professors.SingleOrDefault(p => p.IdCode.Equals(professor.IdCode)).EntityProfessorID.ToString());
             _userManager.AddClaimAsync(professor.PersonalData.ApplicationUser, entityIdClaim);
 
             var idCodeClaim = new Claim("IdCode", professor.IdCode);
@@ -49,6 +49,6 @@ namespace WebApplication1.Services.ProfessorOps
 
     public interface ICreateProfessorOp
     {
-        Task<string> AddProfessorAsync(People.Professor professor);
+        Task<string> AddProfessorAsync(Professor professor);
     }
 }

@@ -5,18 +5,17 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.DataBase.Entities
 {
-    public class Student
+    public class EntityStudent
     {
-        public int StudentID { get; set; }
+        public int EntityStudentID { get; set; }
         public string StudentIndex { get; set; }
-        public float Average { get; set; }
         public DateTime BeginningOfStudying { get; set; }
         public bool SoftDeleted { get; set; }
 
         //----------------
         //relationships
         public int PersonalDataID { get; set; }
-        public PersonalData PersonalData { get; set; }
+        public EntityPersonalData PersonalData { get; set; }
         public IList<StudentCourse> Courses { get; set; }
     }
 }

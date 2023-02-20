@@ -6,12 +6,10 @@ using static WebApplication1.Pages.ShowResults.ShowPeopleModel;
 
 namespace WebApplication1.DataBase.Entities
 {
-    public class PersonalData
+    public class EntityPersonalData
     {
-#nullable enable
-        public ApplicationUser? ApplicationUser { get; set; }
-#nullable disable
-        public int PersonalDataID { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+        public int EntityPersonalDataID { get; set; }
         public int PersonTypeID { get; set; }
         public string SpecificId { get; set; }
         public string FirstName { get; set; }

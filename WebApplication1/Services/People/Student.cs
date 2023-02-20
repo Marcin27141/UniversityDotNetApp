@@ -16,9 +16,6 @@ namespace WebApplication1.Services.People
         [RegularExpression(@"\d{6}", ErrorMessage = "Please use a 6 digit index")]
         public string Index { get; set; }
 
-        [Range(2.0, 5.0, ErrorMessage = "Average must be between 2,0 and 5,0")]
-        public float Average { get; set; }
-
         [DataType(DataType.Date)]
         [Display(Name = "First day of studying")]
         public DateTime BeginningOfStudying { get; set; }
@@ -27,13 +24,12 @@ namespace WebApplication1.Services.People
 
         public override string ToString() => PersonalData.ToString();
 
-        public DataBase.Entities.Student ToEntityStudent(List<DataBase.Entities.Course> courses)
+        public EntityStudent ToEntityStudent(List<EntityCourse> courses)
         {
-            var output = new DataBase.Entities.Student()
+            var output = new EntityStudent()
             {
                 StudentIndex = this.Index,
                 PersonalData = this.PersonalData.ToEntityPersonalData(this.Index,PersonType.Student),
-                Average = this.Average,
                 BeginningOfStudying = this.BeginningOfStudying
             };
 
@@ -48,13 +44,12 @@ namespace WebApplication1.Services.People
             return output;
         }
 
-        public static Student FromEntityStudent(DataBase.Entities.Student entityStudent)
+        public static Student FromEntityStudent(EntityStudent entityStudent)
         {
             return new Student
             {
                 PersonalData = PersonalData.FromEntityPersonalData(entityStudent.PersonalData),
                 Index = entityStudent.StudentIndex,
-                Average = entityStudent.Average,
                 BeginningOfStudying = entityStudent.BeginningOfStudying,
                 Courses = entityStudent.Courses.Select(sc => Course.FromEntityCourse(sc.Course)).ToList()
             };

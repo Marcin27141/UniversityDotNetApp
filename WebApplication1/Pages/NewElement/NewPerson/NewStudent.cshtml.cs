@@ -72,8 +72,7 @@ namespace WebApplication1.Pages
             {
                 PersonalData = PersonalData,
                 Index = Student.Index,
-                BeginningOfStudying = Student.BeginningOfStudying,
-                Average = Student.Average
+                BeginningOfStudying = Student.BeginningOfStudying
             };
         }
     }

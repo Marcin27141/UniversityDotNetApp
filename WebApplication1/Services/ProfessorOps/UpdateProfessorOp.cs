@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.DataBase;
+using WebApplication1.DataBase.Entities;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Services.ProfessorOps
@@ -11,7 +12,7 @@ namespace WebApplication1.Services.ProfessorOps
     public class UpdateProfessorOp : IUpdateProfessorOp
     {
         private readonly AppDbContext _context;
-        public DataBase.Entities.Professor ProfessorToUpdate { get; private set; }
+        public EntityProfessor ProfessorToUpdate { get; private set; }
 
         public UpdateProfessorOp(AppDbContext context) => _context = context;
 
@@ -34,7 +35,7 @@ namespace WebApplication1.Services.ProfessorOps
             return ProfessorToUpdate.IdCode;
         }
 
-        private void UpdateProfessor(DataBase.Entities.Professor updatedProfessor)
+        private void UpdateProfessor(EntityProfessor updatedProfessor)
         {
             ProfessorToUpdate.PersonalData.FirstName = updatedProfessor.PersonalData.FirstName;
             ProfessorToUpdate.PersonalData.LastName = updatedProfessor.PersonalData.LastName;

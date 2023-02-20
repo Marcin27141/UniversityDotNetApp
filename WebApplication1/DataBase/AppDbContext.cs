@@ -12,10 +12,10 @@ namespace WebApplication1.DataBase
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
-        public DbSet<Professor> Professors { get; set; }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<PersonalData> PersonalData { get; set; }
-        public DbSet<Course> Courses { get; set; }
+        public DbSet<EntityProfessor> Professors { get; set; }
+        public DbSet<EntityStudent> Students { get; set; }
+        public DbSet<EntityPersonalData> PersonalData { get; set; }
+        public DbSet<EntityCourse> Courses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,20 +36,20 @@ namespace WebApplication1.DataBase
                 .HasForeignKey(sc => sc.CourseID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Student>()
+            modelBuilder.Entity<EntityStudent>()
                 .HasMany(s => s.Courses)
                 .WithOne(sc => sc.Student)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Course>()
+            modelBuilder.Entity<EntityCourse>()
                 .HasMany(c => c.Students)
                 .WithOne(sc => sc.Course)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<PersonalData>().HasQueryFilter(pd => !pd.SoftDeleted);
-            modelBuilder.Entity<Student>().HasQueryFilter(st => !st.SoftDeleted);
-            modelBuilder.Entity<Professor>().HasQueryFilter(pr => !pr.SoftDeleted);
-            modelBuilder.Entity<Course>().HasQueryFilter(c => !c.SoftDeleted);
+            modelBuilder.Entity<EntityPersonalData>().HasQueryFilter(pd => !pd.SoftDeleted);
+            modelBuilder.Entity<EntityStudent>().HasQueryFilter(st => !st.SoftDeleted);
+            modelBuilder.Entity<EntityProfessor>().HasQueryFilter(pr => !pr.SoftDeleted);
+            modelBuilder.Entity<EntityCourse>().HasQueryFilter(c => !c.SoftDeleted);
             modelBuilder.Entity<StudentCourse>().HasQueryFilter(sc => !sc.Course.SoftDeleted);
         }
     }

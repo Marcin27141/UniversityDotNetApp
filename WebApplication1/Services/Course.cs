@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebApplication1.DataBase.Entities;
 using WebApplication1.Services.CourseOps;
 using WebApplication1.Services.People;
 
@@ -24,9 +25,9 @@ namespace WebApplication1.Services
 
         public override string ToString() => $"{Name} ({CourseCode})";
 
-        public DataBase.Entities.Course ToEntityCourse(DataBase.Entities.Professor entityProfessor)
+        public EntityCourse ToEntityCourse(EntityProfessor entityProfessor)
         {
-            return new DataBase.Entities.Course()
+            return new EntityCourse()
             {
                 CourseCode = CourseCode,
                 Name = Name,
@@ -36,7 +37,7 @@ namespace WebApplication1.Services
             };
         }
 
-        public static Course FromEntityCourse(DataBase.Entities.Course entityCourse)
+        public static Course FromEntityCourse(EntityCourse entityCourse)
         {
             return new Course
             {

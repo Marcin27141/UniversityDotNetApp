@@ -11,7 +11,7 @@ namespace WebApplication1.Pages.AfterLogin
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IReadStudentOp _readStudentOp;
-        public Services.People.Student Student { get; set; }
+        public Student Student { get; set; }
 
         public StudentModel(UserManager<ApplicationUser> userManager, IReadStudentOp readStudentOp)
         {

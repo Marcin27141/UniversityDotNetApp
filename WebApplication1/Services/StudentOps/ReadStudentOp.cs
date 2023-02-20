@@ -28,7 +28,7 @@ namespace WebApplication1.Services.StudentOps
             var student = _context.Students.AsNoTracking()
                 .Include(s => s.PersonalData)
                 .Include(s => s.Courses)
-                .SingleOrDefault(s => s.StudentID == studentID);
+                .SingleOrDefault(s => s.EntityStudentID == studentID);
             if (student == null) return null;
             return Student.FromEntityStudent(student);
         }
@@ -63,7 +63,7 @@ namespace WebApplication1.Services.StudentOps
         public List<Course> GetStudentCourses(string studentIndex)
         {
             return _context.Students.Include(st => st.Courses).ThenInclude(sc => sc.Course)
-                .Single(st => st.StudentID.Equals(studentIndex))
+                .Single(st => st.EntityStudentID.Equals(studentIndex))
                 .Courses.Select(sc => Course.FromEntityCourse(sc.Course))
                 .ToList();
         }

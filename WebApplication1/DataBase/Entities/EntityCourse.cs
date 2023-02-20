@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.DataBase.Entities
 {
-    public class Course
+    public class EntityCourse
     {
-        public int CourseID { get; set; }
+        public int EntityCourseID { get; set; }
         public string CourseCode { get; set; }
         public string Name { get; set; }
         public int ECTS { get; set; }
@@ -19,7 +19,7 @@ namespace WebApplication1.DataBase.Entities
 
         //TODO Profesor for course optional?
         public int ProfessorID { get; set; }
-        public Professor Professor { get; set; }
+        public EntityProfessor Professor { get; set; }
 
         public IList<StudentCourse> Students { get; set; }
     }
