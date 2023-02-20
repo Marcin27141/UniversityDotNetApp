@@ -1,7 +1,37 @@
 ﻿@page "{results=0}"
+@using WebApplication1.HtmlHelpers;
 @model WebApplication1.Pages.ShowResults.ShowPeopleModel
 @{
     
 }
 
-@await Html.PartialAsync("_ShowPeopleListPartial", Model.PeopleToShow) 
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Role
+        </th>
+        <th></th>
+    </tr>
+
+
+
+    @foreach (var triplet in Model.PeopleToShow)
+    {
+        <tr>
+            <td>
+                @triplet.PersonalData.ToString()
+            </td>
+            <td>
+                @triplet.Type
+            </td>
+            <td>
+                @Html.CreateEditLinkForPerson(triplet.Type, triplet.Key) |
+                @Html.CreateDetailsLinkForPerson(triplet.Type, triplet.Key) |
+                <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-personType="@((int)triplet.Type)" asp-route-id="@triplet.Key">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
