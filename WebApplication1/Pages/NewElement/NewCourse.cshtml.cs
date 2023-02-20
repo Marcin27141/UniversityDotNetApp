@@ -46,7 +46,7 @@ namespace WebApplication1.Pages
             if (!ModelState.IsValid)
                 return Page();
             Course course = CreateCourse();
-            var courseCode = await _createCourseOp.AddCourseAsync(course);
+            var courseCode = await _createCourseOp.AddCourseAsync(course, Enumerable.Empty<string>());
             return RedirectToPage("/ShowResults/ShowCourse", new { courseCode = courseCode });
         }                            
 

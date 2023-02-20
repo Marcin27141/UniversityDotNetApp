@@ -24,9 +24,9 @@ namespace WebApplication1.Services.StudentOps
 
         public async Task<string> AddStudentAsync(Student student, IEnumerable<string> coursesCodes)
         {
-            var codeToCourseDictionary = _context.Courses.Include(c => c.Professor).ThenInclude(p => p.PersonalData).ToDictionary(c => c.CourseCode, c => c);
+            var codeToCourseDictionary = _context.Courses.ToDictionary(c => c.CourseCode, c => c);
             var chosenCourses = coursesCodes
-                .Where(c => codeToCourseDictionary.ContainsKey(c))
+                .Where(codeToCourseDictionary.ContainsKey)
                 .Select(c => codeToCourseDictionary[c])
                 .ToList();
             var entityStudent = student.ToEntityStudent(chosenCourses);

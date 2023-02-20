@@ -22,7 +22,13 @@ namespace WebApplication1.Services.CourseOps
 
         public Course GetCourseByCode(string courseCode)
         {
-            var course = _context.Courses.AsNoTracking().Include(c => c.Professor).ThenInclude(p => p.PersonalData).SingleOrDefault(c => c.CourseCode.Equals(courseCode));
+            var course = _context.Courses.AsNoTracking()
+                .Include(c => c.Professor)
+                    .ThenInclude(p => p.PersonalData)
+                .Include(c => c.Students)
+                    .ThenInclude(sc => sc.Student)
+                        .ThenInclude(s => s.PersonalData)
+                .SingleOrDefault(c => c.CourseCode.Equals(courseCode));
             if (course == null) return null;
             return Course.FromEntityCourse(course);
         }
@@ -32,7 +38,10 @@ namespace WebApplication1.Services.CourseOps
             return _context.Courses
                 .AsNoTracking()
                 .Include(c => c.Professor)
-                .ThenInclude(p => p.PersonalData)
+                    .ThenInclude(p => p.PersonalData)
+                .Include(c => c.Students)
+                    .ThenInclude(sc => sc.Student)
+                        .ThenInclude(s => s.PersonalData)
                 .Select(c => Course.FromEntityCourse(c))
                 .ToList();
         }

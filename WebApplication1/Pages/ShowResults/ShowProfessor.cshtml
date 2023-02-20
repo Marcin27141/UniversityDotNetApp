@@ -1,10 +1,13 @@
 ﻿@page "{idCode}"
 @model WebApplication1.Pages.ShowResults.ProfessorToShowModel
 @{
-    ViewData["Title"] = "Professor to show";
+    ViewData["Title"] = "Professor";
 }
 
-<h1>Personal data: </h1>
+<h1>@Model.ProfessorToShow.PersonalData.FirstName @Model.ProfessorToShow.PersonalData.LastName</h1>
+<br />
+
+<h2>Personal data: </h2>
 @await Html.PartialAsync("_ShowPersonPartial", Model.ProfessorToShow.PersonalData)
 
 <h1>Professor data: </h1>

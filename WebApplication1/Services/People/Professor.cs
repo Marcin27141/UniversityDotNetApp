@@ -53,5 +53,17 @@ namespace WebApplication1.Services.People
                 Salary = entityProfessor.Salary
             };
         }
+
+        public static Professor FromEntityProfessorFlat(EntityProfessor entityProfessor)
+        {
+            return new Professor
+            {
+                PersonalData = PersonalData.FromEntityPersonalData(entityProfessor.PersonalData),
+                IdCode = entityProfessor.IdCode,
+                Subject = entityProfessor.Subject,
+                FirstDayAtJob = entityProfessor.FirstDayAtJob,
+                Salary = entityProfessor.Salary
+            };
+        }
     }
 }

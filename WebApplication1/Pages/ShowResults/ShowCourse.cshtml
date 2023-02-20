@@ -1,8 +1,11 @@
 ﻿@page "{courseCode}"
 @model WebApplication1.Pages.ShowResults.ShowCourseModel
 @{
-    ViewData["Title"] = "Course result";
+    ViewData["Title"] = "Course";
 }
+
+<h1>@Model.CourseToShow.Name</h1>
+<br />
 
 <table class="table">
     <tr>
@@ -31,6 +34,14 @@
     </tr>
     <tr>
         <td>
+            Students enrolled
+        </td>
+        <td>
+            @Model.CourseToShow.EnrolledStudents.Count()
+        </td>
+    </tr>
+    <tr>
+        <td>
             ECTS
         </td>
         <td>
@@ -46,3 +57,38 @@
         </td>
     </tr>
 </table>
+
+@*<br />
+<p><b>Enrolled students (number of students: @Model.CourseToShow.EnrolledStudents.Count())</b></p>
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Index
+        </th>
+        <th></th>
+    </tr>
+
+
+
+    @foreach (var student in Model.CourseToShow.EnrolledStudents)
+    {
+        <tr>
+            <td>
+                @student.ToString()
+            </td>
+            <td>
+                @student.Index
+            </td>
+            <td>
+                <a asp-page="/EditElement/EditCourse" asp-route-courseCode="@course.CourseCode">Edit</a> |
+                <a asp-page="/ShowResults/ShowCourse" asp-route-courseCode="@course.CourseCode">Details</a> |
+                <a asp-page="/ShowResults/ShowStudent" asp-page-handler="delete" asp-route-index="@Model.StudentToShow.Index" asp-route-courseCode="@course.CourseCode">Delete</a>
+            </td>
+        </tr>
+    }
+</table>*@

@@ -51,7 +51,17 @@ namespace WebApplication1.Services.People
                 PersonalData = PersonalData.FromEntityPersonalData(entityStudent.PersonalData),
                 Index = entityStudent.StudentIndex,
                 BeginningOfStudying = entityStudent.BeginningOfStudying,
-                Courses = entityStudent.Courses.Select(sc => Course.FromEntityCourse(sc.Course)).ToList()
+                Courses = entityStudent.Courses.Select(sc => Course.FromEntityCourseFlat(sc.Course)).ToList()
+            };
+        }
+
+        public static Student FromEntityStudentFlat(EntityStudent entityStudent)
+        {
+            return new Student
+            {
+                PersonalData = PersonalData.FromEntityPersonalData(entityStudent.PersonalData),
+                Index = entityStudent.StudentIndex,
+                BeginningOfStudying = entityStudent.BeginningOfStudying,
             };
         }
     }

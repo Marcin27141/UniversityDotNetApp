@@ -28,6 +28,9 @@ namespace WebApplication1.Services.StudentOps
             var student = _context.Students.AsNoTracking()
                 .Include(s => s.PersonalData)
                 .Include(s => s.Courses)
+                    .ThenInclude(sc => sc.Course)
+                        .ThenInclude(c => c.Professor)
+                            .ThenInclude(p => p.PersonalData)
                 .SingleOrDefault(s => s.EntityStudentID == studentID);
             if (student == null) return null;
             return Student.FromEntityStudent(student);
@@ -38,9 +41,9 @@ namespace WebApplication1.Services.StudentOps
             var student = _context.Students
                 .Include(s => s.PersonalData)
                 .Include(s => s.Courses)
-                .ThenInclude(sc => sc.Course)
-                .ThenInclude(c => c.Professor)
-                .ThenInclude(p => p.PersonalData)
+                    .ThenInclude(sc => sc.Course)
+                        .ThenInclude(c => c.Professor)
+                            .ThenInclude(p => p.PersonalData)
                 .SingleOrDefault(s => s.StudentIndex.Equals(index));
             if (student == null) return null;
             return Student.FromEntityStudent(student);
@@ -50,11 +53,11 @@ namespace WebApplication1.Services.StudentOps
         {
             var student = _context.Students
                 .Include(s => s.PersonalData)
-                .ThenInclude(pd => pd.ApplicationUser)
+                    .ThenInclude(pd => pd.ApplicationUser)
                 .Include(s => s.Courses)
-                .ThenInclude(sc => sc.Course)
-                .ThenInclude(c => c.Professor)
-                .ThenInclude(p => p.PersonalData)
+                    .ThenInclude(sc => sc.Course)
+                        .ThenInclude(c => c.Professor)
+                            .ThenInclude(p => p.PersonalData)
                 .SingleOrDefault(s => s.PersonalData.ApplicationUser.Id.Equals(userId));
             if (student == null) return null;
             return Student.FromEntityStudent(student);

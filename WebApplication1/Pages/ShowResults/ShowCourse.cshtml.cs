@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebApplication1.Services;
 using WebApplication1.Services.CourseOps;
+using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages.ShowResults
 {

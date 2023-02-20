@@ -17,10 +17,16 @@ namespace WebApplication1.Services.CourseOps
             _context = context;
         }
 
-        public async Task<string> AddCourseAsync(Course course)
+        public async Task<string> AddCourseAsync(Course course, IEnumerable<string> studentsIndexes)
         {
+            var indexToStudentDictionary = _context.Students.ToDictionary(s => s.StudentIndex, s => s);
+            var enrolledStudents = studentsIndexes
+                .Where(indexToStudentDictionary.ContainsKey)
+                .Select(s => indexToStudentDictionary[s])
+                .ToList();
+
             var entityProfessor = _context.Professors.Include(p => p.PersonalData).SingleOrDefault(p => p.IdCode.Equals(course.Professor.IdCode));
-            var entityCourse = course.ToEntityCourse(entityProfessor);
+            var entityCourse = course.ToEntityCourse(entityProfessor, enrolledStudents);
             var courseWithSameCode = _context.Courses.IgnoreQueryFilters().SingleOrDefault(c => c.CourseCode.Equals(entityCourse.CourseCode));
 
             if (courseWithSameCode != null && !courseWithSameCode.SoftDeleted)
@@ -40,6 +46,6 @@ namespace WebApplication1.Services.CourseOps
 
     public interface ICreateCourseOp
     {
-        Task<string> AddCourseAsync(Course course);
+        Task<string> AddCourseAsync(Course course, IEnumerable<string> studentsIndexes);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -10,6 +11,7 @@ using WebApplication1.Services.StudentOps;
 
 namespace WebApplication1.Pages.ShowResults
 {
+    [Authorize("HasAdminRights")]
     public class ShowPeopleModel : PageModel
     {
         private readonly IReadPeopleOp _readPeopleOp;

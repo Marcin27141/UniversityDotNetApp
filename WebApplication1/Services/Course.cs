@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using WebApplication1.DataBase.Entities;
 using WebApplication1.Services.CourseOps;
 using WebApplication1.Services.People;
@@ -23,11 +24,13 @@ namespace WebApplication1.Services
         [Display(Name="Is finished with exam?")]
         public bool IsFinishedWithExam { get; set; }
 
+        public List<Student> EnrolledStudents { get; set; }
+
         public override string ToString() => $"{Name} ({CourseCode})";
 
-        public EntityCourse ToEntityCourse(EntityProfessor entityProfessor)
+        public EntityCourse ToEntityCourse(EntityProfessor entityProfessor, List<EntityStudent> entityStudents)
         {
-            return new EntityCourse()
+            var output = new EntityCourse()
             {
                 CourseCode = CourseCode,
                 Name = Name,
@@ -35,6 +38,16 @@ namespace WebApplication1.Services
                 ECTS = ECTS,
                 IsFinishedWithExam = IsFinishedWithExam
             };
+
+            output.Students = new List<StudentCourse>();
+            for (int i = 0; i < entityStudents.Count; i++)
+                output.Students.Add(new StudentCourse
+                {
+                    Student = entityStudents.ElementAt(i),
+                    Course = output,
+                });
+
+            return output;
         }
 
         public static Course FromEntityCourse(EntityCourse entityCourse)
@@ -45,7 +58,19 @@ namespace WebApplication1.Services
                 CourseCode = entityCourse.CourseCode,
                 Professor = Professor.FromEntityProfessor(entityCourse.Professor),
                 ECTS = entityCourse.ECTS,
-                IsFinishedWithExam = entityCourse.IsFinishedWithExam
+                IsFinishedWithExam = entityCourse.IsFinishedWithExam,
+                EnrolledStudents = entityCourse.Students.Select(sc => Student.FromEntityStudentFlat(sc.Student)).ToList()
+            };
+        }
+
+        public static Course FromEntityCourseFlat(EntityCourse entityCourse)
+        {
+            return new Course
+            {
+                Name = entityCourse.Name,
+                CourseCode = entityCourse.CourseCode,
+                ECTS = entityCourse.ECTS,
+                IsFinishedWithExam = entityCourse.IsFinishedWithExam,
             };
         }
     }
