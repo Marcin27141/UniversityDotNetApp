@@ -32,14 +32,20 @@ namespace WebApplication1.Services.CourseOps
             if (courseWithSameCode != null && !courseWithSameCode.SoftDeleted)
                 throw new Exception("Course with given code is already added");
 
-            else if (courseWithSameCode != null)             //TODO implement transaction?
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                _context.Courses.Remove(courseWithSameCode);
-                await _context.SaveChangesAsync();
+                 if (courseWithSameCode != null)
+                {
+                    _context.Courses.Remove(courseWithSameCode);
+                    _context.SaveChanges();
+                }
+
+                _context.Add(entityCourse);
+                _context.SaveChanges();
+
+                transaction.Commit();
             }
 
-            _context.Add(entityCourse);
-            await _context.SaveChangesAsync();
             return entityCourse.CourseCode;
         }
     }

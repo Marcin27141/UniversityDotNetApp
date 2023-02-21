@@ -36,14 +36,19 @@ namespace WebApplication1.Services.StudentOps
             if (studentWithSameId != null && !studentWithSameId.SoftDeleted)
                 throw new Exception("Student with given index is already added");
 
-            else if (studentWithSameId != null)         //TODO implement transaction?
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                _context.Remove(studentWithSameId);
-                await _context.SaveChangesAsync();
-            }
+                if (studentWithSameId != null)
+                {
+                    _context.Remove(studentWithSameId);
+                    _context.SaveChanges();
+                }
 
-            _context.Add(entityStudent);
-            await _context.SaveChangesAsync();
+                _context.Add(entityStudent);
+                _context.SaveChanges();
+
+                transaction.Commit();
+            }
 
             var entityIdClaim = new Claim("EntityId", _context.Students.SingleOrDefault(s => s.StudentIndex.Equals(student.Index)).EntityStudentID.ToString());
             _userManager.AddClaimAsync(student.PersonalData.ApplicationUser, entityIdClaim);

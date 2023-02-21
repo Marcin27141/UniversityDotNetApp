@@ -28,14 +28,17 @@ namespace WebApplication1.Services.ProfessorOps
             if (professorWithSameIdCode != null && !professorWithSameIdCode.SoftDeleted)
                 throw new Exception("Professor with given id code is already added");
 
-            else if (professorWithSameIdCode != null)       //TODO implement transaction?
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                _context.Remove(professorWithSameIdCode);
-                await _context.SaveChangesAsync();
-            }
+                if (professorWithSameIdCode != null)
+                {
+                    _context.Remove(professorWithSameIdCode);
+                    _context.SaveChanges();
+                }
 
-            _context.Add(entityProfessor);
-            await _context.SaveChangesAsync();
+                _context.Add(entityProfessor);
+                _context.SaveChanges();
+            }
 
             var entityIdClaim = new Claim("EntityId", _context.Professors.SingleOrDefault(p => p.IdCode.Equals(professor.IdCode)).EntityProfessorID.ToString());
             _userManager.AddClaimAsync(professor.PersonalData.ApplicationUser, entityIdClaim);
