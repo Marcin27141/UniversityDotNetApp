@@ -56,7 +56,7 @@ namespace WebApplication1.Services
             {
                 Name = entityCourse.Name,
                 CourseCode = entityCourse.CourseCode,
-                Professor = Professor.FromEntityProfessor(entityCourse.Professor),
+                Professor = entityCourse.Professor == null ? null : Professor.FromEntityProfessor(entityCourse.Professor),
                 ECTS = entityCourse.ECTS,
                 IsFinishedWithExam = entityCourse.IsFinishedWithExam,
                 EnrolledStudents = entityCourse.Students.Select(sc => Student.FromEntityStudentFlat(sc.Student)).ToList()

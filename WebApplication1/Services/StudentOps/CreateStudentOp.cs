@@ -31,7 +31,11 @@ namespace WebApplication1.Services.StudentOps
                 .ToList();
             var entityStudent = student.ToEntityStudent(chosenCourses);
 
-            var studentWithSameId = _context.Students.IgnoreQueryFilters().SingleOrDefault(s => s.StudentIndex.Equals(entityStudent.StudentIndex));
+            var studentWithSameId = _context.Students.IgnoreQueryFilters()
+                .Include(s => s.PersonalData)
+                .Include(s => s.Courses)
+                    .ThenInclude(sc => sc.Course)
+                .SingleOrDefault(s => s.StudentIndex.Equals(entityStudent.StudentIndex));
 
             if (studentWithSameId != null && !studentWithSameId.SoftDeleted)
                 throw new Exception("Student with given index is already added");
@@ -40,7 +44,7 @@ namespace WebApplication1.Services.StudentOps
             {
                 if (studentWithSameId != null)
                 {
-                    _context.Remove(studentWithSameId);
+                    _context.Remove(studentWithSameId.PersonalData);
                     _context.SaveChanges();
                 }
 

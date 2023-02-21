@@ -11,6 +11,7 @@ namespace WebApplication1.DataBase.Entities
         public ApplicationUser ApplicationUser { get; set; }
         public int EntityPersonalDataID { get; set; }
         public int PersonTypeID { get; set; }
+        public int PersonID { get; set; }
         public string SpecificId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

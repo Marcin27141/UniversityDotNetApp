@@ -27,7 +27,11 @@ namespace WebApplication1.Services.CourseOps
 
             var entityProfessor = _context.Professors.Include(p => p.PersonalData).SingleOrDefault(p => p.IdCode.Equals(course.Professor.IdCode));
             var entityCourse = course.ToEntityCourse(entityProfessor, enrolledStudents);
-            var courseWithSameCode = _context.Courses.IgnoreQueryFilters().SingleOrDefault(c => c.CourseCode.Equals(entityCourse.CourseCode));
+            var courseWithSameCode = _context.Courses.IgnoreQueryFilters()
+                .Include(c => c.Professor)
+                .Include(c => c.Students)
+                    .ThenInclude(sc => sc.Student)
+                .SingleOrDefault(c => c.CourseCode.Equals(entityCourse.CourseCode));
 
             if (courseWithSameCode != null && !courseWithSameCode.SoftDeleted)
                 throw new Exception("Course with given code is already added");

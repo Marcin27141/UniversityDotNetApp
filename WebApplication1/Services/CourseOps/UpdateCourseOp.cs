@@ -20,7 +20,10 @@ namespace WebApplication1.Services.CourseOps
         {
             CourseToUpdate = _context.Courses
                 .Include(c => c.Professor)
-                .ThenInclude(p => p.PersonalData)
+                    .ThenInclude(p => p.PersonalData)
+                .Include(c => c.Students)
+                    .ThenInclude(sc => sc.Student)
+                        .ThenInclude(s => s.PersonalData)
                 .SingleOrDefault(c => c.CourseCode.Equals(code));
             if (CourseToUpdate == null) return null;
             return Course.FromEntityCourse(CourseToUpdate);

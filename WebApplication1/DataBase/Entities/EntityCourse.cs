@@ -18,8 +18,10 @@ namespace WebApplication1.DataBase.Entities
         //relationships
 
         //TODO Profesor for course optional?
-        public int ProfessorID { get; set; }
-        public EntityProfessor Professor { get; set; }
+#nullable enable
+        public int? ProfessorID { get; set; }
+        public EntityProfessor? Professor { get; set; }
+#nullable disable
 
         public IList<StudentCourse> Students { get; set; }
     }

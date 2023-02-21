@@ -56,7 +56,7 @@ namespace WebApplication1.Pages
         {
             if (_readStudentOp.GetStudentByIndex(Student.Index) != null)
                 ModelState.AddModelError("Student.Index", "Student with given index is already added");
-            if (_readUserOp.GetUserById(ApplicationUserId) != null)
+            if (_readStudentOp.GetStudentByUser(ApplicationUserId) != null)
                 ModelState.AddModelError("ApplicationUserId", "There already is a connected account");
             if (!ModelState.IsValid)
                 return Page();

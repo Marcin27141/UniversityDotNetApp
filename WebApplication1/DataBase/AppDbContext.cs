@@ -28,23 +28,28 @@ namespace WebApplication1.DataBase
                 .HasOne(sc => sc.Student)
                 .WithMany(s => s.Courses)
                 .HasForeignKey(sc => sc.StudentID)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<StudentCourse>()
                 .HasOne(sc => sc.Course)
                 .WithMany(c => c.Students)
                 .HasForeignKey(sc => sc.CourseID)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<EntityStudent>()
-                .HasMany(s => s.Courses)
-                .WithOne(sc => sc.Student)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(s => s.PersonalData)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<EntityProfessor>()
+                .HasOne(p => p.PersonalData)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<EntityCourse>()
-                .HasMany(c => c.Students)
-                .WithOne(sc => sc.Course)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(c => c.Professor)
+                .WithMany()
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<EntityPersonalData>().HasQueryFilter(pd => !pd.SoftDeleted);
             modelBuilder.Entity<EntityStudent>().HasQueryFilter(st => !st.SoftDeleted);

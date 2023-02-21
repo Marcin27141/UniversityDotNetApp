@@ -48,7 +48,7 @@ namespace WebApplication1.Pages.NewPerson
         {
             if (_readProfessorOp.GetProfessorByIdCode(Professor.IdCode) != null)
                 ModelState.AddModelError("Professor.IdCode", "Professor with given id is already added");
-            if (_readUserOp.GetUserById(ApplicationUserId) != null)
+            if (_readProfessorOp.GetProfessorByUser(ApplicationUserId) != null)
                 ModelState.AddModelError("ApplicationUserId", "There already is a connected account");
             if (!ModelState.IsValid)
                 return Page();

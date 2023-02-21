@@ -38,7 +38,7 @@ namespace WebApplication1.Pages.EditElement
         public void OnGet(string courseCode)
         {
             Course = _updateCourseOp.GetCourseToUpdateByCode(courseCode);
-            ProfessorId = Course?.Professor.IdCode;
+            ProfessorId = Course?.Professor?.IdCode;
         }
 
         public async Task<IActionResult> OnPost()

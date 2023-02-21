@@ -23,7 +23,9 @@ namespace WebApplication1.Services.ProfessorOps
         public async Task<string> AddProfessorAsync(Professor professor)
         {
             var entityProfessor = professor.ToEntityProfessor();
-            var professorWithSameIdCode = _context.Professors.IgnoreQueryFilters().SingleOrDefault(p => p.IdCode.Equals(entityProfessor.IdCode));
+            var professorWithSameIdCode = _context.Professors.IgnoreQueryFilters()
+                .Include(p => p.PersonalData)
+                .SingleOrDefault(p => p.IdCode.Equals(entityProfessor.IdCode));
 
             if (professorWithSameIdCode != null && !professorWithSameIdCode.SoftDeleted)
                 throw new Exception("Professor with given id code is already added");
@@ -32,12 +34,14 @@ namespace WebApplication1.Services.ProfessorOps
             {
                 if (professorWithSameIdCode != null)
                 {
-                    _context.Remove(professorWithSameIdCode);
+                    _context.Remove(professorWithSameIdCode.PersonalData);
                     _context.SaveChanges();
                 }
 
                 _context.Add(entityProfessor);
                 _context.SaveChanges();
+
+                transaction.Commit();
             }
 
             var entityIdClaim = new Claim("EntityId", _context.Professors.SingleOrDefault(p => p.IdCode.Equals(professor.IdCode)).EntityProfessorID.ToString());

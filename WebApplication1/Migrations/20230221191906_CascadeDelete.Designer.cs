@@ -12,8 +12,8 @@ using WebApplication1.DataBase;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230220180044_Removing average from EntityStudent")]
-    partial class RemovingaveragefromEntityStudent
+    [Migration("20230221191906_CascadeDelete")]
+    partial class CascadeDelete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -343,9 +343,6 @@ namespace WebApplication1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EntityStudentID"));
 
-                    b.Property<float>("Average")
-                        .HasColumnType("real");
-
                     b.Property<DateTime>("BeginningOfStudying")
                         .HasColumnType("datetime2");
 
@@ -478,13 +475,13 @@ namespace WebApplication1.Migrations
                     b.HasOne("WebApplication1.DataBase.Entities.EntityCourse", "Course")
                         .WithMany("Students")
                         .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebApplication1.DataBase.Entities.EntityStudent", "Student")
                         .WithMany("Courses")
                         .HasForeignKey("StudentID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Course");
