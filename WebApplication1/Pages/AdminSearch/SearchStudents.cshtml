@@ -1,0 +1,79 @@
+﻿@page
+@model WebApplication1.Pages.AdminSearch.SearchStudentsModel
+@{
+	ViewData["Title"] = "Search Student";
+}
+
+<form method="post">
+
+<div class="form-group">
+    <label asp-for="OrderOption" class="control-label"></label>
+    <select asp-for="OrderOption"
+            class="form-control"
+            asp-items="Html.GetEnumSelectList<Queries.StudentOrderByOptions>()">
+    </select>
+    <span asp-validation-for="OrderOption" class="text-danger"></span>
+</div>
+
+<br />
+
+<div class="form-group">
+    <label asp-for="FilterOption" class="control-label"></label>
+    <select asp-for="FilterOption"
+            class="form-control"
+            asp-items="Html.GetEnumSelectList<Queries.StudentFilterByOptions>()">
+    </select>
+    <span asp-validation-for="FilterOption" class="text-danger"></span>
+</div>
+
+<br />
+
+<div class="form-group">
+    <label asp-for="Filter"></label>
+    <input class="form-control" asp-for="Filter" />
+    <span asp-validation-for="Filter"></span>
+</div>
+
+<br />
+
+ <div class="form-group">
+    <button type="submit"
+            class="btn btn-success">
+        Search
+    </button>
+</div>
+    
+</form>
+
+<br />
+<br />
+
+@foreach (var student in Model.StudentsToShow)
+{
+    <br />
+    <h1>@student.PersonalData.FirstName @student.PersonalData.LastName</h1>
+    <br />
+
+    <h2>Personal data: </h2>
+    @await Html.PartialAsync("_ShowPersonPartial", student.PersonalData)
+
+    <h2>Student data: </h2>
+    <table class="table">
+        <tr>
+            <td>
+                Index
+            </td>
+            <td>
+                @student.Index
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Beginning of studies
+            </td>
+            <td>
+                @student.BeginningOfStudying.ToShortDateString()
+            </td>
+        </tr>
+    </table>
+}

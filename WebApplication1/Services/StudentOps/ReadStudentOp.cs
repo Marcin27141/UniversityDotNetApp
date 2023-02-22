@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.DataBase;
+using WebApplication1.Queries;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Services.StudentOps
@@ -15,12 +16,12 @@ namespace WebApplication1.Services.StudentOps
 
         public List<Student> GetAllStudents()
         {
-            var output = new List<Student>();
-            foreach (var student in _context.Students.Include(s => s.PersonalData))
-            {
-                output.Add(Student.FromEntityStudent(student));
-            }
-            return output;
+            return _context.Students
+                .Include(s => s.PersonalData)
+                .Include(s => s.Courses)
+                    .ThenInclude(sc => sc.Course)
+                 .Select(s => Student.FromEntityStudent(s))
+                 .ToList();
         }
 
         public Student GetStudentByKey(int studentID)
@@ -70,11 +71,26 @@ namespace WebApplication1.Services.StudentOps
                 .Courses.Select(sc => Course.FromEntityCourse(sc.Course))
                 .ToList();
         }
-    }
+
+		public List<Student> SortFilterStudents(StudentOrderByOptions orderByOption, StudentFilterByOptions filterByOption, string filter)
+		{
+            return _context.Students
+                .AsNoTracking()
+                .Include(s => s.PersonalData)
+                .Include(s => s.Courses)
+                    .ThenInclude(sc => sc.Course)
+                .OrderStudentsBy(orderByOption)
+                .FilterStudentsBy(filterByOption, filter)
+                .MapEntitiesToStudents()
+                .ToList();
+		}
+	}
 
     public interface IReadStudentOp
     {
+        List<Student> GetAllStudents();
         Student GetStudentByIndex(string index);
         Student GetStudentByUser(string userId);
+        List<Student> SortFilterStudents(StudentOrderByOptions orderByOption, StudentFilterByOptions filterByOption, string filter);
     }
 }
