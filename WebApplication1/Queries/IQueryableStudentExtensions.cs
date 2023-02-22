@@ -35,15 +35,15 @@ namespace WebApplication1.Queries
             switch (orderByOptions)
             {
                 case StudentOrderByOptions.SimpleOrder:
-                    return students.OrderByDescending(s => s.EntityStudentID);
+                    return students.OrderBy(s => s.EntityStudentID);
                 case StudentOrderByOptions.ByName:
-                    return students.OrderByDescending(s => s.PersonalData.FirstName);
+                    return students.OrderBy(s => s.PersonalData.FirstName);
                 case StudentOrderByOptions.BySurname:
-                    return students.OrderByDescending(s => s.PersonalData.LastName);
+                    return students.OrderBy(s => s.PersonalData.LastName);
                 case StudentOrderByOptions.ByAge:
-                    return students.OrderByDescending(s => s.PersonalData.Birthday);
+                    return students.OrderBy(s => s.PersonalData.Birthday);
                 case StudentOrderByOptions.ByIndex:
-                    return students.OrderByDescending(s => s.StudentIndex);
+                    return students.OrderBy(s => s.StudentIndex);
                 default :
                     throw new ArgumentOutOfRangeException(nameof(orderByOptions), orderByOptions, null);
             }
