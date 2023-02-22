@@ -58,8 +58,9 @@ namespace WebApplication1.Queries
                 case StudentFilterByOptions.BySurname:
                     return students.Where(s => s.PersonalData.LastName.StartsWith(filterValue));
                 case StudentFilterByOptions.ByAge:
-                    var filterAge = int.Parse(filterValue);
-                    return students.Where(s => DateTime.Now.Year - s.PersonalData.Birthday.Year > filterAge);
+                    var canParse = int.TryParse(filterValue, out int result);
+                    if (!canParse) return students;
+                    return students.Where(s => DateTime.Now.Year - s.PersonalData.Birthday.Year > result);
                 case StudentFilterByOptions.ByIndex:
                     return students.Where(s => s.StudentIndex.StartsWith(filterValue));
                 default:

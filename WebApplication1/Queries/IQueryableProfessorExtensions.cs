@@ -54,6 +54,8 @@ namespace WebApplication1.Queries
 
         public static IQueryable<EntityProfessor> FilterProfessorsBy(this IQueryable<EntityProfessor> professors, ProfessorFilterByOptions filterByOptions, string filterValue)
         {
+            bool canParse;
+
             switch (filterByOptions)
             {
                 case ProfessorFilterByOptions.NoFilter:
@@ -61,13 +63,15 @@ namespace WebApplication1.Queries
                 case ProfessorFilterByOptions.BySurname:
                     return professors.Where(p => p.PersonalData.LastName.StartsWith(filterValue));
                 case ProfessorFilterByOptions.ByAge:
-                    var filterAge = int.Parse(filterValue);
-                    return professors.Where(p => DateTime.Now.Year - p.PersonalData.Birthday.Year > filterAge);
+                    canParse = int.TryParse(filterValue, out int parseAge);
+                    if (!canParse) return professors;
+                    return professors.Where(p => DateTime.Now.Year - p.PersonalData.Birthday.Year > parseAge);
                 case ProfessorFilterByOptions.ByIdCode:
                     return professors.Where(p => p.IdCode.StartsWith(filterValue));
                 case ProfessorFilterByOptions.BySalary:
-                    var filterSalary = int.Parse(filterValue);
-                    return professors.Where(p => p.Salary >= filterSalary);
+                    canParse = int.TryParse(filterValue, out int parseSalary);
+                    if (!canParse) return professors;
+                    return professors.Where(p => p.Salary >= parseSalary);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(filterByOptions), filterByOptions, null);
             }
