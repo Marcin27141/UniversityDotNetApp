@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.DataBase;
+using WebApplication1.Queries;
+using WebApplication1.Services.People;
 
 namespace WebApplication1.Services.CourseOps
 {
@@ -11,14 +13,6 @@ namespace WebApplication1.Services.CourseOps
     {
         private readonly AppDbContext _context;
         public ReadCourseOp(AppDbContext context) => _context = context;
-
-        /*public List<Course> GetCoursesListByEnum(IEnumerable<string> courses)
-        {
-            List<DataBase.Entities.Course> entityCourses = new();
-            for (int i = 0; i < courses.Count(); i++)
-                entityCourses.Add(_context.Courses.Include(c => c.Professor).Find(courses.ElementAt(i)));
-            return entityCourses.Select(c => Course.FromEntityCourse(c)).ToList();
-        }*/
 
         public Course GetCourseByCode(string courseCode)
         {
@@ -45,11 +39,27 @@ namespace WebApplication1.Services.CourseOps
                 .Select(c => Course.FromEntityCourse(c))
                 .ToList();
         }
+
+        public List<Course> SortFilterCourses(CourseOrderByOptions orderByOption, CourseFilterByOptions filterByOption, string filter)
+        {
+            return _context.Courses
+                .AsNoTracking()
+                .Include(c => c.Professor)
+                    .ThenInclude(p => p.PersonalData)
+                .Include(c => c.Students)
+                    .ThenInclude(sc => sc.Student)
+                        .ThenInclude(s => s.PersonalData)
+                .OrderCoursesBy(orderByOption)
+                .FilterCoursesBy(filterByOption, filter)
+                .MapEntitiesToCourses()
+                .ToList();
+        }
     }
 
     public interface IReadCourseOp
     {
         Course GetCourseByCode(string courseCode);
         List<Course> GetAllCourses();
+        List<Course> SortFilterCourses(CourseOrderByOptions orderByOption, CourseFilterByOptions filterByOption, string filter);
     }
 }
