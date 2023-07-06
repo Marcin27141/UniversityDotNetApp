@@ -9,7 +9,10 @@ using WebApplication1.DataBase.Entities;
 using WebApplication1.Policies.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication1.Policies.Handlers;
-
+using WebApplication1.Services.ProfessorOps;
+using WebApplication1.ApiServices.ApiProfessorOps;
+using AutoMapper;
+using WebApplication1.Configurations;
 
 namespace WebApplication1
 {
@@ -57,6 +60,9 @@ namespace WebApplication1
                 .AddClasses(classes => classes.Where(c => c.Namespace.Contains("Services") && !c.Namespace.EndsWith("People")))
                 .AsMatchingInterface()
                 .WithScopedLifetime());
+
+            services.AddScoped<IReadProfessorOp, ApiReadProfessorOp>();
+            services.AddAutoMapper(typeof(AutomapperConfiguration));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -20,22 +20,6 @@ namespace WebApplication1.Services.ProfessorOps
             return _context.Professors.Include(p => p.PersonalData).Select(p => Professor.FromEntityProfessor(p)).ToList();
         }
 
-        /*public List<ProfessorDisplayAndKey> GetProfessorsDisplayAndKey()
-        {
-            return _context.Professors.AsNoTracking().Select(p => new ProfessorDisplayAndKey
-            {
-                Display = p.ToString() + ", " + p.Subject,
-                ProfessorIdCode = p.IdCode,
-            }).ToList();
-        }*/
-
-        public Professor GetProfessorByKey(int professorID)
-        {
-            var professor = _context.Professors.AsNoTracking().Include(p => p.PersonalData).SingleOrDefault(p => p.EntityProfessorID == professorID);
-            if (professor == null) return null;
-            return Professor.FromEntityProfessor(professor);
-        }
-
         public Professor GetProfessorByIdCode(string idCode)
         {
             var professor = _context.Professors.AsNoTracking().Include(p => p.PersonalData).SingleOrDefault(p => p.IdCode.Equals(idCode));
@@ -63,12 +47,6 @@ namespace WebApplication1.Services.ProfessorOps
                 .MapEntitiesToProfessors()
                 .ToList();
         }
-    }
-
-    public class ProfessorDisplayAndKey
-    {
-        public string Display { get; set; }
-        public string ProfessorIdCode { get; set; }
     }
 
     public interface IReadProfessorOp
