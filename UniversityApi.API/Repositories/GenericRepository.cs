@@ -1,16 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
+using UniversityApi.API.DataBase.Identity;
 
 namespace UniversityApi.API.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly UniversityApiDbContext _context;
+        private readonly UserManager<ApiUser> _userManager;
 
-        public GenericRepository(UniversityApiDbContext dbContext)
+        public GenericRepository(UniversityApiDbContext dbContext, UserManager<ApiUser> userManager)
         {
             _context = dbContext;
+            _userManager = userManager;
         }
 
         public async Task<T> AddAsync(T entity)
@@ -45,6 +49,14 @@ namespace UniversityApi.API.Repositories
                 return null;
             }
             return await _context.Set<T>().FindAsync(id);
+        }
+
+        public virtual async Task<T> GetByUserAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var claims = await _userManager.GetClaimsAsync(user);
+            var entityPersonId = claims.FirstOrDefault(c => c.Type == "EntityPersonId")?.Value;
+            return await _context.Set<T>().FindAsync(entityPersonId);
         }
 
         public async Task UpdateAsync(T entity)

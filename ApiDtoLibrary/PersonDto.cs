@@ -2,7 +2,7 @@
 
 namespace ApiDtoLibrary
 {
-    public class Person
+    public class PersonDto
     {
         [Required]
         [Display(Name = "First name")]

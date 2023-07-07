@@ -13,5 +13,11 @@ namespace UniversityApi.API.Repositories
         {
             _context = context;
         }
+
+        public async Task<EntityProfessor> GetByIdCodeAsync(string idCode)
+        {
+            return await _context.Set<EntityProfessor>().FirstOrDefaultAsync(p => p.IdCode.Equals(idCode));
+        }
     }
 }
+

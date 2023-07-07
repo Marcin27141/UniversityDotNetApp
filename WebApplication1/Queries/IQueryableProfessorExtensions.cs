@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System;
-using WebApplication1.DataBase.Entities;
-using WebApplication1.Services.People;
+using ApiDtoLibrary.Professors;
 
 namespace WebApplication1.Queries
 {
@@ -26,23 +25,18 @@ namespace WebApplication1.Queries
     }
     public static class IQueryableProfessorExtensions
     {
-        public static IQueryable<Professor> MapEntitiesToProfessors(this IQueryable<EntityProfessor> professors)
-        {
-            return professors.Select(p => Professor.FromEntityProfessor(p));
-        }
-
-        public static IQueryable<EntityProfessor> OrderProfessorsBy(this IQueryable<EntityProfessor> professors, ProfessorOrderByOptions orderByOptions)
+        public static IQueryable<FullProfessor> OrderProfessorsBy(this IQueryable<FullProfessor> professors, ProfessorOrderByOptions orderByOptions)
         {
             switch (orderByOptions)
             {
                 case ProfessorOrderByOptions.SimpleOrder:
-                    return professors.OrderBy(p => p.EntityProfessorID);
+                    return professors.OrderBy(p => p.EntityPersonID);
                 case ProfessorOrderByOptions.ByName:
-                    return professors.OrderBy(p => p.PersonalData.FirstName);
+                    return professors.OrderBy(p => p.FirstName);
                 case ProfessorOrderByOptions.BySurname:
-                    return professors.OrderBy(p => p.PersonalData.LastName);
+                    return professors.OrderBy(p => p.LastName);
                 case ProfessorOrderByOptions.ByAge:
-                    return professors.OrderBy(p => p.PersonalData.Birthday);
+                    return professors.OrderBy(p => p.Birthday);
                 case ProfessorOrderByOptions.ByIdCode:
                     return professors.OrderBy(p => p.IdCode);
                 case ProfessorOrderByOptions.BySalary:
@@ -52,7 +46,7 @@ namespace WebApplication1.Queries
             }
         }
 
-        public static IQueryable<EntityProfessor> FilterProfessorsBy(this IQueryable<EntityProfessor> professors, ProfessorFilterByOptions filterByOptions, string filterValue)
+        public static IQueryable<FullProfessor> FilterProfessorsBy(this IQueryable<FullProfessor> professors, ProfessorFilterByOptions filterByOptions, string filterValue)
         {
             bool canParse;
 
@@ -61,11 +55,11 @@ namespace WebApplication1.Queries
                 case ProfessorFilterByOptions.NoFilter:
                     return professors;
                 case ProfessorFilterByOptions.BySurname:
-                    return professors.Where(p => p.PersonalData.LastName.StartsWith(filterValue));
+                    return professors.Where(p => p.LastName.StartsWith(filterValue));
                 case ProfessorFilterByOptions.ByAge:
                     canParse = int.TryParse(filterValue, out int parseAge);
                     if (!canParse) return professors;
-                    return professors.Where(p => DateTime.Now.Year - p.PersonalData.Birthday.Year > parseAge);
+                    return professors.Where(p => DateTime.Now.Year - p.Birthday.Year > parseAge);
                 case ProfessorFilterByOptions.ByIdCode:
                     return professors.Where(p => p.IdCode.StartsWith(filterValue));
                 case ProfessorFilterByOptions.BySalary:

@@ -1,9 +1,7 @@
-﻿using System;
+﻿using ApiDtoLibrary.Students;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using WebApplication1.DataBase;
-using WebApplication1.DataBase.Entities;
-using WebApplication1.Services.People;
 
 namespace WebApplication1.Queries
 {
@@ -25,44 +23,39 @@ namespace WebApplication1.Queries
     }
     public static class IQueryableStudentExtensions
     {
-        public static IQueryable<Student> MapEntitiesToStudents(this IQueryable<EntityStudent> students)
-        {
-            return students.Select(s => Student.FromEntityStudent(s));
-        }
-
-        public static IQueryable<EntityStudent> OrderStudentsBy(this IQueryable<EntityStudent> students, StudentOrderByOptions orderByOptions)
+        public static IQueryable<FullStudent> OrderStudentsBy(this IQueryable<FullStudent> students, StudentOrderByOptions orderByOptions)
         {
             switch (orderByOptions)
             {
                 case StudentOrderByOptions.SimpleOrder:
-                    return students.OrderBy(s => s.EntityStudentID);
+                    return students.OrderBy(s => s.EntityPersonID);
                 case StudentOrderByOptions.ByName:
-                    return students.OrderBy(s => s.PersonalData.FirstName);
+                    return students.OrderBy(s => s.FirstName);
                 case StudentOrderByOptions.BySurname:
-                    return students.OrderBy(s => s.PersonalData.LastName);
+                    return students.OrderBy(s => s.LastName);
                 case StudentOrderByOptions.ByAge:
-                    return students.OrderBy(s => s.PersonalData.Birthday);
+                    return students.OrderBy(s => s.Birthday);
                 case StudentOrderByOptions.ByIndex:
-                    return students.OrderBy(s => s.StudentIndex);
+                    return students.OrderBy(s => s.Index);
                 default :
                     throw new ArgumentOutOfRangeException(nameof(orderByOptions), orderByOptions, null);
             }
         }
 
-        public static IQueryable<EntityStudent> FilterStudentsBy(this IQueryable<EntityStudent> students, StudentFilterByOptions filterByOptions, string filterValue)
+        public static IQueryable<FullStudent> FilterStudentsBy(this IQueryable<FullStudent> students, StudentFilterByOptions filterByOptions, string filterValue)
         {
             switch (filterByOptions)
             {
                 case StudentFilterByOptions.NoFilter:
                     return students;
                 case StudentFilterByOptions.BySurname:
-                    return students.Where(s => s.PersonalData.LastName.StartsWith(filterValue));
+                    return students.Where(s => s.LastName.StartsWith(filterValue));
                 case StudentFilterByOptions.ByAge:
                     var canParse = int.TryParse(filterValue, out int result);
                     if (!canParse) return students;
-                    return students.Where(s => DateTime.Now.Year - s.PersonalData.Birthday.Year > result);
+                    return students.Where(s => DateTime.Now.Year - s.Birthday.Year > result);
                 case StudentFilterByOptions.ByIndex:
-                    return students.Where(s => s.StudentIndex.StartsWith(filterValue));
+                    return students.Where(s => s.Index.StartsWith(filterValue));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(filterByOptions), filterByOptions, null);
             }

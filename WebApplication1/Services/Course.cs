@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using WebApplication1.DataBase.Entities;
-using WebApplication1.Services.CourseOps;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Services
 {
-    public class Course
+    public class Course : IDistinguishableEntity
     {
+        public static readonly int COURSE_ENTITY_CLASS_ID = 1;
+
+
+        public int EntityCourseID { get; set; }
+
         [Required]
         public string Name { get; set; }
 
@@ -26,52 +29,17 @@ namespace WebApplication1.Services
 
         public List<Student> EnrolledStudents { get; set; }
 
+
+
+        public string Key => CourseCode;
+
+        public int EntityId => EntityCourseID;
+
+        public int EntityClassId => COURSE_ENTITY_CLASS_ID;
+
+
+
         public override string ToString() => $"{Name} ({CourseCode})";
 
-        public EntityCourse ToEntityCourse(EntityProfessor entityProfessor, List<EntityStudent> entityStudents)
-        {
-            var output = new EntityCourse()
-            {
-                CourseCode = CourseCode,
-                Name = Name,
-                Professor = entityProfessor,
-                ECTS = ECTS,
-                IsFinishedWithExam = IsFinishedWithExam
-            };
-
-            output.Students = new List<StudentCourse>();
-            for (int i = 0; i < entityStudents.Count; i++)
-                output.Students.Add(new StudentCourse
-                {
-                    Student = entityStudents.ElementAt(i),
-                    Course = output,
-                });
-
-            return output;
-        }
-
-        public static Course FromEntityCourse(EntityCourse entityCourse)
-        {
-            return new Course
-            {
-                Name = entityCourse.Name,
-                CourseCode = entityCourse.CourseCode,
-                Professor = entityCourse.Professor == null ? null : Professor.FromEntityProfessor(entityCourse.Professor),
-                ECTS = entityCourse.ECTS,
-                IsFinishedWithExam = entityCourse.IsFinishedWithExam,
-                EnrolledStudents = entityCourse.Students.Select(sc => Student.FromEntityStudentFlat(sc.Student)).ToList()
-            };
-        }
-
-        public static Course FromEntityCourseFlat(EntityCourse entityCourse)
-        {
-            return new Course
-            {
-                Name = entityCourse.Name,
-                CourseCode = entityCourse.CourseCode,
-                ECTS = entityCourse.ECTS,
-                IsFinishedWithExam = entityCourse.IsFinishedWithExam,
-            };
-        }
     }
 }

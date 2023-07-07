@@ -51,6 +51,21 @@ namespace UniversityApi.API.Controllers
             return output;
         }
 
+        // GET: api/Students/ByUser/SomeUserId929304
+        [HttpGet("ByUser/{id}")]
+        public async Task<ActionResult<GetStudent>> GetStudentByUser(string id)
+        {
+            var entityStudent = await _repository.GetByUserAsync(id);
+
+            if (entityStudent == null)
+            {
+                return NotFound();
+            }
+
+            var output = _mapper.Map<GetStudent>(entityStudent);
+            return output;
+        }
+
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -72,6 +87,43 @@ namespace UniversityApi.API.Controllers
             try
             {
                 await _repository.UpdateAsync(student);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await EntityStudentExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // PUT: api/Students/5/courses
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}/courses")]
+        public async Task<IActionResult> PutStudent(int id, PutStudent putStudent, IEnumerable<string> courseCodes)
+        {
+            if (id != putStudent.EntityPersonID)
+            {
+                return BadRequest("Invalid Record id");
+            }
+
+            var student = await _repository.GetAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(putStudent, student);
+
+            try
+            {
+                await _repository.UpdateWithCoursesAsync(student, courseCodes);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -111,6 +163,20 @@ namespace UniversityApi.API.Controllers
 
             await _repository.DeleteAsync(id);
 
+            return NoContent();
+        }
+
+        // DELETE: api/Students/5/C01
+        [HttpDelete("{id}/{courseCode}")]
+        public async Task<IActionResult> DeleteStudentCourse(int id, string courseCode)
+        {
+            var entityStudent = await _repository.GetAsync(id);
+            if (entityStudent == null)
+            {
+                return NotFound();
+            }
+
+            await _repository.DeleteStudentsCourseAsync(id, courseCode);
             return NoContent();
         }
 

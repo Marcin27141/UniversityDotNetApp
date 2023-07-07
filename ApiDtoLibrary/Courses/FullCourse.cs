@@ -4,14 +4,14 @@ using ApiDtoLibrary.Students;
 
 namespace ApiDtoLibrary.Courses
 {
-    public class Course : BaseCourse
+    public class FullCourse : BaseCourse
     {
         [Required]
         [Display(Name = "Id")]
         public int EntityCourseID { get; set; }
 
-        public Professor Professor { get; set; }
+        public FullProfessor Professor { get; set; }
 
-        public List<Student> EnrolledStudents { get; set; }
+        public List<FullStudent> EnrolledStudents { get; set; }
     }
 }

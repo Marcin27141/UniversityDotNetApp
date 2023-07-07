@@ -4,6 +4,6 @@ namespace UniversityApi.API.Contracts
 {
     public interface IProfessorsRepository : IGenericRepository<EntityProfessor>
     {
-
+        Task<EntityProfessor> GetByIdCodeAsync(string idCode);
     }
 }

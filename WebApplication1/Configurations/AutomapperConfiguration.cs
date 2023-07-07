@@ -1,12 +1,10 @@
-﻿using ApiDtoLibrary.Courses;
+﻿using ApiDtoLibrary;
+using ApiDtoLibrary.Courses;
 using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using ApiDtoLibrary.Users;
 using AutoMapper;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using WebApplication1.Services;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Configurations
@@ -16,36 +14,42 @@ namespace WebApplication1.Configurations
         public AutomapperConfiguration()
         {
             //Models/Courses
-            CreateMap<Services.Course, Course>().ReverseMap();
-            CreateMap<Services.Course, GetCourse>().ReverseMap();
-            CreateMap<Services.Course, PostCourse>().ReverseMap();
-            CreateMap<Services.Course, PutCourse>().ReverseMap();
+            CreateMap<Course, FullCourse>().ReverseMap();
+            CreateMap<Course, GetCourse>().ReverseMap();
+            CreateMap<Course, PostCourse>().ReverseMap();
+            CreateMap<Course, PutCourse>().ReverseMap();
+
+            //Models/People
+            MapPersonalData(CreateMap<PersonDto, Person>());
 
             //Models/Professors
-            CreateMap<ApiDtoLibrary.Professors.Professor, Services.People.Professor>().ForMember(dest => dest.PersonalData, opt => opt.MapFrom(src => new PersonalData
-            {
-                FirstName = src.FirstName,
-                LastName = src.LastName,
-                PESEL = src.PESEL,
-                Birthday = src.Birthday,
-                Motherland = src.Motherland
-            })).ReverseMap();
-            CreateMap<GetProfessor, Services.People.Professor>().ForMember(dest => dest.PersonalData, opt => opt.MapFrom(src => new PersonalData
-            {
-                FirstName = src.FirstName,
-                LastName = src.LastName,
-                PESEL = src.PESEL,
-                Birthday = src.Birthday,
-                Motherland = src.Motherland
-            })).ReverseMap();
-            CreateMap<Services.People.Professor, PostProfessor>().ReverseMap();
-            CreateMap<Services.People.Professor, PutProfessor>().ReverseMap();
+            MapPersonalData(CreateMap<FullProfessor, Professor>());
+            MapPersonalData(CreateMap<GetProfessor, Professor>());
+            MapPersonalData(CreateMap<PostProfessor, Professor>());
+            MapPersonalData(CreateMap<PutProfessor, Professor>());
 
             //Models/Students
-            CreateMap<Services.People.Student, ApiDtoLibrary.Students.Student>().ReverseMap();
-            CreateMap<Services.People.Student, GetStudent>().ReverseMap();
-            CreateMap<Services.People.Student, PostStudent>().ReverseMap();
-            CreateMap<Services.People.Student, PutStudent>().ReverseMap();
+            MapPersonalData(CreateMap<FullStudent, Student>());
+            MapPersonalData(CreateMap<GetStudent, Student>());
+            MapPersonalData(CreateMap<PostStudent, Student>());
+            MapPersonalData(CreateMap<PutStudent, Student>());
+
+            //Models/ApplicationUser
+            CreateMap<ApiUserDto, ApplicationUser>();
+        }
+
+        private void MapPersonalData<S, T>(IMappingExpression<S, T> mapping)
+            where S : PersonDto
+            where T : Person
+        {
+            mapping.ForMember(dest => dest.PersonalData, opt => opt.MapFrom(src => new PersonalData
+            {
+                FirstName = src.FirstName,
+                LastName = src.LastName,
+                PESEL = src.PESEL,
+                Birthday = src.Birthday,
+                Motherland = src.Motherland
+            })).ReverseMap();
         }
     }
 }

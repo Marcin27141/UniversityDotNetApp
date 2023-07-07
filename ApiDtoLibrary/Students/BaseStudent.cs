@@ -3,7 +3,7 @@ using ApiDtoLibrary;
 
 namespace ApiDtoLibrary.Students
 {
-    public class BaseStudent : Person
+    public class BaseStudent : PersonDto
     {
         [Required]
         [RegularExpression(@"\d{6}", ErrorMessage = "Index must be 6 digits")]

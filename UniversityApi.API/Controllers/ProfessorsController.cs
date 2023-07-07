@@ -54,6 +54,37 @@ namespace UniversityApi.API.Controllers
             return output;
         }
 
+        // GET: api/Professors/idCode/12393
+        [HttpGet("idCode/{idCode}")]
+        public async Task<ActionResult<GetProfessor>> GetProfessorByIdCode(string idCode)
+        {
+            var entityProfessor = await _repository.GetByIdCodeAsync(idCode);
+
+            if (entityProfessor == null)
+            {
+                return NotFound();
+                //throw new NotFoundException(nameof(GetProfessor), id);
+            }
+
+            var output = _mapper.Map<GetProfessor>(entityProfessor);
+            return output;
+        }
+
+        // GET: api/Professors/ByUser/SomeUserId93850327
+        [HttpGet("ByUser/{id}")]
+        public async Task<ActionResult<GetProfessor>> GetProfessorByUser(string id)
+        {
+            var entityProfessor = await _repository.GetByUserAsync(id);
+
+            if (entityProfessor == null)
+            {
+                return NotFound();
+            }
+
+            var output = _mapper.Map<GetProfessor>(entityProfessor);
+            return output;
+        }
+
         // PUT: api/Professors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

@@ -10,8 +10,8 @@ namespace ApiDtoLibrary.Courses
         [Display(Name = "Id")]
         public int EntityCourseID { get; set; }
 
-        public Professor Professor { get; set; }
+        public FullProfessor Professor { get; set; }
 
-        public List<Student> EnrolledStudents { get; set; }
+        public List<FullStudent> EnrolledStudents { get; set; }
     }
 }

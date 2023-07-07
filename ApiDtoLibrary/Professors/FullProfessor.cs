@@ -2,7 +2,7 @@
 
 namespace ApiDtoLibrary.Professors
 {
-    public class Professor : BaseProfessor
+    public class FullProfessor : BaseProfessor
     {
         [Required]
         [Display(Name = "Id")]

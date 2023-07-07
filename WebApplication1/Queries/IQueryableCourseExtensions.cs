@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System;
-using WebApplication1.DataBase.Entities;
-using WebApplication1.Services.People;
-using WebApplication1.Services;
+using ApiDtoLibrary.Courses;
 
 namespace WebApplication1.Queries
 {
@@ -25,12 +23,7 @@ namespace WebApplication1.Queries
     }
     public static class IQueryableCourseExtensions
     {
-        public static IQueryable<Course> MapEntitiesToCourses(this IQueryable<EntityCourse> courses)
-        {
-            return courses.Select(c => Course.FromEntityCourse(c));
-        }
-
-        public static IQueryable<EntityCourse> OrderCoursesBy(this IQueryable<EntityCourse> courses, CourseOrderByOptions orderByOptions)
+        public static IQueryable<FullCourse> OrderCoursesBy(this IQueryable<FullCourse> courses, CourseOrderByOptions orderByOptions)
         {
             switch (orderByOptions)
             {
@@ -47,7 +40,7 @@ namespace WebApplication1.Queries
             }
         }
 
-        public static IQueryable<EntityCourse> FilterCoursesBy(this IQueryable<EntityCourse> courses, CourseFilterByOptions filterByOptions, string filterValue)
+        public static IQueryable<FullCourse> FilterCoursesBy(this IQueryable<FullCourse> courses, CourseFilterByOptions filterByOptions, string filterValue)
         {
             switch (filterByOptions)
             {
