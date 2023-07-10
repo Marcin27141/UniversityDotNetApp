@@ -9,5 +9,7 @@ namespace UniversityApi.API.Contracts
     public interface IProfessorsRepository : IGenericRepository<Professor>
     {
         List<Professor> SortFilterProfessors(ProfessorOrderByOptions orderByOption, ProfessorFilterByOptions filterByOption, string filter);
+
+        Task<bool> IdCodeIsOccupied(string idCode);
     }
 }

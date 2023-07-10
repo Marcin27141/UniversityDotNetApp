@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,18 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using UniversityApi.API.Contracts;
+using WebApplication1.Contracts;
 using WebApplication1.Services.People;
-using WebApplication1.Services.ProfessorOps;
-using WebApplication1.Services.UserOps;
 
 namespace WebApplication1.Pages.NewPerson
 {
     [Authorize("HasAdminRights")]
     public class NewProfessorModel : PageModel
     {
-        private readonly ICreateProfessorOp _createProfessorOp;
-        private readonly IReadProfessorOp _readProfessorOp;
-        private readonly IReadUserOp _readUserOp;
+        private readonly IProfessorsRepository _professorsRepository;
+        private readonly IUserRepository _userRepository;
 
         public IEnumerable<SelectListItem> ApplicationUsers { get; set; }
 
@@ -32,11 +30,10 @@ namespace WebApplication1.Pages.NewPerson
         [BindProperty]
         public string ApplicationUserId { get; set; }
 
-        public NewProfessorModel(ICreateProfessorOp createProfessorOp, IReadProfessorOp readProfessorOp, IReadUserOp readUserOp) {
-            _createProfessorOp = createProfessorOp;
-            _readProfessorOp = readProfessorOp;
-            _readUserOp = readUserOp;
-            ApplicationUsers = readUserOp.GetAllUsers().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
+        public NewProfessorModel(IProfessorsRepository professorsRepository, IUserRepository userRepository) {
+            _professorsRepository = professorsRepository;
+            _userRepository = userRepository;
+            ApplicationUsers = _userRepository.GetAllUsersAsync().Result.Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
         }
 
 
@@ -46,27 +43,17 @@ namespace WebApplication1.Pages.NewPerson
 
         public async Task<IActionResult> OnPost()
         {
-            if (_readProfessorOp.GetProfessorByIdCode(Professor.IdCode) != null)
+            if (await _professorsRepository.IdCodeIsOccupied(this.Professor.IdCode))
                 ModelState.AddModelError("Professor.IdCode", "Professor with given id is already added");
-            if (_readProfessorOp.GetProfessorByUser(ApplicationUserId) != null)
+            if (await _userRepository.GetUserAsync(ApplicationUserId) != null)
                 ModelState.AddModelError("ApplicationUserId", "There already is a connected account");
             if (!ModelState.IsValid)
                 return Page();
-            Professor professor = CreateProfessor();
-            var idCode = await _createProfessorOp.AddProfessorAsync(professor);
-            return RedirectToPage("/ShowResults/ShowProfessor", new { idCode = idCode });
-        }
 
-        private Professor CreateProfessor() 
-        {
-            PersonalData.ApplicationUser = _readUserOp.GetUserById(ApplicationUserId);
-            return new() {
-                PersonalData = PersonalData,
-                IdCode = Professor.IdCode,
-                Subject = Professor.Subject,
-                FirstDayAtJob = Professor.FirstDayAtJob,
-                Salary = Professor.Salary
-            };
+            this.Professor.ApplicationUser = await _userRepository.GetUserAsync(ApplicationUserId);
+            this.Professor.PersonalData = this.PersonalData;
+            var id = await _professorsRepository.AddAsync(this.Professor);
+            return RedirectToPage("/ShowResults/ShowProfessor", new { id = id});
         }
     }
 }

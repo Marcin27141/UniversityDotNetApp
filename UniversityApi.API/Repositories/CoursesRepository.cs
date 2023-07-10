@@ -33,5 +33,10 @@ namespace UniversityApi.API.Repositories
                 .Include(c => c.Students)
                 .ToListAsync();
         }
+
+        public async Task<bool> CourseCodeIsOccupied(string courseCode)
+        {
+            return await _context.Set<EntityCourse>().AnyAsync(s => s.CourseCode.Equals(courseCode));
+        }
     }
 }

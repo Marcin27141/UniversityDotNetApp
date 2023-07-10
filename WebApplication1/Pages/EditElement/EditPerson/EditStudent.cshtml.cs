@@ -4,20 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WebApplication1.Services.CourseOps;
+using UniversityApi.API.Contracts;
 using WebApplication1.Services.People;
-using WebApplication1.Services.StudentOps;
 
 namespace WebApplication1.Pages.EditElement.EditPerson
 {
     public class EditStudentModel : PageModel
     {
-        private readonly IUpdateStudentOp _updateStudentOp;
-        private readonly IReadCourseOp _readCourseOp;
+        private readonly IStudentsRepository _studentsRepository;
+        private readonly ICoursesRepository _coursesRepository;
         private readonly IAuthorizationService _authService;
 
         public IEnumerable<SelectListItem> AvailableCourses { get; set; }
@@ -29,21 +27,21 @@ namespace WebApplication1.Pages.EditElement.EditPerson
         public Student Student { get; set; }
 
         [BindProperty]
-        public IEnumerable<string> SelectedCourses { get; set; }
+        public IEnumerable<string> SelectedCourses { get { return SelectedCourses.Where(c => c != null);  } set { } }
 
-        public EditStudentModel(IUpdateStudentOp updateStudentOp, IReadCourseOp readCourseOp, IAuthorizationService authorizationService)
+        public EditStudentModel(IStudentsRepository studentsRepository, ICoursesRepository coursesRepository, IAuthorizationService authorizationService)
         {
-            _updateStudentOp = updateStudentOp;
-            _readCourseOp = readCourseOp;
+            _studentsRepository = studentsRepository;
+            _coursesRepository = coursesRepository;
             _authService = authorizationService;
-            AvailableCourses = _readCourseOp.GetAllCourses().Select(i => new SelectListItem() { Text = i.ToString(), Value = i.CourseCode.ToString() });
+            AvailableCourses = _coursesRepository.GetAllAsync().Result.Select(i => new SelectListItem() { Text = i.ToString(), Value = i.EntityCourseID.ToString() });
         }
 
-        public async Task<IActionResult> OnGet(string index)
+        public async Task<IActionResult> OnGet(Guid id)
         {
-            Student = _updateStudentOp.GetStudentToUpdateByIndex(index);
-            PersonalData = Student?.PersonalData;
-            SelectedCourses = Student?.Courses.Select(i => i.CourseCode.ToString());
+            this.Student = await _studentsRepository.GetAsync(id);
+            this.PersonalData = Student?.PersonalData;
+            SelectedCourses = Student?.Courses.Select(i => i.EntityCourseID.ToString());
 
             var authResult = await _authService.AuthorizeAsync(User, Student, "CanEditStudent");
             if (!authResult.Succeeded)
@@ -57,19 +55,10 @@ namespace WebApplication1.Pages.EditElement.EditPerson
         {
             if (!ModelState.IsValid)
                 return Page();
-            var editedStudent = CreateStudent();
-            var studentIndex = await _updateStudentOp.UpdateStudentAsync(editedStudent, SelectedCourses.Where(c => c != null));
-            return RedirectToPage("/ShowResults/ShowStudent", new { index = studentIndex });
-        }
 
-        private Student CreateStudent()
-        {
-            return new Student()
-            {
-                PersonalData = PersonalData,
-                Index = Student.Index,
-                BeginningOfStudying = Student.BeginningOfStudying,
-            };
+            this.Student.PersonalData = this.PersonalData;
+            var id = await _studentsRepository.UpdateAsync(this.Student);
+            return RedirectToPage("/ShowResults/ShowStudent", new { id });
         }
     }
 }

@@ -14,6 +14,11 @@ namespace UniversityApi.API.Repositories
         public ProfessorsRepository(UniversityApiDbContext dbContext, UserManager<ApiUser> userManager) : base(dbContext, userManager)
         {
         }
+
+        public async Task<bool> IdCodeIsOccupied(string idCode)
+        {
+            return await _context.Set<EntityProfessor>().AnyAsync(s => s.IdCode.Equals(idCode));
+        }
     }
 }
 

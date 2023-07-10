@@ -1,4 +1,5 @@
 ﻿using ApiDtoLibrary.Courses;
+using ApiDtoLibrary.Professors;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +44,13 @@ namespace UniversityApi.API.Controllers
             var output = _mapper.Map<GetCourse>(entityCourse);
 
             return output;
+        }
+
+        // GET: api/Courses/CourseCode/C01
+        [HttpGet("CousreCode/{courseCode}")]
+        public async Task<ActionResult<GetCourse>> CheckIfCourseCodeOccupied(string courseCode)
+        {
+            return Ok(await _repository.CourseCodeIsOccupied(courseCode));
         }
 
         // PUT: api/Courses/5

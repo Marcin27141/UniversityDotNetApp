@@ -1,6 +1,8 @@
 ﻿using ApiDtoLibrary.Person;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using UniversityApi.API.Contracts;
 
 namespace UniversityApi.API.Controllers
@@ -24,6 +26,22 @@ namespace UniversityApi.API.Controllers
             var people = await _repository.GetAllPersonalDataAsync();
             var output = _mapper.Map<IEnumerable<GetPersonDto>>(people);
             return Ok(output);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        // DELETE: api/People/someGuidValue
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEntityPerson(Guid id)
+        {
+            var entity = await _repository.GetAsync(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            await _repository.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 

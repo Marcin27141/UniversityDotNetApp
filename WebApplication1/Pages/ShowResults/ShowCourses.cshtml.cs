@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using UniversityApi.API.Contracts;
 using WebApplication1.Services;
-using WebApplication1.Services.CourseOps;
 
 namespace WebApplication1.Pages.ShowResults
 {
@@ -19,14 +18,14 @@ namespace WebApplication1.Pages.ShowResults
         {
             _coursesRepository = coursesRepository;
         }
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            CreatedCourses = _coursesRepository.GetAllCourses();
+            CreatedCourses = await _coursesRepository.GetAllAsync();
         }
 
-        public async Task<IActionResult> OnGetDelete(string courseCode)
+        public async Task<IActionResult> OnGetDelete(Guid id)
         {
-            await _coursesRepository.Delete(courseCode);
+            await _coursesRepository.DeleteAsync(id);
             return RedirectToPage();
         }
     }

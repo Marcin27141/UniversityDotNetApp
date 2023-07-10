@@ -4,12 +4,21 @@ using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using ApiDtoLibrary.Users;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
 using UniversityApi.API.DataBase.Identity;
 namespace UniversityApi.API.Configurations
 {
     public class AutoMapperConfig : Profile
     {
+        private readonly UniversityApiDbContext _context;
+
+        public AutoMapperConfig(UniversityApiDbContext dbContext)
+        {
+            _context = dbContext;
+        }
+
         public AutoMapperConfig()
         {
             //Models/Courses

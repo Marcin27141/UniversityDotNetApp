@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using UniversityApi.API.Contracts;
 using WebApplication1.Services.People;
-using WebApplication1.Services.ProfessorOps;
 
 namespace WebApplication1.Pages.EditElement.EditPerson
 {
     public class EditProfessorModel : PageModel
     {
-        private readonly IUpdateProfessorOp _updateProfessorOp;
+        private readonly IProfessorsRepository _professorsRepository;
         private readonly IAuthorizationService _authService;
 
         [Required]
@@ -20,14 +20,14 @@ namespace WebApplication1.Pages.EditElement.EditPerson
         [BindProperty]
         public Professor Professor { get; set; }
 
-        public EditProfessorModel(IUpdateProfessorOp updateProfessorOp, IAuthorizationService authService)
+        public EditProfessorModel(IProfessorsRepository professorsRepository, IAuthorizationService authService)
         {
-            _updateProfessorOp = updateProfessorOp;
+            _professorsRepository = professorsRepository;
             _authService = authService;
         }
-        public async Task<IActionResult> OnGet(string idCode)
+        public async Task<IActionResult> OnGet(Guid id)
         {
-            Professor = _updateProfessorOp.GetProfessorToUpdateByIdCode(idCode);
+            Professor = await _professorsRepository.GetAsync(id);
             PersonalData = Professor?.PersonalData;
 
             var authResult = await _authService.AuthorizeAsync(User, Professor, "CanEditProfessor");
@@ -42,21 +42,11 @@ namespace WebApplication1.Pages.EditElement.EditPerson
         {
             if (!ModelState.IsValid)
                 return Page();
-            var editedProfessor = CreateProfessor();
-            var idCode = await _updateProfessorOp.UpdateProfessorAsync(editedProfessor);
-            return RedirectToPage("/ShowResults/ShowProfessor", new { idCode });
-        }
 
-        private Professor CreateProfessor()
-        {
-            return new()
-            {
-                PersonalData = PersonalData,
-                IdCode = Professor.IdCode,
-                Subject = Professor.Subject,
-                FirstDayAtJob = Professor.FirstDayAtJob,
-                Salary = Professor.Salary
-            };
+
+            this.Professor.PersonalData = this.PersonalData;
+            var id = await _professorsRepository.UpdateAsync(this.Professor);
+            return RedirectToPage("/ShowResults/ShowProfessor", new { id });
         }
     }
 }

@@ -8,5 +8,6 @@ namespace UniversityApi.API.Contracts
     {
         Task<Guid> UpdateWithCoursesAsync(EntityStudent updatedStudent, IEnumerable<Guid> coursesIds);
         Task DeleteStudentsCourseAsync(Guid studentId, Guid courseId);
+        Task<bool> IndexIsOccupied(string index);
     }
 }

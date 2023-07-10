@@ -6,7 +6,7 @@ namespace WebApplication1.Services.People
     public abstract class Person : IDistinguishableEntity
     {
         public Guid EntityPersonID { get; set; }
-        public AppUserDto AppUser { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         public PersonalData PersonalData { get; set; }
 
         public abstract string Key { get; }

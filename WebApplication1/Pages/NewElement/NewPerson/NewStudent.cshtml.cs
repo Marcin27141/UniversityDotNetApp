@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using UniversityApi.API.Contracts;
 using WebApplication1.Contracts;
+using WebApplication1.Services;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages
@@ -30,7 +31,7 @@ namespace WebApplication1.Pages
         public Student Student { get; set; }
 
         [BindProperty]
-        public IEnumerable<string> SelectedCourses { get; set; }
+        public IEnumerable<string> SelectedCourses { get { return SelectedCourses.Where(c => c != null); } set { } }
 
         [Required]
         [BindProperty]
@@ -41,8 +42,10 @@ namespace WebApplication1.Pages
             _coursesRepository = coursesRepository;
             _userRepository = userRepository;
 
-            ApplicationUsers = _userRepository.GetAllUsers().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
-            AvailableCourses = _readCourseOp.GetAllCourses().Select(c => new SelectListItem() { Text = c.ToString(), Value = c.CourseCode });
+            ApplicationUsers = _userRepository.GetAllUsersAsync().Result.Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
+            var courses = _coursesRepository.GetAllAsync().Result;
+            TempData["Courses"] = courses;
+            AvailableCourses = courses.Select(c => new SelectListItem() { Text = c.ToString(), Value = c.EntityCourseID.ToString() });
         }
         public void OnGet()
         {
@@ -50,26 +53,20 @@ namespace WebApplication1.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (_readStudentOp.GetStudentByIndex(Student.Index) != null)
+            if (await _studentsRepository.IndexIsOccupied(Student.Index))
                 ModelState.AddModelError("Student.Index", "Student with given index is already added");
-            if (_readStudentOp.GetStudentByUser(ApplicationUserId) != null)
+            if (await _studentsRepository.GetByUserAsync(ApplicationUserId) != null)
                 ModelState.AddModelError("ApplicationUserId", "There already is a connected account");
             if (!ModelState.IsValid)
                 return Page();
-            Student student = CreateStudent();
-            var index = await _createStudentOp.AddStudentAsync(student, SelectedCourses.Where(c => c != null));
-            return RedirectToPage("/ShowResults/ShowStudent", new { index = index });
-        }
 
-        private Student CreateStudent()
-        {
-            PersonalData.ApplicationUser = _readUserOp.GetUserById(ApplicationUserId);
-            return new Student()
-            {
-                PersonalData = PersonalData,
-                Index = Student.Index,
-                BeginningOfStudying = Student.BeginningOfStudying
-            };
+            this.Student.ApplicationUser = await _userRepository.GetUserAsync(ApplicationUserId);
+            this.Student.PersonalData = PersonalData;
+            List<Course> courses = TempData["Courses"] as List<Course>;
+            this.Student.Courses = courses.Where(c => SelectedCourses.Contains(c.EntityCourseID.ToString())).ToList();
+
+            var id = await _studentsRepository.AddAsync(this.Student);
+            return RedirectToPage("/ShowResults/ShowStudent", new { id = id });
         }
     }
 }

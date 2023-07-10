@@ -52,5 +52,10 @@ namespace UniversityApi.API.Repositories
             student.Courses.Remove(course);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> IndexIsOccupied(string index)
+        {
+            return await _context.Set<EntityStudent>().AnyAsync(s => s.Index.Equals(index));
+        }
     }
 }

@@ -10,7 +10,8 @@ namespace UniversityApi.API.Contracts
     public interface IStudentsRepository : IGenericRepository<Student>
     {
         List<Student> SortFilterStudents(StudentOrderByOptions orderByOption, StudentFilterByOptions filterByOption, string filter);
-        Task<bool> RemoveStudentCourseAsync(int studentId, string courseCode);
-        Task<Guid> UpdateStudentAsync(Student updatedStudent, IEnumerable<Guid> coursesIds);
+        Task RemoveStudentCourseAsync(Guid studentId, Guid courseId);
+        Task<Guid> UpdateStudentWithCoursesAsync(Student updatedStudent, IEnumerable<Guid> coursesIds);
+        Task<bool> IndexIsOccupied(string index);
     }
 }

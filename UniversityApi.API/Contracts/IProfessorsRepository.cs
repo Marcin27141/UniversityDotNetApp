@@ -6,5 +6,6 @@ namespace UniversityApi.API.Contracts
 {
     public interface IProfessorsRepository : IGenericRepository<EntityProfessor>
     {
+        Task<bool> IdCodeIsOccupied(string idCode);
     }
 }

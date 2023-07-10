@@ -20,9 +20,9 @@ namespace WebApplication1.Pages.ShowResults
             _authService = authService;
         } 
 
-        public async Task<IActionResult> OnGet(string courseCode)
+        public async Task<IActionResult> OnGet(Guid id)
         {
-            CourseToShow = _courseRespository.GetByCourseCode(courseCode);
+            CourseToShow = await _courseRespository.GetAsync(id);
             if (CourseToShow == null)
                 throw new Exception("Couldn't find the course");
 

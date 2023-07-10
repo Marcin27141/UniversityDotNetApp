@@ -18,17 +18,17 @@ namespace WebApplication1.Pages.ShowResults
             _studentsRepository = studentsRepository;
         }
 
-        public IActionResult OnGet(string key)
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            StudentToShow = _studentsRepository.GetStudentByIndex(index);
+            StudentToShow = await _studentsRepository.GetAsync(id);
             if (StudentToShow == null)
                 throw new Exception("Couldn't find a student with given index");
             return Page();
         }
 
-        public async Task<IActionResult> OnGetDelete(string index, string courseCode)
+        public async Task<IActionResult> OnGetDeleteAsync(Guid studentId, Guid courseId)
         {
-            await _updateStudentOp.RemoveStudentCourseAsync(index, courseCode);
+            await _studentsRepository.RemoveStudentCourseAsync(studentId, courseId);
             return RedirectToPage();
         }
     }

@@ -15,6 +15,18 @@ namespace UniversityApi.API.Repositories
             _context = dbContext;
         }
 
+        public async Task<EntityPerson> GetAsync(Guid id)
+        {
+            return await _context.People.FindAsync(id);
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var entity = await GetAsync(id);
+            _context.People.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<EntityPerson>> GetAllPersonalDataAsync()
         {
             return await _context.People.ToListAsync();

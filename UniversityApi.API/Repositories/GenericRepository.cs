@@ -55,7 +55,7 @@ namespace UniversityApi.API.Repositories
             return await GetAsync(Guid.Parse(entityPersonId));
         }
 
-        public async Task UpdateAsync(T entity)
+        public virtual async Task UpdateAsync(T entity)
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();

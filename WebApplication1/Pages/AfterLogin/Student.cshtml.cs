@@ -1,27 +1,25 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WebApplication1.DataBase.Entities;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using UniversityApi.API.Contracts;
 using WebApplication1.Services.People;
-using WebApplication1.Services.StudentOps;
 
 namespace WebApplication1.Pages.AfterLogin
 {
     public class StudentModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IReadStudentOp _readStudentOp;
+        private readonly IStudentsRepository _studentsRepository;
         public Student Student { get; set; }
 
-        public StudentModel(UserManager<ApplicationUser> userManager, IReadStudentOp readStudentOp)
+        public StudentModel(IStudentsRepository studentsRepository)
         {
-            _userManager = userManager;
-            _readStudentOp = readStudentOp;
+            _studentsRepository = studentsRepository;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Student = _readStudentOp.GetStudentByUser(_userManager.GetUserId(User));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            this.Student = await _studentsRepository.GetByUserAsync(userId);
         }
     }
 }

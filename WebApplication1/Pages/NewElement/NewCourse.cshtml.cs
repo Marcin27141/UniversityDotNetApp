@@ -8,33 +8,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using UniversityApi.API.Contracts;
 using WebApplication1.Services;
-using WebApplication1.Services.CourseOps;
-using WebApplication1.Services.ProfessorOps;
+using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages
 {
     [Authorize("HasAdminRights")]
     public class NewCourseModel : PageModel
     {
-        private readonly ICreateCourseOp _createCourseOp;
-        private readonly IReadProfessorOp _readProfessorOp;
-        private readonly IReadCourseOp _readCourseOp;
+        private readonly ICoursesRepository _coursesRespository;
+        private readonly IProfessorsRepository _professorsRepository;
 
         [BindProperty]
         public Course CreatedCourse { get; set; }
         //TODO error message for dropdown list
         [BindProperty]
         [Required(ErrorMessage ="Please select a professor or create a new one")]
-        public string ProfessorIdCode { get; set; }
+        public string ProfessorId { get; set; }
         public IEnumerable<SelectListItem> CreatedProfessors { get; set; }
 
-        public NewCourseModel(ICreateCourseOp createCourseOp, IReadProfessorOp readProfessorOp, IReadCourseOp readCourseOp)
+        public NewCourseModel(ICoursesRepository coursesRespository, IProfessorsRepository professorsRepository)
         {
-            _createCourseOp = createCourseOp;
-            _readProfessorOp = readProfessorOp;
-            _readCourseOp = readCourseOp;
-            CreatedProfessors = _readProfessorOp.GetAllProfessors().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Subject, Value = p.IdCode });
+            _coursesRespository = coursesRespository;
+            _professorsRepository = professorsRepository;
+            CreatedProfessors = _professorsRepository.GetAllAsync().Result.Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Subject, Value = p.EntityPersonID.ToString() });
         }
 
         public void OnGet()
@@ -43,23 +41,13 @@ namespace WebApplication1.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (await _coursesRespository.CourseCodeIsOccupied(CreatedCourse.CourseCode))
+                ModelState.AddModelError("CreatedCourse.CourseCode", "Course with given code is already added");
             if (!ModelState.IsValid)
                 return Page();
-            Course course = CreateCourse();
-            var courseCode = await _createCourseOp.AddCourseAsync(course, Enumerable.Empty<string>());
-            return RedirectToPage("/ShowResults/ShowCourse", new { courseCode = courseCode });
+            CreatedCourse.Professor = await _professorsRepository.GetAsync(Guid.Parse(ProfessorId));
+            var courseId = await _coursesRespository.AddAsync(CreatedCourse);
+            return RedirectToPage("/ShowResults/ShowCourse", new { id = courseId });
         }                            
-
-        private Course CreateCourse()
-        {
-            return new Course()
-            {
-                Name = CreatedCourse.Name,
-                CourseCode = CreatedCourse.CourseCode,
-                Professor = _readProfessorOp.GetProfessorByIdCode(ProfessorIdCode),
-                ECTS = CreatedCourse.ECTS,
-                IsFinishedWithExam = CreatedCourse.IsFinishedWithExam
-            };
-        }
     }
 }

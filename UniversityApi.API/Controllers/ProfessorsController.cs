@@ -1,4 +1,5 @@
 ﻿using ApiDtoLibrary.Professors;
+using ApiDtoLibrary.Students;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,13 @@ namespace UniversityApi.API.Controllers
 
             var output = _mapper.Map<GetProfessor>(entityProfessor);
             return output;
+        }
+
+        // GET: api/Professors/IdCode/12312
+        [HttpGet("IdCode/{idCode}")]
+        public async Task<ActionResult<GetProfessor>> CheckIfIdCodeOccupied(string idCode)
+        {
+            return Ok(await _repository.IdCodeIsOccupied(idCode));
         }
 
         // GET: api/Professors/User/SomeUserId93850327

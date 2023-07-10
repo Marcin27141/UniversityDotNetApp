@@ -44,6 +44,13 @@ namespace UniversityApi.API.Controllers
             return output;
         }
 
+        // GET: api/Students/Index/123123
+        [HttpGet("Index/{index}")]
+        public async Task<ActionResult<GetStudent>> CheckIfIndexOccupied(string index)
+        {
+            return Ok(await _repository.IndexIsOccupied(index));
+        }
+
         // GET: api/Students/ByUser/SomeUserId929304
         [HttpGet("User/{id}")]
         public async Task<ActionResult<GetStudent>> GetStudentByUser(string id)
@@ -91,10 +98,10 @@ namespace UniversityApi.API.Controllers
             return NoContent();
         }
 
-        // PUT: api/Students/courses
+        // PUT: api/Students/Courses/
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("courses")]
-        public async Task<IActionResult> PutStudent(PutStudent putStudent, IEnumerable<Guid> coursesIds)
+        /*[HttpPut("Courses")]
+        public async Task<IActionResult> PutStudentWithCourses(PutStudent putStudent)
         {
             var student = await _repository.GetAsync(putStudent.EntityPersonID);
             if (student == null)
@@ -121,7 +128,7 @@ namespace UniversityApi.API.Controllers
             }
 
             return NoContent();
-        }
+        }*/
 
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

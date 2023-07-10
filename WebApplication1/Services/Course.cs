@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using WebApplication1.Services.People;
@@ -10,7 +11,7 @@ namespace WebApplication1.Services
         public static readonly int COURSE_ENTITY_CLASS_ID = 1;
 
 
-        public int EntityCourseID { get; set; }
+        public Guid EntityCourseID { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -33,7 +34,7 @@ namespace WebApplication1.Services
 
         public string Key => CourseCode;
 
-        public int EntityId => EntityCourseID;
+        public Guid EntityId => EntityCourseID;
 
         public int EntityClassId => COURSE_ENTITY_CLASS_ID;
 

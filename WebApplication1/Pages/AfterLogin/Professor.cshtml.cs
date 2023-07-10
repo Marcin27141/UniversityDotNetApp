@@ -1,28 +1,25 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WebApplication1.DataBase.Entities;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using UniversityApi.API.Contracts;
 using WebApplication1.Services.People;
-using WebApplication1.Services.ProfessorOps;
-using WebApplication1.Services.StudentOps;
 
 namespace WebApplication1.Pages.AfterLogin
 {
     public class ProfessorModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IReadProfessorOp _readProfessorOp;
+        private readonly IProfessorsRepository _professorsRepository;
         public Professor Professor { get; set; }
 
-        public ProfessorModel(UserManager<ApplicationUser> userManager, IReadProfessorOp readProfessorOp)
+        public ProfessorModel(IProfessorsRepository professorsRepository)
         {
-            _userManager = userManager;
-            _readProfessorOp = readProfessorOp;
+            _professorsRepository = professorsRepository;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Professor = _readProfessorOp.GetProfessorByUser(_userManager.GetUserId(User));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            this.Professor = await _professorsRepository.GetByUserAsync(userId);
         }
     }
 }

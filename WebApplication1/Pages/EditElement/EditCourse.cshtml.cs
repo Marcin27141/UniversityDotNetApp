@@ -7,17 +7,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using UniversityApi.API.Contracts;
 using WebApplication1.Services;
-using WebApplication1.Services.CourseOps;
-using WebApplication1.Services.ProfessorOps;
 
 namespace WebApplication1.Pages.EditElement
 {
     [Authorize("HasAdminRights")]
     public class EditCourseModel : PageModel
     {
-        private readonly IUpdateCourseOp _updateCourseOp;
-        private readonly IReadProfessorOp _readProfessorOp;
+        private readonly ICoursesRepository _coursesRepository;
+        private readonly IProfessorsRepository _professorsRepository;
 
         public IEnumerable<SelectListItem> CreatedProfessors { get; set; }
 
@@ -28,16 +27,16 @@ namespace WebApplication1.Pages.EditElement
         [Required(ErrorMessage = "Please select a professor or create a new one")]
         public string ProfessorId { get; set; }
 
-        public EditCourseModel(IUpdateCourseOp updateCourseOp, IReadProfessorOp readProfessorOp)
+        public EditCourseModel(ICoursesRepository coursesRepository, IProfessorsRepository professorsRepository)
         {
-            _updateCourseOp = updateCourseOp;
-            _readProfessorOp = readProfessorOp;
-            CreatedProfessors = _readProfessorOp.GetAllProfessors().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Subject, Value = p.IdCode });
+            _coursesRepository = coursesRepository;
+            _professorsRepository = professorsRepository;
+            CreatedProfessors = _professorsRepository.GetAllAsync().Result.Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Subject, Value = p.EntityPersonID.ToString() });
         }
 
-        public void OnGet(string courseCode)
+        public async Task OnGetAsync(Guid id)
         {
-            Course = _updateCourseOp.GetCourseToUpdateByCode(courseCode);
+            Course = await _coursesRepository.GetAsync(id);
             ProfessorId = Course?.Professor?.IdCode;
         }
 
@@ -45,21 +44,10 @@ namespace WebApplication1.Pages.EditElement
         {
             if (!ModelState.IsValid)
                 return Page();
-            var editedCourse = CreateCourse();
-            string courseCode = await _updateCourseOp.UpdateCourseAsync(editedCourse);
-            return RedirectToPage("/ShowResults/ShowCourse", new { courseCode });
-        }
 
-        private Course CreateCourse()
-        {
-            return new Course()
-            {
-                Name = Course.Name,
-                CourseCode = Course.CourseCode,
-                Professor = _readProfessorOp.GetProfessorByIdCode(ProfessorId),
-                ECTS = Course.ECTS,
-                IsFinishedWithExam = Course.IsFinishedWithExam
-            };
+            this.Course.Professor = await _professorsRepository.GetAsync(Guid.Parse(ProfessorId));
+            var id = await _coursesRepository.UpdateAsync(this.Course);
+            return RedirectToPage("/ShowResults/ShowCourse", new { id });
         }
     }
 }
