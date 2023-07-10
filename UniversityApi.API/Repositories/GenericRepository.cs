@@ -8,8 +8,8 @@ namespace UniversityApi.API.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly UniversityApiDbContext _context;
-        private readonly UserManager<ApiUser> _userManager;
+        protected readonly UniversityApiDbContext _context;
+        protected readonly UserManager<ApiUser> _userManager;
 
         public GenericRepository(UniversityApiDbContext dbContext, UserManager<ApiUser> userManager)
         {
@@ -24,14 +24,14 @@ namespace UniversityApi.API.Repositories
             return entity;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Guid id)
         {
             var entity = await GetAsync(id);
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> Exists(int id)
+        public async Task<bool> Exists(Guid id)
         {
             var entity = await GetAsync(id);
             return entity != null;
@@ -42,21 +42,17 @@ namespace UniversityApi.API.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        public virtual async Task<T> GetAsync(int? id)
+        public virtual async Task<T> GetAsync(Guid id)
         {
-            if (id is null)
-            {
-                return null;
-            }
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public virtual async Task<T> GetByUserAsync(string id)
+        public virtual async Task<T> GetByUserAsync(string userId)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(userId);
             var claims = await _userManager.GetClaimsAsync(user);
             var entityPersonId = claims.FirstOrDefault(c => c.Type == "EntityPersonId")?.Value;
-            return await _context.Set<T>().FindAsync(entityPersonId);
+            return await GetAsync(Guid.Parse(entityPersonId));
         }
 
         public async Task UpdateAsync(T entity)

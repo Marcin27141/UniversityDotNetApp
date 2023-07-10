@@ -1,9 +1,10 @@
-﻿namespace WebApplication1.Services
+﻿using System;
+
+namespace WebApplication1.Services
 {
     public interface IDistinguishableEntity
     {
         int EntityClassId { get; }
-        int EntityId { get; }
-        string Key { get; }
+        Guid EntityId { get; }
     }
 }

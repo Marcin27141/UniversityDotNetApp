@@ -1,5 +1,5 @@
-﻿using ApiDtoLibrary;
-using ApiDtoLibrary.Courses;
+﻿using ApiDtoLibrary.Courses;
+using ApiDtoLibrary.Person;
 using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using ApiDtoLibrary.Users;
@@ -19,7 +19,7 @@ namespace UniversityApi.API.Configurations
             CreateMap<EntityCourse, PutCourse>().ReverseMap();
 
             //Models/Professors
-            CreateMap<PersonDto, EntityPerson>().ReverseMap();
+            CreateMap<PostPersonDto, EntityPerson>().ReverseMap();
 
             //Models/Professors
             CreateMap<EntityProfessor, FullProfessor>().ReverseMap();

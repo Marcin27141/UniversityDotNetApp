@@ -1,30 +1,28 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using UniversityApi.API.Contracts;
 using WebApplication1.Services;
-using WebApplication1.Services.CourseOps;
-using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages.ShowResults
 {
     public class ShowCourseModel : PageModel
     {
-        private readonly IReadCourseOp _readCourseOp;
+        private readonly ICoursesRepository _courseRespository;
         private readonly IAuthorizationService _authService;
         public bool HasAdminRights { get; set; }
         public Course CourseToShow { get; set; }
 
-        public ShowCourseModel(IReadCourseOp readCourseOp, IAuthorizationService authService) {
-            _readCourseOp = readCourseOp;
+        public ShowCourseModel(ICoursesRepository courseRespository, IAuthorizationService authService) {
+            _courseRespository = courseRespository;
             _authService = authService;
         } 
 
         public async Task<IActionResult> OnGet(string courseCode)
         {
-            CourseToShow = _readCourseOp.GetCourseByCode(courseCode);
+            CourseToShow = _courseRespository.GetByCourseCode(courseCode);
             if (CourseToShow == null)
                 throw new Exception("Couldn't find the course");
 

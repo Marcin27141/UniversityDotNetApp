@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,22 +6,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
-using WebApplication1.Services.CourseOps;
+using UniversityApi.API.Contracts;
+using WebApplication1.Contracts;
 using WebApplication1.Services.People;
-using WebApplication1.Services.StudentOps;
-using WebApplication1.Services.UserOps;
 
 namespace WebApplication1.Pages
 {
     [Authorize("HasAdminRights")]
     public class NewStudentModel : PageModel
     {
-        private readonly ICreateStudentOp _createStudentOp;
-        private readonly IReadCourseOp _readCourseOp;
-        private readonly IReadStudentOp _readStudentOp;
-        private readonly IReadUserOp _readUserOp;
+        private readonly IStudentsRepository _studentsRepository;
+        private readonly ICoursesRepository _coursesRepository;
+        private readonly IUserRepository _userRepository;
 
         public IEnumerable<SelectListItem> ApplicationUsers { get; set; }
         public IEnumerable<SelectListItem> AvailableCourses { get; set; }
@@ -40,12 +36,12 @@ namespace WebApplication1.Pages
         [BindProperty]
         public string ApplicationUserId { get; set; }
 
-        public NewStudentModel(ICreateStudentOp createStudentOp, IReadCourseOp readCourseOp, IReadStudentOp readStudentOp, IReadUserOp readUserOp) {
-            _createStudentOp = createStudentOp;
-            _readCourseOp = readCourseOp;
-            _readStudentOp = readStudentOp;
-            _readUserOp = readUserOp;
-            ApplicationUsers = readUserOp.GetAllUsers().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
+        public NewStudentModel(IStudentsRepository studentsRepository, ICoursesRepository coursesRepository, IUserRepository userRepository) {
+            _studentsRepository = studentsRepository;
+            _coursesRepository = coursesRepository;
+            _userRepository = userRepository;
+
+            ApplicationUsers = _userRepository.GetAllUsers().Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
             AvailableCourses = _readCourseOp.GetAllCourses().Select(c => new SelectListItem() { Text = c.ToString(), Value = c.CourseCode });
         }
         public void OnGet()

@@ -18,10 +18,9 @@ namespace UniversityApi.API.Repositories
             return _context.Users.ToListAsync();
         }
 
-        public async Task<ApiUser> GetUserByIdAsync(string id)
+        public async Task<ApiUser> GetUserAsync(string id)
         {
-            var result = await _context.Users.FindAsync(id);
-            return result;
+            return await _context.Users.FindAsync(id);
         }
     }
 }

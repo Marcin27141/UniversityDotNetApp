@@ -1,16 +1,17 @@
 ﻿using ApiDtoLibrary.Users;
+using System;
 
 namespace WebApplication1.Services.People
 {
     public abstract class Person : IDistinguishableEntity
     {
-        public int EntityPersonID { get; set; }
+        public Guid EntityPersonID { get; set; }
         public AppUserDto AppUser { get; set; }
         public PersonalData PersonalData { get; set; }
 
         public abstract string Key { get; }
 
-        public int EntityId => EntityPersonID;
+        public Guid EntityId => EntityPersonID;
 
         public abstract int EntityClassId { get; }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApplication1.Contracts;
 using WebApplication1.Queries;
@@ -10,6 +11,6 @@ namespace UniversityApi.API.Contracts
     {
         List<Student> SortFilterStudents(StudentOrderByOptions orderByOption, StudentFilterByOptions filterByOption, string filter);
         Task<bool> RemoveStudentCourseAsync(int studentId, string courseCode);
-        Task<string> UpdateStudentAsync(Student updatedStudent, IEnumerable<string> coursesCodes);
+        Task<Guid> UpdateStudentAsync(Student updatedStudent, IEnumerable<Guid> coursesIds);
     }
 }

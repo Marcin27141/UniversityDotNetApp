@@ -1,34 +1,21 @@
 ﻿using ApiDtoLibrary.Students;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
+using UniversityApi.API.DataBase.Identity;
 
 namespace UniversityApi.API.Repositories
 {
     public class StudentsRepository : GenericRepository<EntityStudent>, IStudentsRepository
     {
-        private readonly UniversityApiDbContext _context;
-
-        public StudentsRepository(UniversityApiDbContext dbContext) : base(dbContext)
+        public StudentsRepository(UniversityApiDbContext dbContext, UserManager<ApiUser> userManager) : base(dbContext, userManager)
         {
-            _context = dbContext;
         }
 
-        public override async Task<EntityStudent> GetAsync(int? id)
-        {
-            if (id is null)
-            {
-                return null;
-            }
-            return await _context.Set<EntityStudent>()
-                .Include(s => s.Courses)
-                    .ThenInclude(c => c.Professor)
-                .SingleOrDefaultAsync(s => s.EntityPersonID == id);
-        }
-
-        public override async Task<EntityStudent> GetByUserAsync(string id)
+        public override async Task<EntityStudent> GetAsync(Guid id)
         {
             return await _context.Set<EntityStudent>()
                 .Include(s => s.Courses)
@@ -44,24 +31,24 @@ namespace UniversityApi.API.Repositories
                 .ToListAsync();
         }
 
-        public async Task<string> UpdateWithCoursesAsync(EntityStudent updatedStudent, IEnumerable<string> coursesCodes)
+        public async Task<Guid> UpdateWithCoursesAsync(EntityStudent updatedStudent, IEnumerable<Guid> coursesIds)
         {
-            var updatedCourses = coursesCodes
-                .Select(c => _context.Courses.SingleOrDefault(o => o.CourseCode.Equals(c)))
+            var updatedCourses = coursesIds
+                .Select(id => _context.Courses.Find(id))
                 .ToList();
             var studentToUpdate = _context.Set<EntityStudent>()
                 .Include(s => s.Courses)
-                .SingleOrDefault(s => s.Index.Equals(updatedStudent.Index));
+                .SingleOrDefault(s => s.EntityPersonID == updatedStudent.EntityPersonID);
             studentToUpdate.Courses = updatedCourses;
             _context.Update(studentToUpdate);
             await _context.SaveChangesAsync();
-            return studentToUpdate.Index;
+            return studentToUpdate.EntityPersonID;
         }
 
-        public async Task DeleteStudentsCourseAsync(int id, string courseCode)
+        public async Task DeleteStudentsCourseAsync(Guid studentId, Guid courseId)
         {
-            var student = await GetAsync(id);
-            var course = await _context.Courses.FirstOrDefaultAsync(c => c.CourseCode.Equals(courseCode));
+            var student = await GetAsync(studentId);
+            var course = await _context.Courses.FindAsync(courseId);
             student.Courses.Remove(course);
             await _context.SaveChangesAsync();
         }

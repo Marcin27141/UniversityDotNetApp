@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ApiDtoLibrary
+namespace ApiDtoLibrary.Person
 {
-    public class PersonDto
+    public class PostPersonDto
     {
         [Required]
         [Display(Name = "First name")]

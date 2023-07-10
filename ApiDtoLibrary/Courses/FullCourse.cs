@@ -8,7 +8,7 @@ namespace ApiDtoLibrary.Courses
     {
         [Required]
         [Display(Name = "Id")]
-        public int EntityCourseID { get; set; }
+        public Guid EntityCourseID { get; set; }
 
         public FullProfessor Professor { get; set; }
 

@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using ApiDtoLibrary.Professors;
+﻿using ApiDtoLibrary.Professors;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.Contracts;
-using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
-using UniversityApi.API.Exceptions;
 
 namespace UniversityApi.API.Controllers
 {
@@ -38,9 +30,9 @@ namespace UniversityApi.API.Controllers
             return Ok(output);
         }
 
-        // GET: api/Professors/5
+        // GET: api/Professors/someGuidValue
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetProfessor>> GetProfessor(int id)
+        public async Task<ActionResult<GetProfessor>> GetProfessor(Guid id)
         {
             var entityProfessor = await _repository.GetAsync(id);
 
@@ -54,24 +46,8 @@ namespace UniversityApi.API.Controllers
             return output;
         }
 
-        // GET: api/Professors/idCode/12393
-        [HttpGet("idCode/{idCode}")]
-        public async Task<ActionResult<GetProfessor>> GetProfessorByIdCode(string idCode)
-        {
-            var entityProfessor = await _repository.GetByIdCodeAsync(idCode);
-
-            if (entityProfessor == null)
-            {
-                return NotFound();
-                //throw new NotFoundException(nameof(GetProfessor), id);
-            }
-
-            var output = _mapper.Map<GetProfessor>(entityProfessor);
-            return output;
-        }
-
-        // GET: api/Professors/ByUser/SomeUserId93850327
-        [HttpGet("ByUser/{id}")]
+        // GET: api/Professors/User/SomeUserId93850327
+        [HttpGet("User/{id}")]
         public async Task<ActionResult<GetProfessor>> GetProfessorByUser(string id)
         {
             var entityProfessor = await _repository.GetByUserAsync(id);
@@ -88,14 +64,9 @@ namespace UniversityApi.API.Controllers
         // PUT: api/Professors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProfessor(int id, PutProfessor putProfessor)
+        public async Task<IActionResult> PutProfessor(PutProfessor putProfessor)
         {
-            if (id != putProfessor.EntityPersonID)
-            {
-                return BadRequest("Invalid Record id");
-            }
-
-            var professor = await _repository.GetAsync(id);
+            var professor = await _repository.GetAsync(putProfessor.EntityPersonID);
             if (professor == null)
             {
                 return NotFound();
@@ -109,7 +80,7 @@ namespace UniversityApi.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await EntityProfessorExists(id))
+                if (!await EntityProfessorExists(putProfessor.EntityPersonID))
                 {
                     return NotFound();
                 }
@@ -134,9 +105,9 @@ namespace UniversityApi.API.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        // DELETE: api/Professors/5
+        // DELETE: api/Professors/someGuidValue
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEntityProfessor(int id)
+        public async Task<IActionResult> DeleteEntityProfessor(Guid id)
         {
             var entityProfessor = await _repository.GetAsync(id);
             if (entityProfessor == null)
@@ -149,7 +120,7 @@ namespace UniversityApi.API.Controllers
             return NoContent();
         }
 
-        private async Task<bool> EntityProfessorExists(int id)
+        private async Task<bool> EntityProfessorExists(Guid id)
         {
             return await _repository.Exists(id);
         }

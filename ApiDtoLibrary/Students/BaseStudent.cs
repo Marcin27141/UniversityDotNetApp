@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ApiDtoLibrary;
+using ApiDtoLibrary.Person;
 
 namespace ApiDtoLibrary.Students
 {
-    public class BaseStudent : PersonDto
+    public class BaseStudent : PostPersonDto
     {
         [Required]
         [RegularExpression(@"\d{6}", ErrorMessage = "Index must be 6 digits")]

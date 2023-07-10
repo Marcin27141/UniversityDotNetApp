@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ApiDtoLibrary.Students;
+﻿using ApiDtoLibrary.Students;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.Contracts;
-using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
 
 namespace UniversityApi.API.Controllers
@@ -36,9 +29,9 @@ namespace UniversityApi.API.Controllers
             return Ok(output);
         }
 
-        // GET: api/Students/5
+        // GET: api/Students/someGuidValue
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetStudent>> GetStudent(int id)
+        public async Task<ActionResult<GetStudent>> GetStudent(Guid id)
         {
             var entityStudent = await _repository.GetAsync(id);
 
@@ -52,7 +45,7 @@ namespace UniversityApi.API.Controllers
         }
 
         // GET: api/Students/ByUser/SomeUserId929304
-        [HttpGet("ByUser/{id}")]
+        [HttpGet("User/{id}")]
         public async Task<ActionResult<GetStudent>> GetStudentByUser(string id)
         {
             var entityStudent = await _repository.GetByUserAsync(id);
@@ -66,17 +59,12 @@ namespace UniversityApi.API.Controllers
             return output;
         }
 
-        // PUT: api/Students/5
+        // PUT: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, PutStudent putStudent)
+        [HttpPut]
+        public async Task<IActionResult> PutStudent(PutStudent putStudent)
         {
-            if (id != putStudent.EntityPersonID)
-            {
-                return BadRequest("Invalid Record id");
-            }
-
-            var student = await _repository.GetAsync(id);
+            var student = await _repository.GetAsync(putStudent.EntityPersonID);
             if (student == null)
             {
                 return NotFound();
@@ -90,7 +78,7 @@ namespace UniversityApi.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await EntityStudentExists(id))
+                if (!await EntityStudentExists(putStudent.EntityPersonID))
                 {
                     return NotFound();
                 }
@@ -103,17 +91,12 @@ namespace UniversityApi.API.Controllers
             return NoContent();
         }
 
-        // PUT: api/Students/5/courses
+        // PUT: api/Students/courses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}/courses")]
-        public async Task<IActionResult> PutStudent(int id, PutStudent putStudent, IEnumerable<string> courseCodes)
+        [HttpPut("courses")]
+        public async Task<IActionResult> PutStudent(PutStudent putStudent, IEnumerable<Guid> coursesIds)
         {
-            if (id != putStudent.EntityPersonID)
-            {
-                return BadRequest("Invalid Record id");
-            }
-
-            var student = await _repository.GetAsync(id);
+            var student = await _repository.GetAsync(putStudent.EntityPersonID);
             if (student == null)
             {
                 return NotFound();
@@ -123,11 +106,11 @@ namespace UniversityApi.API.Controllers
 
             try
             {
-                await _repository.UpdateWithCoursesAsync(student, courseCodes);
+                await _repository.UpdateWithCoursesAsync(student, coursesIds);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await EntityStudentExists(id))
+                if (!await EntityStudentExists(putStudent.EntityPersonID))
                 {
                     return NotFound();
                 }
@@ -151,9 +134,9 @@ namespace UniversityApi.API.Controllers
             return CreatedAtAction(nameof(GetStudent), new { id = student.EntityPersonID }, student);
         }
 
-        // DELETE: api/Students/5
+        // DELETE: api/Students/someGuidValue
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEntityStudent(int id)
+        public async Task<IActionResult> DeleteEntityStudent(Guid id)
         {
             var entityStudent = await _repository.GetAsync(id);
             if (entityStudent == null)
@@ -166,21 +149,21 @@ namespace UniversityApi.API.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Students/5/C01
-        [HttpDelete("{id}/{courseCode}")]
-        public async Task<IActionResult> DeleteStudentCourse(int id, string courseCode)
+        // DELETE: api/Students/SomeGuidValue/SomeGuidValue
+        [HttpDelete("{studentId}/{courseId}")]
+        public async Task<IActionResult> DeleteStudentCourse(Guid studentId, Guid courseId)
         {
-            var entityStudent = await _repository.GetAsync(id);
+            var entityStudent = await _repository.GetAsync(studentId);
             if (entityStudent == null)
             {
                 return NotFound();
             }
 
-            await _repository.DeleteStudentsCourseAsync(id, courseCode);
+            await _repository.DeleteStudentsCourseAsync(studentId, courseId);
             return NoContent();
         }
 
-        private async Task<bool> EntityStudentExists(int id)
+        private async Task<bool> EntityStudentExists(Guid id)
         {
             return await _repository.Exists(id);
         }

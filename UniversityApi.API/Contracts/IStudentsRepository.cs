@@ -1,11 +1,12 @@
 ﻿using ApiDtoLibrary.Students;
+using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.DataBase.Entities;
 
 namespace UniversityApi.API.Contracts
 {
     public interface IStudentsRepository : IGenericRepository<EntityStudent>
     {
-        Task<string> UpdateWithCoursesAsync(EntityStudent updatedStudent, IEnumerable<string> coursesCodes);
-        Task DeleteStudentsCourseAsync(int id, string courseCode);
+        Task<Guid> UpdateWithCoursesAsync(EntityStudent updatedStudent, IEnumerable<Guid> coursesIds);
+        Task DeleteStudentsCourseAsync(Guid studentId, Guid courseId);
     }
 }

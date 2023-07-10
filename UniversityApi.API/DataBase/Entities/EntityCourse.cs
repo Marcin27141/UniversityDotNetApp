@@ -2,7 +2,7 @@
 {
     public class EntityCourse
     {
-        public int EntityCourseID { get; set; }
+        public Guid EntityCourseID { get; set; }
         public string CourseCode { get; set; }
         public string Name { get; set; }
         public int ECTS { get; set; }

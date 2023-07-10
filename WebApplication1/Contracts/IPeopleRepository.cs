@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WebApplication1.Services.People;
-using WebApplication1.Services.PeopleOps;
 
 namespace WebApplication1.Contracts
 {
@@ -11,7 +11,7 @@ namespace WebApplication1.Contracts
 
     public class KeyTypePersonalData
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public PersonType Type { get; set; }
         public PersonalData PersonalData { get; set; }
     }

@@ -9,25 +9,19 @@ namespace UniversityApi.API.Repositories
 {
     public class CoursesRepository : GenericRepository<EntityCourse>, ICoursesRepository
     {
-        private readonly UniversityApiDbContext _context;
-
         public CoursesRepository(UniversityApiDbContext dbContext, UserManager<ApiUser> userManager) : base(dbContext, userManager)
         {
         }
 
-        public override async Task<EntityCourse> GetAsync(int? id)
+        public override async Task<EntityCourse> GetAsync(Guid id)
         {
-            if (id is null)
-            {
-                return null;
-            }
             return await _context.Courses
                 .Include(c => c.Professor)
                 .Include(c => c.Students)
                 .SingleOrDefaultAsync(c => c.EntityCourseID == id);
         }
 
-        public override async Task<EntityCourse> GetByUserAsync(string id)
+        public override Task<EntityCourse> GetByUserAsync(string id)
         {
             throw new System.InvalidOperationException();
         }

@@ -7,7 +7,7 @@ namespace ApiDtoLibrary.Students
     {
         [Required]
         [Display(Name = "Id")]
-        public int EntityPersonID { get; set; }
+        public Guid EntityPersonID { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "First day of studying")]

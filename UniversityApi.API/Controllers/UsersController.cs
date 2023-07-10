@@ -1,7 +1,5 @@
-﻿using ApiDtoLibrary.Professors;
-using ApiDtoLibrary.Users;
+﻿using ApiDtoLibrary.Users;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UniversityApi.API.Contracts;
 
@@ -33,7 +31,7 @@ namespace UniversityApi.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ApiUserDto>> GetUserById(string id)
         {
-            var user = await _repository.GetUserByIdAsync(id);
+            var user = await _repository.GetUserAsync(id);
             var output = _mapper.Map<ApiUserDto>(user);
             return Ok(output);
         }

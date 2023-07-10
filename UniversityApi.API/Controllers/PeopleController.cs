@@ -1,9 +1,6 @@
-﻿using ApiDtoLibrary;
-using ApiDtoLibrary.Professors;
+﻿using ApiDtoLibrary.Person;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Core.Types;
 using UniversityApi.API.Contracts;
 
 namespace UniversityApi.API.Controllers
@@ -22,10 +19,10 @@ namespace UniversityApi.API.Controllers
 
         // GET: api/People
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PersonDto>>> GetPeople()
+        public async Task<ActionResult<IEnumerable<GetPersonDto>>> GetPeople()
         {
             var people = await _repository.GetAllPersonalDataAsync();
-            var output = _mapper.Map<IEnumerable<PersonDto>>(people);
+            var output = _mapper.Map<IEnumerable<GetPersonDto>>(people);
             return Ok(output);
         }
     }

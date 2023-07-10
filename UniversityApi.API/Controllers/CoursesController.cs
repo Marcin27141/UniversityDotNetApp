@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ApiDtoLibrary.Courses;
+﻿using ApiDtoLibrary.Courses;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.Contracts;
-using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
 
 namespace UniversityApi.API.Controllers
@@ -35,9 +29,9 @@ namespace UniversityApi.API.Controllers
             return Ok(output);
         }
 
-        // GET: api/Courses/5
+        // GET: api/Courses/someGuidValue
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetCourse>> GetCourse(int id)
+        public async Task<ActionResult<GetCourse>> GetCourse(Guid id)
         {
             var entityCourse = await _repository.GetAsync(id);
 
@@ -54,14 +48,9 @@ namespace UniversityApi.API.Controllers
         // PUT: api/Courses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEntityCourse(int id, PutCourse putCourse)
+        public async Task<IActionResult> PutEntityCourse(PutCourse putCourse)
         {
-            if (id != putCourse.EntityCourseID)
-            {
-                return BadRequest();
-            }
-
-            var course = await _repository.GetAsync(id);
+            var course = await _repository.GetAsync(putCourse.EntityCourseID);
             if (course == null)
             {
                 return NotFound();
@@ -75,7 +64,7 @@ namespace UniversityApi.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await EntityCourseExists(id))
+                if (!await EntityCourseExists(putCourse.EntityCourseID))
                 {
                     return NotFound();
                 }
@@ -99,9 +88,9 @@ namespace UniversityApi.API.Controllers
             return CreatedAtAction(nameof(GetCourse), new { id = course.EntityCourseID }, course);
         }
 
-        // DELETE: api/Courses/5
+        // DELETE: api/Courses/someGuidValue
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEntityCourse(int id)
+        public async Task<IActionResult> DeleteEntityCourse(Guid id)
         {
             var entityCourse = await _repository.GetAsync(id);
             if (entityCourse == null)
@@ -114,7 +103,7 @@ namespace UniversityApi.API.Controllers
             return NoContent();
         }
 
-        private async Task<bool> EntityCourseExists(int id)
+        private async Task<bool> EntityCourseExists(Guid id)
         {
             return await _repository.Exists(id);
         }

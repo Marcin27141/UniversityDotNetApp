@@ -1,5 +1,5 @@
-﻿using ApiDtoLibrary;
-using ApiDtoLibrary.Courses;
+﻿using ApiDtoLibrary.Courses;
+using ApiDtoLibrary.Person;
 using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using ApiDtoLibrary.Users;
@@ -20,7 +20,7 @@ namespace WebApplication1.Configurations
             CreateMap<Course, PutCourse>().ReverseMap();
 
             //Models/People
-            MapPersonalData(CreateMap<PersonDto, Person>());
+            MapPersonalData(CreateMap<PostPersonDto, Person>());
 
             //Models/Professors
             MapPersonalData(CreateMap<FullProfessor, Professor>());
@@ -39,7 +39,7 @@ namespace WebApplication1.Configurations
         }
 
         private void MapPersonalData<S, T>(IMappingExpression<S, T> mapping)
-            where S : PersonDto
+            where S : PostPersonDto
             where T : Person
         {
             mapping.ForMember(dest => dest.PersonalData, opt => opt.MapFrom(src => new PersonalData

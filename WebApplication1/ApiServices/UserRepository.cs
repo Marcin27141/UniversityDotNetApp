@@ -3,6 +3,7 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
 
@@ -15,25 +16,25 @@ namespace WebApplication1.ApiServices
             _apiPath += "/Users";
         }
 
-        public List<ApplicationUser> GetAllUsers()
+        public async Task<List<ApplicationUser>> GetAllUsersAsync()
         {
-            var response = _httpClient.GetAsync(_apiPath).Result;
+            var response = await _httpClient.GetAsync(_apiPath);
             if (response.IsSuccessStatusCode)
             {
-                var getResults = response.Content.ReadFromJsonAsync<List<ApiUserDto>>().Result;
+                var getResults = await response.Content.ReadFromJsonAsync<List<ApiUserDto>>();
                 var result = _mapper.Map<List<ApplicationUser>>(getResults);
                 return result;
             }
             return Enumerable.Empty<ApplicationUser>().ToList();
         }
 
-        public ApplicationUser GetUserById(string id)
+        public async Task<ApplicationUser> GetUserAsync(string id)
         {
             string getByIdPath = $"{_apiPath}/{id}";
-            var response = _httpClient.GetAsync(getByIdPath).Result;
+            var response = await _httpClient.GetAsync(getByIdPath);
             if (response.IsSuccessStatusCode)
             {
-                var getResult = response.Content.ReadFromJsonAsync<ApiUserDto>().Result;
+                var getResult = await response.Content.ReadFromJsonAsync<ApiUserDto>();
                 var result = _mapper.Map<ApplicationUser>(getResult);
                 return result;
             }

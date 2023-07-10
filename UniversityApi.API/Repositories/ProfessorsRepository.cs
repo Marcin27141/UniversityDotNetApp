@@ -1,22 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ApiDtoLibrary.Professors;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
+using UniversityApi.API.DataBase.Identity;
 
 namespace UniversityApi.API.Repositories
 {
     public class ProfessorsRepository : GenericRepository<EntityProfessor>, IProfessorsRepository
     {
-        private readonly UniversityApiDbContext _context;
-
-        public ProfessorsRepository(UniversityApiDbContext context) : base(context)
+        public ProfessorsRepository(UniversityApiDbContext dbContext, UserManager<ApiUser> userManager) : base(dbContext, userManager)
         {
-            _context = context;
-        }
-
-        public async Task<EntityProfessor> GetByIdCodeAsync(string idCode)
-        {
-            return await _context.Set<EntityProfessor>().FirstOrDefaultAsync(p => p.IdCode.Equals(idCode));
         }
     }
 }

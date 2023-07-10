@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ApiDtoLibrary;
+using ApiDtoLibrary.Person;
 
 namespace ApiDtoLibrary.Professors
 {
-    public class BaseProfessor : PersonDto
+    public class BaseProfessor : PostPersonDto
     {
         [Required]
         [RegularExpression(@"\d{5}", ErrorMessage = "ID must be 5 digits")]

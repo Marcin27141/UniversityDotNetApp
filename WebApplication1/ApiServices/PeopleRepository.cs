@@ -1,15 +1,10 @@
-﻿using ApiDtoLibrary;
-using ApiDtoLibrary.Professors;
-using ApiDtoLibrary.Users;
+﻿using ApiDtoLibrary.Person;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using WebApplication1.Contracts;
-using WebApplication1.Services;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.ApiServices
@@ -26,7 +21,7 @@ namespace WebApplication1.ApiServices
             var response = _httpClient.GetAsync(_apiPath).Result;
             if (response.IsSuccessStatusCode)
             {
-                var getResult = response.Content.ReadFromJsonAsync<List<PersonDto>>().Result;
+                var getResult = response.Content.ReadFromJsonAsync<List<GetPersonDto>>().Result;
                 var result = _mapper.Map<List<Person>>(getResult);
                 return result;
             }
@@ -52,7 +47,7 @@ namespace WebApplication1.ApiServices
             return people
                 .Select(p => new KeyTypePersonalData
                 {
-                    Id = p.EntityId,
+                    Id = p.EntityPersonID,
                     Type = GetPersonType(p),
                     PersonalData = p.PersonalData,
                 }).ToList();

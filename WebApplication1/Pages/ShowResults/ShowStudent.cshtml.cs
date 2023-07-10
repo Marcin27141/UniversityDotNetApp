@@ -3,27 +3,24 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using UniversityApi.API.Contracts;
 using WebApplication1.Services;
-using WebApplication1.Services.CourseOps;
 using WebApplication1.Services.People;
-using WebApplication1.Services.StudentOps;
 
 namespace WebApplication1.Pages.ShowResults
 {
     public class ShowStudentModel : PageModel
     {
-        private readonly IReadStudentOp _readStudentOp;
-        private readonly IUpdateStudentOp _updateStudentOp;
+        private readonly IStudentsRepository _studentsRepository;
         public Student StudentToShow { get; set; }
         public List<Course> Courses { get; set; }
-        public ShowStudentModel(IReadStudentOp readStudentOp, IUpdateStudentOp updateStudentOp) {
-            _readStudentOp = readStudentOp;
-            _updateStudentOp = updateStudentOp;
+        public ShowStudentModel(IStudentsRepository studentsRepository) {
+            _studentsRepository = studentsRepository;
         }
 
-        public IActionResult OnGet(string index)
+        public IActionResult OnGet(string key)
         {
-            StudentToShow = _readStudentOp.GetStudentByIndex(index);
+            StudentToShow = _studentsRepository.GetStudentByIndex(index);
             if (StudentToShow == null)
                 throw new Exception("Couldn't find a student with given index");
             return Page();
