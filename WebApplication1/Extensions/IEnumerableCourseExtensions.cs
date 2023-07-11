@@ -2,8 +2,10 @@
 using System.Linq;
 using System;
 using ApiDtoLibrary.Courses;
+using System.Collections.Generic;
+using WebApplication1.Services;
 
-namespace WebApplication1.Queries
+namespace WebApplication1.Extensions
 {
     public enum CourseOrderByOptions
     {
@@ -21,9 +23,9 @@ namespace WebApplication1.Queries
         [Display(Name = "By ECTS...")] ByECTS,
         [Display(Name = "By Exam...")] ByExam,
     }
-    public static class IQueryableCourseExtensions
+    public static class IEnumerableCourseExtensions
     {
-        public static IQueryable<FullCourse> OrderCoursesBy(this IQueryable<FullCourse> courses, CourseOrderByOptions orderByOptions)
+        public static IEnumerable<Course> OrderCoursesBy(this IEnumerable<Course> courses, CourseOrderByOptions orderByOptions)
         {
             switch (orderByOptions)
             {
@@ -40,7 +42,7 @@ namespace WebApplication1.Queries
             }
         }
 
-        public static IQueryable<FullCourse> FilterCoursesBy(this IQueryable<FullCourse> courses, CourseFilterByOptions filterByOptions, string filterValue)
+        public static IEnumerable<Course> FilterCoursesBy(this IEnumerable<Course> courses, CourseFilterByOptions filterByOptions, string filterValue)
         {
             switch (filterByOptions)
             {

@@ -1,9 +1,11 @@
 ﻿using ApiDtoLibrary.Students;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using WebApplication1.Services.People;
 
-namespace WebApplication1.Queries
+namespace WebApplication1.Extensions
 {
     public enum StudentOrderByOptions
     {
@@ -21,20 +23,20 @@ namespace WebApplication1.Queries
         [Display(Name = "By Age...")] ByAge,
         [Display(Name = "By Index...")] ByIndex
     }
-    public static class IQueryableStudentExtensions
+    public static class IEnumerableStudentExtensions
     {
-        public static IQueryable<FullStudent> OrderStudentsBy(this IQueryable<FullStudent> students, StudentOrderByOptions orderByOptions)
+        public static IEnumerable<Student> OrderStudentsBy(this IEnumerable<Student> students, StudentOrderByOptions orderByOptions)
         {
             switch (orderByOptions)
             {
                 case StudentOrderByOptions.SimpleOrder:
                     return students.OrderBy(s => s.EntityPersonID);
                 case StudentOrderByOptions.ByName:
-                    return students.OrderBy(s => s.FirstName);
+                    return students.OrderBy(s => s.PersonalData.FirstName);
                 case StudentOrderByOptions.BySurname:
-                    return students.OrderBy(s => s.LastName);
+                    return students.OrderBy(s => s.PersonalData.LastName);
                 case StudentOrderByOptions.ByAge:
-                    return students.OrderBy(s => s.Birthday);
+                    return students.OrderBy(s => s.PersonalData.Birthday);
                 case StudentOrderByOptions.ByIndex:
                     return students.OrderBy(s => s.Index);
                 default :
@@ -42,18 +44,18 @@ namespace WebApplication1.Queries
             }
         }
 
-        public static IQueryable<FullStudent> FilterStudentsBy(this IQueryable<FullStudent> students, StudentFilterByOptions filterByOptions, string filterValue)
+        public static IEnumerable<Student> FilterStudentsBy(this IEnumerable<Student> students, StudentFilterByOptions filterByOptions, string filterValue)
         {
             switch (filterByOptions)
             {
                 case StudentFilterByOptions.NoFilter:
                     return students;
                 case StudentFilterByOptions.BySurname:
-                    return students.Where(s => s.LastName.StartsWith(filterValue));
+                    return students.Where(s => s.PersonalData.LastName.StartsWith(filterValue));
                 case StudentFilterByOptions.ByAge:
                     var canParse = int.TryParse(filterValue, out int result);
                     if (!canParse) return students;
-                    return students.Where(s => DateTime.Now.Year - s.Birthday.Year > result);
+                    return students.Where(s => DateTime.Now.Year - s.PersonalData.Birthday.Year > result);
                 case StudentFilterByOptions.ByIndex:
                     return students.Where(s => s.Index.StartsWith(filterValue));
                 default:

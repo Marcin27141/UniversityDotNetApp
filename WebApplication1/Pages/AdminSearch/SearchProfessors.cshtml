@@ -10,7 +10,7 @@
         <label asp-for="OrderOption" class="control-label"></label>
         <select asp-for="OrderOption"
                 class="form-control"
-                asp-items="Html.GetEnumSelectList<Queries.ProfessorOrderByOptions>()">
+                asp-items="Html.GetEnumSelectList<Extensions.ProfessorOrderByOptions>()">
         </select>
         <span asp-validation-for="OrderOption" class="text-danger"></span>
     </div>
@@ -21,7 +21,7 @@
         <label asp-for="FilterOption" class="control-label"></label>
         <select asp-for="FilterOption"
                 class="form-control"
-                asp-items="Html.GetEnumSelectList<Queries.ProfessorFilterByOptions>()">
+                asp-items="Html.GetEnumSelectList<Extensions.ProfessorFilterByOptions>()">
         </select>
         <span asp-validation-for="FilterOption" class="text-danger"></span>
     </div>

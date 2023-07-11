@@ -34,7 +34,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
             return default;
         }
 
-        public async Task<List<T>> GetAll()
+        public async Task<List<T>> GetAllAsync()
         {
             string byAllPath = GetPathForGetAll();
             var response = await _httpClient.GetAsync(byAllPath);
@@ -47,7 +47,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
             return Enumerable.Empty<T>().ToList();
         }
 
-        public async virtual Task<T> GetByUser(string userId)
+        public async virtual Task<T> GetByUserAsync(string userId)
         {
             string getByUserPath = GetPathForGetByUser(userId);
             var response = await _httpClient.GetAsync(getByUserPath);

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using WebApplication1.Contracts;
+using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages.ShowResults
 {
@@ -13,7 +14,7 @@ namespace WebApplication1.Pages.ShowResults
     public class ShowPeopleModel : PageModel
     {
         private readonly IPeopleRepository _peopleRepository;
-        public List<KeyTypePersonalData> PeopleToShow { get; set; }
+        public List<Person> PeopleToShow { get; set; }
 
         public ShowPeopleModel(IPeopleRepository peopleRepository)
         {
@@ -28,8 +29,8 @@ namespace WebApplication1.Pages.ShowResults
             {
                 var entry = TempData["PeopleList"];
                 if (entry == null)
-                    PeopleToShow = new List<KeyTypePersonalData>();
-                else PeopleToShow = JsonConvert.DeserializeObject<List<KeyTypePersonalData>>(entry.ToString());
+                    PeopleToShow = new List<Person>();
+                else PeopleToShow = JsonConvert.DeserializeObject<List<Person>>(entry.ToString());
             }
             else PeopleToShow = _peopleRepository.GetAllPersonalData();
         }

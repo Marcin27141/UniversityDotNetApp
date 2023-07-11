@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
@@ -7,6 +6,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ApiDtoLibrary.Person;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using WebApplication1.DataBase.Entities;
+using WebApplication1.Contracts;
+using WebApplication1.Services;
 
 namespace WebApplication1.Areas.Identity.Pages.Account
 {
@@ -24,21 +25,19 @@ namespace WebApplication1.Areas.Identity.Pages.Account
     {
         private const string PROFESSOR_MAIL_PATTERN = @"^[\w\.]+@edu.com";
         private const string STUDENT_MAIL_PATTERN = @"^[\w\.]+@student.edu.com";
-        private const string ADMIN_MAIL_PATTERN = @"^[\w\.]+@admin.edu.com";
+        private const string ADMIN_MAIL_PATTERN = @"^[\w\.]+@admin.com";
 
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAuthenticationRepository _authenticationRespository;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            IAuthenticationRepository authenticationRespository,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender
+            )
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _authenticationRespository = authenticationRespository;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -78,38 +77,38 @@ namespace WebApplication1.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _authenticationRespository.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _authenticationRespository.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Password = Input.Password };
+                var result = await _authenticationRespository.CreateUserAsync(user);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
                     //Name claim
                     var nameClaim = new Claim("FullName", Input.Name);
-                    await _userManager.AddClaimAsync(user, nameClaim);
+                    await _authenticationRespository.AddClaimAsync(user, nameClaim);
 
                     //IsAdmin claim
                     if (Input.HasAdminRights)
                     {
                         var adminClaim = new Claim("IsAdmin", Input.HasAdminRights.ToString());
-                        await _userManager.AddClaimAsync(user, adminClaim);
+                        await _authenticationRespository.AddClaimAsync(user, adminClaim);
                     }
 
                     //Status claim {Admin/Student/Professor}
                     var statusClaim = GetStatusString();
                     if (statusClaim != null)
-                        await _userManager.AddClaimAsync(user, new Claim("Status", statusClaim));
+                        await _authenticationRespository.AddClaimAsync(user, new Claim("Status", statusClaim));
                     
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var code = await _authenticationRespository.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
@@ -120,13 +119,13 @@ namespace WebApplication1.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    if (_authenticationRespository.ConfirmedAccountRequired())
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _authenticationRespository.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -142,12 +141,12 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
         private string GetStatusString()
         {
-            string status = Input.HasAdminRights ? "Admin" : null;
+            string status = Input.HasAdminRights ? nameof(PersonStatus.Admin) : null;
             if (string.IsNullOrEmpty(status)) {
                 if (Regex.IsMatch(Input.Email, STUDENT_MAIL_PATTERN))
-                    status = "Student";
+                    status = nameof(PersonStatus.Student);
                 else if (Regex.IsMatch(Input.Email, PROFESSOR_MAIL_PATTERN))
-                    status = "Professor";
+                    status = nameof(PersonStatus.Professor);
             }
             return status;
         }

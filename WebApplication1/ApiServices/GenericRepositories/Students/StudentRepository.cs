@@ -1,13 +1,11 @@
-﻿using ApiDtoLibrary.Students;
-using AutoMapper;
+﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Net.Http.Json;
+using System.Linq;
 using System.Threading.Tasks;
 using UniversityApi.API.Contracts;
 using WebApplication1.Contracts;
-using WebApplication1.Queries;
-using WebApplication1.Services;
+using WebApplication1.Extensions;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.ApiServices.GenericRepositories.Students
@@ -37,7 +35,11 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
 
         public List<Student> SortFilterStudents(StudentOrderByOptions orderByOption, StudentFilterByOptions filterByOption, string filter)
         {
-            throw new NotImplementedException();
+            var allStudents = GetAllAsync().Result;
+            return allStudents
+                .OrderStudentsBy(orderByOption)
+                .FilterStudentsBy(filterByOption, filter)
+                .ToList();
         }
 
         public Task<Guid> UpdateStudentWithCoursesAsync(Student updatedStudent, IEnumerable<Guid> coursesIds)

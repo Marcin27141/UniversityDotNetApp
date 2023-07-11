@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using WebApplication1.Services.PeopleOps;
 
 namespace WebApplication1.Services.People
 {

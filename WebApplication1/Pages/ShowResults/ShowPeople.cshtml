@@ -18,19 +18,19 @@
 
 
 
-    @foreach (var triplet in Model.PeopleToShow)
+    @foreach (var person in Model.PeopleToShow)
     {
         <tr>
             <td>
-                @triplet.PersonalData.ToString()
+                @person.PersonalData.ToString()
             </td>
             <td>
-                @triplet.Type
+                @person.PersonStatus
             </td>
             <td>
-                @Html.CreateEditLinkForPerson(triplet.Type, triplet.Key) |
-                @Html.CreateDetailsLinkForPerson(triplet.Type, triplet.Key) |
-                <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-personType="@((int)triplet.Type)" asp-route-id="@triplet.Key">Delete</a>
+                @Html.CreateEditLinkForPerson(person.PersonStatus, person.EntityPersonID) |
+                @Html.CreateDetailsLinkForPerson(person.PersonStatus, person.EntityPersonID) |
+                <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-personType="@((int)person.PersonStatus)" asp-route-id="@person.Key">Delete</a>
             </td>
         </tr>
     }

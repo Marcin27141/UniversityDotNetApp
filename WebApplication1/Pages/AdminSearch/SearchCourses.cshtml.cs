@@ -1,16 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
-using WebApplication1.Queries;
+using System.Linq;
+using UniversityApi.API.Contracts;
+using WebApplication1.Extensions;
 using WebApplication1.Services;
-using WebApplication1.Services.CourseOps;
 
 
 namespace WebApplication1.Pages.AdminSearch
 {
     public class SearchCoursesModel : PageModel
     {
-        private readonly IReadCourseOp _readCourseOp;
+        private readonly ICoursesRepository _coursesRespository;
 
         [BindProperty]
         public CourseOrderByOptions OrderOption { get; set; }
@@ -22,10 +23,10 @@ namespace WebApplication1.Pages.AdminSearch
         public List<Course> CoursesToShow { get; set; }
 
 
-        public SearchCoursesModel(IReadCourseOp readCourseOp)
+        public SearchCoursesModel(ICoursesRepository coursesRespository)
         {
-            _readCourseOp = readCourseOp;
-            CoursesToShow = _readCourseOp.GetAllCourses();
+            _coursesRespository = coursesRespository;
+            CoursesToShow = _coursesRespository.GetAllAsync().Result;
         }
 
         public void OnGet()
@@ -36,7 +37,7 @@ namespace WebApplication1.Pages.AdminSearch
         {
             if (!ModelState.IsValid)
                 return Page();
-            CoursesToShow = _readCourseOp.SortFilterCourses(OrderOption, FilterOption, Filter);
+            CoursesToShow = _coursesRespository.SortFilterCourses(OrderOption, FilterOption, Filter);
             return Page();
         }
     }

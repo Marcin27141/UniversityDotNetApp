@@ -12,7 +12,6 @@ namespace UniversityApi.API.DataBase.Configuration
             builder.HasData(
                 new EntityCourse
                 {
-                    EntityCourseID = 1,
                     CourseCode = "C01",
                     Name = "Databases",
                     ECTS = 2,
@@ -21,7 +20,6 @@ namespace UniversityApi.API.DataBase.Configuration
                 },
                 new EntityCourse
                 {
-                    EntityCourseID = 2,
                     CourseCode = "C02",
                     Name = "Algorithms",
                     ECTS = 3,
@@ -30,7 +28,6 @@ namespace UniversityApi.API.DataBase.Configuration
                 },
                 new EntityCourse
                 {
-                    EntityCourseID = 3,
                     CourseCode = "C03",
                     Name = "Computer science",
                     ECTS = 4,

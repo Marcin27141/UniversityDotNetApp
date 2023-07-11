@@ -4,15 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebApplication1.DataBase;
-using WebApplication1.DataBase.Entities;
 using WebApplication1.Policies.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication1.Policies.Handlers;
-using WebApplication1.Services.ProfessorOps;
-using WebApplication1.ApiServices.ApiProfessorOps;
-using AutoMapper;
 using WebApplication1.Configurations;
+using UniversityApi.API.Contracts;
+using WebApplication1.ApiServices.GenericRepositories.Professors;
+using WebApplication1.ApiServices.GenericRepositories.Courses;
+using WebApplication1.ApiServices.GenericRepositories.Students;
+using WebApplication1.Contracts;
+using WebApplication1.ApiServices;
+using WebApplication1.Services;
+using WebApplication1.ApiServices.GenericRepositories;
+using WebApplication1.Services.People;
+using ApiDtoLibrary.Students;
+using NuGet.Protocol.Core.Types;
+using Scrutor;
 
 namespace WebApplication1
 {
@@ -29,10 +36,6 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
-
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddRazorPages();
 
@@ -55,13 +58,39 @@ namespace WebApplication1
 
             //custom services
 
-            services.Scan(scan => scan
-                .FromAssemblyOf<Startup>()
-                .AddClasses(classes => classes.Where(c => c.Namespace.Contains("Services") && !c.Namespace.EndsWith("People")))
-                .AsMatchingInterface()
-                .WithScopedLifetime());
+            //services.Scan(scan => scan
+            //    .FromAssemblyOf<Startup>()
+            //    .AddClasses(classes => classes.Where(c => c.Namespace.Contains("Services") && !c.Namespace.EndsWith("People")))
+            //    .AsMatchingInterface()
+            //    .WithScopedLifetime());
 
-            services.AddScoped<IReadProfessorOp, ApiReadProfessorOp>();
+            services.Scan(scan =>
+            {
+                scan.FromAssemblyOf<Startup>()
+                    .AddClasses(classes => classes.Where(c => c.Namespace.Contains("ApiServices")))
+                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime();
+            });
+
+            //services.AddScoped(typeof(IGenericGetRepository<>), typeof(GenericGetRepository<,>));
+            //services.AddScoped(typeof(IGenericPostRepository<>), typeof(GenericPostRepository<,>));
+            //services.AddScoped(typeof(IGenericPutRepository<>), typeof(GenericPutRepository<,>));
+            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            //services.AddScoped(IGenericGetRepository<Student>, GenericGetRepository<Student,GetStudent>));
+            //services.AddScoped(typeof(IGenericPostRepository<,>), typeof(GenericPostRepository<,>));
+            //services.AddScoped(typeof(IGenericPutRepository<,>), typeof(GenericPutRepository<,>));
+            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            
+
+            //services.AddScoped<IProfessorsRepository, ProfessorRepository>();
+            //services.AddScoped<ICoursesRepository, CourseRepository>();
+            //services.AddScoped<IStudentsRepository, StudentRepository>();
+            //services.AddScoped<IPeopleRepository, PeopleRepository>();
+            //services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+            //services.AddScoped<IUserRepository, UserRepository>();
             services.AddAutoMapper(typeof(AutomapperConfiguration));
         }
 

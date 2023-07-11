@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System;
 using System.Text;
 using UniversityApi.API.Configurations;
 using UniversityApi.API.Contracts;
@@ -27,6 +28,10 @@ builder.Services.AddIdentityCore<ApiUser>()
     .AddEntityFrameworkStores<UniversityApiDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<UserManager<ApiUser>>();
+builder.Services.AddScoped<SignInManager<ApiUser>>();
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -45,10 +50,13 @@ builder.Host.UseSerilog((ctx,lc) => lc.WriteTo.Console().ReadFrom.Configuration(
 builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IPeopleRespository, PeopleRepository>();
 builder.Services.AddScoped<IProfessorsRepository, ProfessorsRepository>();
 builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
 builder.Services.AddScoped<ICoursesRepository, CoursesRepository>();
 
+builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+builder.Services.AddScoped<IUsersRepository, UserRepository>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 builder.Services.AddAuthentication(options =>

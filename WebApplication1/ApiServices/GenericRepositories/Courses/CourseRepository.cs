@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UniversityApi.API.Contracts;
 using WebApplication1.Contracts;
-using WebApplication1.Queries;
+using WebApplication1.Extensions;
 using WebApplication1.Services;
 
 namespace WebApplication1.ApiServices.GenericRepositories.Courses
@@ -27,7 +28,11 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
 
         public List<Course> SortFilterCourses(CourseOrderByOptions orderByOption, CourseFilterByOptions filterByOption, string filter)
         {
-            throw new System.NotImplementedException();
+            var allCourses = GetAllAsync().Result;
+            return allCourses
+                .OrderCoursesBy(orderByOption)
+                .FilterCoursesBy(filterByOption, filter)
+                .ToList();
         }
 
         protected override string GetPathForDelete(object entityId) => $"{_apiPath}/Courses/{entityId}";

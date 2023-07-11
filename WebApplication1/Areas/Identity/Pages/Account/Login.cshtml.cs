@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
+using WebApplication1.Contracts;
+using WebApplication1.Services;
 
 namespace WebApplication1.Areas.Identity.Pages.Account
 {
@@ -22,16 +24,13 @@ namespace WebApplication1.Areas.Identity.Pages.Account
         private const string RETURN_URL_STUDENT = "/AfterLogin/Student";
         private const string RETURN_URL_ADMIN = "/AfterLogin/Admin";
 
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAuthenticationRepository _authenticationRepository;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, 
-            ILogger<LoginModel> logger,
-            UserManager<ApplicationUser> userManager)
+        public LoginModel(ILogger<LoginModel> logger,
+            IAuthenticationRepository authenticationRepository)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _authenticationRepository = authenticationRepository;
             _logger = logger;
         }
 
@@ -71,7 +70,7 @@ namespace WebApplication1.Areas.Identity.Pages.Account
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _authenticationRepository.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
         }
@@ -80,21 +79,17 @@ namespace WebApplication1.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _authenticationRepository.GetExternalAuthenticationSchemesAsync()).ToList();
         
             if (ModelState.IsValid)
             {
                 //TODO separate login pages for students and workers?
-                if (Regex.IsMatch(Input.Email, PROFESSOR_MAIL_PATTERN))
-                    returnUrl = RETURN_URL_PROFESSOR;
-                else if (Regex.IsMatch(Input.Email, STUDENT_MAIL_PATTERN))
-                    returnUrl = RETURN_URL_STUDENT;
-                else if (Regex.IsMatch(Input.Email, ADMIN_MAIL_PATTERN))
-                    returnUrl = RETURN_URL_ADMIN;
+                returnUrl = GetReturnUrl();
 
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = new ApplicationUser { Email = Input.Email, Password = Input.Password };
+                var result = await _authenticationRepository.PasswordSignInAsync(user, Input.RememberMe, false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -118,6 +113,17 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private string GetReturnUrl()
+        {
+            if (Regex.IsMatch(Input.Email, PROFESSOR_MAIL_PATTERN))
+                return RETURN_URL_PROFESSOR;
+            else if (Regex.IsMatch(Input.Email, STUDENT_MAIL_PATTERN))
+                return RETURN_URL_STUDENT;
+            else if (Regex.IsMatch(Input.Email, ADMIN_MAIL_PATTERN))
+                return RETURN_URL_ADMIN;
+            return null;
         }
     }
 }

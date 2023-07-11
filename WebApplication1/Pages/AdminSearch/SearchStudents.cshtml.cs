@@ -1,17 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using WebApplication1.Queries;
+using UniversityApi.API.Contracts;
+using WebApplication1.Extensions;
 using WebApplication1.Services.People;
-using WebApplication1.Services.StudentOps;
 
 namespace WebApplication1.Pages.AdminSearch
 {
     public class SearchStudentsModel : PageModel
     {
-        private readonly IReadStudentOp _readStudentOp;
+        private readonly IStudentsRepository _studentsRepository;
 
         [BindProperty]
         public StudentOrderByOptions OrderOption { get; set; }
@@ -23,10 +21,10 @@ namespace WebApplication1.Pages.AdminSearch
         public List<Student> StudentsToShow { get; set; }
 
 
-		public SearchStudentsModel(IReadStudentOp readStudentOp)
+		public SearchStudentsModel(IStudentsRepository studentsRepository)
         {
-            _readStudentOp = readStudentOp;
-            StudentsToShow = _readStudentOp.GetAllStudents();
+            _studentsRepository = studentsRepository;
+            StudentsToShow = _studentsRepository.GetAllAsync().Result;
         }
 
         public void OnGet()
@@ -37,7 +35,7 @@ namespace WebApplication1.Pages.AdminSearch
         {
 			if (!ModelState.IsValid)
 				return Page();
-			StudentsToShow = _readStudentOp.SortFilterStudents(OrderOption, FilterOption, Filter);
+			StudentsToShow = _studentsRepository.SortFilterStudents(OrderOption, FilterOption, Filter);
 			return Page();
 		}
     }

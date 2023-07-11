@@ -1,9 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<DataBase.Entities.ApplicationUser> SignInManager
-@inject UserManager<DataBase.Entities.ApplicationUser> UserManager
+@inject WebApplication1.Contracts.IUserRepository _userRepository
 
 <ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
+    @if (_userRepository.IsSignedIn(User))
     {
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity"

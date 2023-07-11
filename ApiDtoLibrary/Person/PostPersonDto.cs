@@ -4,6 +4,8 @@ namespace ApiDtoLibrary.Person
 {
     public class PostPersonDto
     {
+        public PersonStatus PersonStatus { get; set; }
+
         [Required]
         [Display(Name = "First name")]
         public string FirstName { get; set; }

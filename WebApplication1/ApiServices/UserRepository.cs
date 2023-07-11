@@ -3,6 +3,7 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
@@ -39,6 +40,19 @@ namespace WebApplication1.ApiServices
                 return result;
             }
             return default;
+        }
+
+        public bool IsSignedIn(ClaimsPrincipal user)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier);
+            string signInCheckPath = $"{_apiPath}/SignInCheck/{userId}";
+            var response = _httpClient.GetAsync(signInCheckPath).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var getResult = response.Content.ReadAsStringAsync().Result;
+                return bool.Parse(getResult);
+            }
+            return false;
         }
     }
 }

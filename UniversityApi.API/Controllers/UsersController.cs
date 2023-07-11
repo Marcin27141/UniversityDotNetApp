@@ -1,6 +1,7 @@
 ﻿using ApiDtoLibrary.Users;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using UniversityApi.API.Contracts;
 
 namespace UniversityApi.API.Controllers
@@ -34,6 +35,13 @@ namespace UniversityApi.API.Controllers
             var user = await _repository.GetUserAsync(id);
             var output = _mapper.Map<ApiUserDto>(user);
             return Ok(output);
+        }
+
+        // GET: api/Users/SignInCheck
+        [HttpGet("SignInCheck/{id}")]
+        public ActionResult<ApiUserDto> CheckIfUserIsSigned(string id)
+        {
+            return Ok(_repository.IsSignedIn(id));
         }
     }
 }

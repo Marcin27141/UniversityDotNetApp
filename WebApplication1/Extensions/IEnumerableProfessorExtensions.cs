@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System;
-using ApiDtoLibrary.Professors;
+using System.Collections.Generic;
+using WebApplication1.Services.People;
 
-namespace WebApplication1.Queries
+namespace WebApplication1.Extensions
 {
     public enum ProfessorOrderByOptions
     {
@@ -23,20 +24,20 @@ namespace WebApplication1.Queries
         [Display(Name = "By Id Code...")] ByIdCode,
         [Display(Name = "By Salary...")] BySalary
     }
-    public static class IQueryableProfessorExtensions
+    public static class IEnumerableProfessorExtensions
     {
-        public static IQueryable<FullProfessor> OrderProfessorsBy(this IQueryable<FullProfessor> professors, ProfessorOrderByOptions orderByOptions)
+        public static IEnumerable<Professor> OrderProfessorsBy(this IEnumerable<Professor> professors, ProfessorOrderByOptions orderByOptions)
         {
             switch (orderByOptions)
             {
                 case ProfessorOrderByOptions.SimpleOrder:
                     return professors.OrderBy(p => p.EntityPersonID);
                 case ProfessorOrderByOptions.ByName:
-                    return professors.OrderBy(p => p.FirstName);
+                    return professors.OrderBy(p => p.PersonalData.FirstName);
                 case ProfessorOrderByOptions.BySurname:
-                    return professors.OrderBy(p => p.LastName);
+                    return professors.OrderBy(p => p.PersonalData.LastName);
                 case ProfessorOrderByOptions.ByAge:
-                    return professors.OrderBy(p => p.Birthday);
+                    return professors.OrderBy(p => p.PersonalData.Birthday);
                 case ProfessorOrderByOptions.ByIdCode:
                     return professors.OrderBy(p => p.IdCode);
                 case ProfessorOrderByOptions.BySalary:
@@ -46,7 +47,7 @@ namespace WebApplication1.Queries
             }
         }
 
-        public static IQueryable<FullProfessor> FilterProfessorsBy(this IQueryable<FullProfessor> professors, ProfessorFilterByOptions filterByOptions, string filterValue)
+        public static IEnumerable<Professor> FilterProfessorsBy(this IEnumerable<Professor> professors, ProfessorFilterByOptions filterByOptions, string filterValue)
         {
             bool canParse;
 
@@ -55,11 +56,11 @@ namespace WebApplication1.Queries
                 case ProfessorFilterByOptions.NoFilter:
                     return professors;
                 case ProfessorFilterByOptions.BySurname:
-                    return professors.Where(p => p.LastName.StartsWith(filterValue));
+                    return professors.Where(p => p.PersonalData.LastName.StartsWith(filterValue));
                 case ProfessorFilterByOptions.ByAge:
                     canParse = int.TryParse(filterValue, out int parseAge);
                     if (!canParse) return professors;
-                    return professors.Where(p => DateTime.Now.Year - p.Birthday.Year > parseAge);
+                    return professors.Where(p => DateTime.Now.Year - p.PersonalData.Birthday.Year > parseAge);
                 case ProfessorFilterByOptions.ByIdCode:
                     return professors.Where(p => p.IdCode.StartsWith(filterValue));
                 case ProfessorFilterByOptions.BySalary:

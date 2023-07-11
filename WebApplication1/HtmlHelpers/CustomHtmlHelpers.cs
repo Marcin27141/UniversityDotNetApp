@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using ApiDtoLibrary.Person;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using WebApplication1.Services.PeopleOps;
 
 namespace WebApplication1.HtmlHelpers
 {
     public static class CustomHtmlHelpers
     {
-        public static IHtmlContent CreateEditLinkForPerson(this IHtmlHelper helper, PersonType personType, string key)
+        public static IHtmlContent CreateEditLinkForPerson(this IHtmlHelper helper, PersonStatus personStatus, Guid id)
         {
-            string output = personType switch
+            string output = personStatus switch
             {
-                PersonType.Student => String.Format($"<a href=\"/EditElement/EditPerson/EditStudent/{key}\">Edit</a>"),
-                PersonType.Professor => String.Format($"<a href=\"/EditElement/EditPerson/EditProfessor/{key}\">Edit</a>"),
+                PersonStatus.Student => String.Format($"<a href=\"/EditElement/EditPerson/EditStudent/{id}\">Edit</a>"),
+                PersonStatus.Professor => String.Format($"<a href=\"/EditElement/EditPerson/EditProfessor/{id}\">Edit</a>"),
                 _ => null
             };
             return new HtmlString(output);
@@ -29,12 +29,12 @@ namespace WebApplication1.HtmlHelpers
             return new HtmlString(output);
         }*/
 
-        public static IHtmlContent CreateDetailsLinkForPerson(this IHtmlHelper helper, PersonType personType, string key)
+        public static IHtmlContent CreateDetailsLinkForPerson(this IHtmlHelper helper, PersonStatus personStatus, Guid id)
         {
-            string output = personType switch
+            string output = personStatus switch
             {
-                PersonType.Student => String.Format($"<a href=\"/ShowResults/ShowStudent/{key}\">Details</a>"),
-                PersonType.Professor => String.Format($"<a href=\"/ShowResults/ShowProfessor/{key}\">Details</a>"),
+                PersonStatus.Student => String.Format($"<a href=\"/ShowResults/ShowStudent/{id}\">Details</a>"),
+                PersonStatus.Professor => String.Format($"<a href=\"/ShowResults/ShowProfessor/{id}\">Details</a>"),
                 _ => null
             };
             return new HtmlString(output);
