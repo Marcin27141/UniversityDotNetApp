@@ -12,6 +12,7 @@ namespace WebApplication1.Contracts
         Task<IEnumerable<AuthenticationScheme>> GetExternalAuthenticationSchemesAsync();
         Task<IdentityResult> CreateUserAsync(ApplicationUser user);
         Task<IdentityResult> AddClaimAsync(ApplicationUser user, Claim claim);
+        Task<string> GetIdByUsernameAsync(string username);
         Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
         Task<SignInResult> PasswordSignInAsync(ApplicationUser user, bool rememberMe, bool lockoutOnFailure);
         Task SignInAsync(ApplicationUser user, bool isPersistent);

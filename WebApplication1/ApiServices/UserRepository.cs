@@ -45,6 +45,7 @@ namespace WebApplication1.ApiServices
         public bool IsSignedIn(ClaimsPrincipal user)
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier);
+            if (userId == null) return false;
             string signInCheckPath = $"{_apiPath}/SignInCheck/{userId}";
             var response = _httpClient.GetAsync(signInCheckPath).Result;
             if (response.IsSuccessStatusCode)

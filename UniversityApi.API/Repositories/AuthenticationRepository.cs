@@ -45,9 +45,16 @@ namespace UniversityApi.API.Repositories
             return _signInManager.GetExternalAuthenticationSchemesAsync();
         }
 
-        public Task<SignInResult> PasswordSignInAsync(LoginDto loginDto, bool rememberMe, bool lockoutOnFailure)
+        public async Task<string> GetUserIdByUsernameAsync(string username)
         {
-            return _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, rememberMe, lockoutOnFailure);
+            var user = await _userManager.FindByNameAsync(username);
+            return user.Id;
+        }
+
+        public async Task<SignInResult> PasswordSignInAsync(LoginDto loginDto, bool rememberMe, bool lockoutOnFailure)
+        {
+            var result = await _signInManager.PasswordSignInAsync("admin@admin.com", "P@ssw0rd", false, false);
+            return result;
         }
 
         public async Task SignInAsync(string userId, bool isPersistent)

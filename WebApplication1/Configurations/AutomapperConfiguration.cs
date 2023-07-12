@@ -35,7 +35,8 @@ namespace WebApplication1.Configurations
             MapPersonalData(CreateMap<PutStudent, Student>());
 
             //Models/ApplicationUser
-            CreateMap<ApiUserDto, ApplicationUser>();
+            CreateMap<ApiUserDto, ApplicationUser>().ReverseMap();
+            CreateMap<LoginDto, ApplicationUser>().ReverseMap();
         }
 
         private void MapPersonalData<S, T>(IMappingExpression<S, T> mapping)

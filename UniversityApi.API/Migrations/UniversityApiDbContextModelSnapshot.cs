@@ -24,11 +24,11 @@ namespace UniversityApi.API.Migrations
 
             modelBuilder.Entity("EntityCourseEntityStudent", b =>
                 {
-                    b.Property<int>("CoursesEntityCourseID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CoursesEntityCourseID")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("StudentsEntityPersonID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("StudentsEntityPersonID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CoursesEntityCourseID", "StudentsEntityPersonID");
 
@@ -66,15 +66,15 @@ namespace UniversityApi.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "46c83bc6-1426-49d9-be8f-6083002fa382",
-                            ConcurrencyStamp = "1c0af613-1848-49f7-885d-38bf4ea8fbb7",
+                            Id = "9c30542b-d69e-47e2-84cd-8ee162fe4901",
+                            ConcurrencyStamp = "81b20b20-8eb3-4e0f-9ec9-653dfbeb4543",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "32ff77e4-efd4-4e86-a413-437b11057187",
-                            ConcurrencyStamp = "027dfbf7-1686-43b7-a6bb-e65fa0ee8641",
+                            Id = "ba022248-dd76-4dc7-a7a6-15df17c7bd55",
+                            ConcurrencyStamp = "f6fa6dc1-fd55-4be9-80c0-37d73904bc37",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -188,11 +188,9 @@ namespace UniversityApi.API.Migrations
 
             modelBuilder.Entity("UniversityApi.API.DataBase.Entities.EntityCourse", b =>
                 {
-                    b.Property<int>("EntityCourseID")
+                    b.Property<Guid>("EntityCourseID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EntityCourseID"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CourseCode")
                         .HasColumnType("nvarchar(max)");
@@ -206,6 +204,9 @@ namespace UniversityApi.API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ProfessorEntityPersonID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int?>("ProfessorID")
                         .HasColumnType("int");
 
@@ -214,14 +215,14 @@ namespace UniversityApi.API.Migrations
 
                     b.HasKey("EntityCourseID");
 
-                    b.HasIndex("ProfessorID");
+                    b.HasIndex("ProfessorEntityPersonID");
 
                     b.ToTable("Courses");
 
                     b.HasData(
                         new
                         {
-                            EntityCourseID = 1,
+                            EntityCourseID = new Guid("78c52e9b-802f-47d9-9ff5-2f33eaeb034d"),
                             CourseCode = "C01",
                             ECTS = 2,
                             IsFinishedWithExam = false,
@@ -231,7 +232,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityCourseID = 2,
+                            EntityCourseID = new Guid("e013432a-33de-4735-8d9e-70992ba3acb7"),
                             CourseCode = "C02",
                             ECTS = 3,
                             IsFinishedWithExam = true,
@@ -241,7 +242,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityCourseID = 3,
+                            EntityCourseID = new Guid("bedbac50-c312-4c09-98ee-f18f5372b646"),
                             CourseCode = "C03",
                             ECTS = 4,
                             IsFinishedWithExam = true,
@@ -253,11 +254,9 @@ namespace UniversityApi.API.Migrations
 
             modelBuilder.Entity("UniversityApi.API.DataBase.Entities.EntityPerson", b =>
                 {
-                    b.Property<int>("EntityPersonID")
+                    b.Property<Guid>("EntityPersonID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EntityPersonID"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
@@ -376,7 +375,7 @@ namespace UniversityApi.API.Migrations
                     b.HasData(
                         new
                         {
-                            EntityPersonID = 4,
+                            EntityPersonID = new Guid("3498a1e1-489b-4296-ad10-7c41ba1f1f9f"),
                             Birthday = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Danuta",
                             LastName = "Dobrzycka",
@@ -390,7 +389,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityPersonID = 5,
+                            EntityPersonID = new Guid("f0589de7-392f-4a9e-982c-c59f665ff419"),
                             Birthday = new DateTime(1999, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Eustachy",
                             LastName = "Epoletnik",
@@ -404,7 +403,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityPersonID = 6,
+                            EntityPersonID = new Guid("add84880-1570-4fe8-b305-c1e51d9e40a2"),
                             Birthday = new DateTime(1998, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Filomena",
                             LastName = "Fomicz",
@@ -433,7 +432,7 @@ namespace UniversityApi.API.Migrations
                     b.HasData(
                         new
                         {
-                            EntityPersonID = 1,
+                            EntityPersonID = new Guid("fb86a22d-d501-4c01-8469-d9e165988e00"),
                             Birthday = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Adam",
                             LastName = "Adamczyk",
@@ -445,7 +444,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityPersonID = 2,
+                            EntityPersonID = new Guid("bf84744e-4767-4bf3-a5d4-1403fc0f06fa"),
                             Birthday = new DateTime(1999, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Bartosz",
                             LastName = "Bednarek",
@@ -457,7 +456,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityPersonID = 3,
+                            EntityPersonID = new Guid("a71babb0-4fbd-467a-a18e-1aa9fe91971e"),
                             Birthday = new DateTime(1998, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Celina",
                             LastName = "Czarna",
@@ -539,7 +538,7 @@ namespace UniversityApi.API.Migrations
                 {
                     b.HasOne("UniversityApi.API.DataBase.Entities.EntityProfessor", "Professor")
                         .WithMany()
-                        .HasForeignKey("ProfessorID");
+                        .HasForeignKey("ProfessorEntityPersonID");
 
                     b.Navigation("Professor");
                 });

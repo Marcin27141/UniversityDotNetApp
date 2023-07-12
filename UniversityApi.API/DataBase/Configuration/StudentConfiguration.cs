@@ -12,6 +12,7 @@ namespace UniversityApi.API.DataBase.Configuration
             builder.HasData(
                 new EntityStudent
                 {
+                    EntityPersonID = Guid.NewGuid(),
                     FirstName = "Adam",
                     LastName = "Adamczyk",
                     PESEL = "01111111111",
@@ -22,6 +23,7 @@ namespace UniversityApi.API.DataBase.Configuration
                 },
                 new EntityStudent
                 {
+                    EntityPersonID = Guid.NewGuid(),
                     FirstName = "Bartosz",
                     LastName = "Bednarek",
                     PESEL = "0222222222",
@@ -32,6 +34,7 @@ namespace UniversityApi.API.DataBase.Configuration
                 },
                 new EntityStudent
                 {
+                    EntityPersonID = Guid.NewGuid(),
                     FirstName = "Celina",
                     LastName = "Czarna",
                     PESEL = "03333333333",

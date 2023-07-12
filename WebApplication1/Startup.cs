@@ -8,17 +8,7 @@ using WebApplication1.Policies.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication1.Policies.Handlers;
 using WebApplication1.Configurations;
-using UniversityApi.API.Contracts;
-using WebApplication1.ApiServices.GenericRepositories.Professors;
-using WebApplication1.ApiServices.GenericRepositories.Courses;
-using WebApplication1.ApiServices.GenericRepositories.Students;
-using WebApplication1.Contracts;
-using WebApplication1.ApiServices;
-using WebApplication1.Services;
-using WebApplication1.ApiServices.GenericRepositories;
-using WebApplication1.Services.People;
-using ApiDtoLibrary.Students;
-using NuGet.Protocol.Core.Types;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Scrutor;
 
 namespace WebApplication1

@@ -29,17 +29,14 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
         private readonly IAuthenticationRepository _authenticationRespository;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             IAuthenticationRepository authenticationRespository,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender
+            ILogger<RegisterModel> logger
             )
         {
             _authenticationRespository = authenticationRespository;
             _logger = logger;
-            _emailSender = emailSender;
         }
 
         [BindProperty]
@@ -52,7 +49,10 @@ namespace WebApplication1.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            public string Name { get; set; }
+            public string FirstName { get; set; }
+
+            [Required]
+            public string LastName { get; set; }
 
             [Display(Name = "Is Admin?")]
             public bool HasAdminRights { get; set; }
@@ -86,14 +86,21 @@ namespace WebApplication1.Areas.Identity.Pages.Account
             ExternalLogins = (await _authenticationRespository.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Password = Input.Password };
+                var user = new ApplicationUser {
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Password = Input.Password
+                };
                 var result = await _authenticationRespository.CreateUserAsync(user);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    user.Id = await _authenticationRespository.GetIdByUsernameAsync(user.UserName);
 
                     //Name claim
-                    var nameClaim = new Claim("FullName", Input.Name);
+                    var nameClaim = new Claim("Name", Input.FirstName);
                     await _authenticationRespository.AddClaimAsync(user, nameClaim);
 
                     //IsAdmin claim
@@ -115,9 +122,6 @@ namespace WebApplication1.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_authenticationRespository.ConfirmedAccountRequired())
                     {

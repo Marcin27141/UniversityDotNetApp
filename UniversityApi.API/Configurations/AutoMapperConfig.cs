@@ -44,6 +44,7 @@ namespace UniversityApi.API.Configurations
 
             //Models/Users
             CreateMap<ApiUserDto, ApiUser>().ReverseMap();
+            CreateMap<LoginDto, ApiUser>().ReverseMap();
         }
     }
 }

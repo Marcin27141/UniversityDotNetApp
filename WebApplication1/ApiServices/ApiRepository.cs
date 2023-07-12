@@ -18,7 +18,8 @@ namespace WebApplication1.ApiServices
 
         protected HttpContent GetSerializedContent(object postEntity)
         {
-            return new StringContent(JsonConvert.SerializeObject(postEntity), Encoding.UTF8, "application/json");
+            var serialized = JsonConvert.SerializeObject(postEntity);
+            return new StringContent(serialized, Encoding.UTF8, "application/json");
         }
     }
 }

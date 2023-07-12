@@ -13,6 +13,7 @@ namespace UniversityApi.API.Contracts
         bool ConfirmedAccountRequired();
 
         Task<IdentityResult> CreateUserAsync(ApiUser user, string password);
+        Task<string> GetUserIdByUsernameAsync(string username);
 
         Task<string> GenerateEmailConfirmationTokenAsync(string userId);
 

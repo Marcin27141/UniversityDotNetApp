@@ -1,9 +1,12 @@
 ﻿using ApiDtoLibrary.Users;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using System.Security.Claims;
+using System.Text.Json;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase.Identity;
+using UniversityApi.JsonConverters;
 
 namespace UniversityApi.API.Controllers
 {
@@ -31,10 +34,11 @@ namespace UniversityApi.API.Controllers
 
         // POST: api/Authentication/PasswordSignIn
         [HttpPost]
-        [Route("PasswordSignIn/rememberMe={rememberMe}/lockoutOnFailure={lockoutOnFailure}")]
-        public async Task<ActionResult> PasswordSignInAsync(LoginDto loginDto, bool rememberMe, bool lockoutOnFailure)
+        //[Route("PasswordSignIn/rememberMe={rememberMe}/lockoutOnFailure={lockoutOnFailure}")]
+        [Route("PasswordSignIn")]
+        public async Task<ActionResult> PasswordSignInAsync(LoginDto loginDto)
         {
-            var result = await _authenticationRepository.PasswordSignInAsync(loginDto, rememberMe, lockoutOnFailure);
+            var result = await _authenticationRepository.PasswordSignInAsync(new LoginDto(), false, false);
             if (result.Succeeded)
             {
                 return Ok(result);
@@ -69,7 +73,7 @@ namespace UniversityApi.API.Controllers
             var result = await _authenticationRepository.CreateUserAsync(user, userDto.Password);
             if (result.Succeeded)
             {
-                return Ok(result);
+                return Ok(user.Id);
             }
             return BadRequest(result);
         }
@@ -83,11 +87,24 @@ namespace UniversityApi.API.Controllers
             return Ok(result);
         }
 
-        // POST: api/Authentication/Claims/someUserId
+        // GET: api/Authentication/UserId
+        [HttpGet]
+        [Route("UserId/{username}")]
+        public async Task<ActionResult> GetUserIdByUsernameAsync(string username)
+        {
+            var result = await _authenticationRepository.GetUserIdByUsernameAsync(username);
+            return result != null ? Ok(result) : NotFound(result);
+        }
+
+        // POST: api/Authentication/Claims/someUsername
         [HttpPost]
         [Route("Claims/{userId}")]
-        public async Task<ActionResult> AddClaimAsync(string userId, Claim claim)
+        public async Task<ActionResult> AddClaimAsync(string userId, [FromBody] JsonElement claimJson)
         {
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new ClaimConverter());
+            var claim = JsonSerializer.Deserialize<Claim>(claimJson.GetRawText(), options);
+
             var result = await _authenticationRepository.AddClaimAsync(userId, claim);
             if (result.Succeeded)
             {
