@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
 

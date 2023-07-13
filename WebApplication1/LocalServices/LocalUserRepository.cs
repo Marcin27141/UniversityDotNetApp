@@ -34,8 +34,20 @@ namespace WebApplication1.LocalServices
         }
         public async Task<List<ApplicationUser>> GetAllUsersAsync()
         {
+            //var users = await _context.Users.ToListAsync();
+            //return _mapper.Map<List<ApplicationUser>>(users);
+
             var users = await _context.Users.ToListAsync();
-            return _mapper.Map<List<ApplicationUser>>(users);
+            var nonAdminUsers = new List<WebAppUser>();
+
+            foreach (var user in users)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                var isAdmin = userClaims.Any(c => c.Type == "IsAdmin");
+                if (!isAdmin) nonAdminUsers.Add(user);
+            }
+
+            return _mapper.Map<List<ApplicationUser>>(nonAdminUsers);
         }
 
         public async Task<ApplicationUser> GetUserAsync(string id)

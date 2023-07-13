@@ -31,8 +31,14 @@ namespace WebApplication1.Pages
         [BindProperty]
         public Student Student { get; set; }
 
+        private IEnumerable<string> _selectedCourses;
+
         [BindProperty]
-        public IEnumerable<string> SelectedCourses { get { return SelectedCourses.Where(c => c != null); } set { } }
+        public IEnumerable<string> SelectedCourses
+        {
+            get { return _selectedCourses?.Where(c => c != null); }
+            set { _selectedCourses = value; }
+        }
 
         [Required]
         [BindProperty]
@@ -43,13 +49,13 @@ namespace WebApplication1.Pages
             _coursesRepository = coursesRepository;
             _userRepository = userRepository;
 
-            ApplicationUsers = _userRepository.GetAllUsersAsync().Result.Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
+            ApplicationUsers = _userRepository.GetAllUsersAsync().Result.Select(p => new SelectListItem() { Text = p.Email, Value = p.Id });
             var courses = _coursesRepository.GetAllAsync().Result;
-            TempData["Courses"] = JsonConvert.SerializeObject(courses);
             AvailableCourses = courses.Select(c => new SelectListItem() { Text = c.ToString(), Value = c.EntityCourseID.ToString() });
         }
         public void OnGet()
         {
+            
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -63,7 +69,7 @@ namespace WebApplication1.Pages
 
             this.Student.ApplicationUser = await _userRepository.GetUserAsync(ApplicationUserId);
             this.Student.PersonalData = PersonalData;
-            List<Course> courses = TempData["Courses"] as List<Course>;
+            var courses = await _coursesRepository.GetAllAsync();
             this.Student.Courses = courses.Where(c => SelectedCourses.Contains(c.EntityCourseID.ToString())).ToList();
 
             var id = await _studentsRepository.AddAsync(this.Student);

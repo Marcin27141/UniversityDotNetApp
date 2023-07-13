@@ -12,6 +12,7 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
 using WebApplication1.Converters;
 using WebApplication1.Services;

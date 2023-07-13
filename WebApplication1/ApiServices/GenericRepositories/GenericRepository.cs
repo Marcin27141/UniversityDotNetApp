@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
 
@@ -32,7 +33,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
             await _httpClient.DeleteAsync(deletePath);
         }
 
-        protected abstract string GetPathForDelete(object entityId);
+        protected virtual string GetPathForDelete(object entityId) => _apiPath;
 
         public Task<List<T>> GetAllAsync() => _getRepository.GetAllAsync();
         public Task<T> GetAsync(Guid id) => _getRepository.GetAsync(id);

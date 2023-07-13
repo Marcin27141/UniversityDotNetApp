@@ -21,9 +21,20 @@ namespace UniversityApi.API.Repositories
             _signInManager = signInManager;
             _userManager = userManager;
         }
-        public Task<List<ApiUser>> GetAllUsersAsync()
+        public async Task<List<ApiUser>> GetAllUsersAsync()
         {
-            return _context.Users.ToListAsync();
+            //return _context.Users.ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            var nonAdminUsers = new List<ApiUser>();
+
+            foreach (var user in users)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                var isAdmin = userClaims.Any(c => c.Type == "IsAdmin" && c.Value == "true");
+                if (!isAdmin) nonAdminUsers.Add(user);
+            }
+
+            return nonAdminUsers;
         }
 
         public async Task<ApiUser> GetUserAsync(string id)

@@ -3,6 +3,7 @@ using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using AutoMapper;
 using System;
+using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
 using WebApplication1.Services.People;
@@ -13,8 +14,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
     {
         public StudentPutRepository(IMapper mapper) : base(mapper)
         {
+            _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Student);
         }
-
-        protected override string GetPathForUpdate(Guid entityId) => $"{_apiPath}/Students/{entityId}";
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UniversityApi.API.Contracts;
+using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
 using WebApplication1.Extensions;
 using WebApplication1.Services.People;
@@ -13,6 +14,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Professors
     {
         public ProfessorRepository(IMapper mapper, IGenericGetRepository<Professor> getRepository, IGenericPostRepository<Professor> postRepository, IGenericPutRepository<Professor> putRepository) : base(mapper, getRepository, postRepository, putRepository)
         {
+            _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Professor);
         }
 
         public async Task<bool> IdCodeIsOccupied(string idCode)

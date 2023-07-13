@@ -1,5 +1,6 @@
 ﻿using ApiDtoLibrary.Courses;
 using AutoMapper;
+using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
 
@@ -9,9 +10,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
     {
         public CoursePostRepository(IMapper mapper) : base(mapper)
         {
-
+            _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Course);
         }
-
-        protected override string GetPathForCreate() => $"{_apiPath}/Courses";
     }
 }
