@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
+using WebApplication1.Services.People;
 
 namespace WebApplication1.ApiServices
 {

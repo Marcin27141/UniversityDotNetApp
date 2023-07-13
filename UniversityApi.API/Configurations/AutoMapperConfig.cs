@@ -1,9 +1,11 @@
-﻿using ApiDtoLibrary.Courses;
+﻿using ApiDtoLibrary.Authentication;
+using ApiDtoLibrary.Courses;
 using ApiDtoLibrary.Person;
 using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using ApiDtoLibrary.Users;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
@@ -45,6 +47,9 @@ namespace UniversityApi.API.Configurations
             //Models/Users
             CreateMap<ApiUserDto, ApiUser>().ReverseMap();
             CreateMap<LoginDto, ApiUser>().ReverseMap();
+
+            //Authentication
+            CreateMap<SignInResultDto, SignInResult>().ReverseMap();
         }
     }
 }

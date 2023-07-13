@@ -19,7 +19,7 @@ namespace WebApplication1.Areas.Identity.Pages.Account
     {
         private const string PROFESSOR_MAIL_PATTERN = @"^[\w\.]+@edu.com";
         private const string STUDENT_MAIL_PATTERN = @"^[\w\.]+@student.edu.com";
-        private const string ADMIN_MAIL_PATTERN = @"^[\w\.]+@admin.edu.com";
+        private const string ADMIN_MAIL_PATTERN = @"^[\w\.]+@admin.com";
         private const string RETURN_URL_PROFESSOR = "/AfterLogin/Professor";
         private const string RETURN_URL_STUDENT = "/AfterLogin/Student";
         private const string RETURN_URL_ADMIN = "/AfterLogin/Admin";
@@ -67,6 +67,9 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
 
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
             ExternalLogins = (await _authenticationRepository.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
@@ -85,7 +88,7 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var user = new ApplicationUser { FirstName = Input.Email = Input.Email, Password = Input.Password };
+                var user = new ApplicationUser { Email = Input.Email, Password = Input.Password };
                 var result = await _authenticationRepository.PasswordSignInAsync(user, Input.RememberMe, false);
                 if (result.Succeeded)
                 {

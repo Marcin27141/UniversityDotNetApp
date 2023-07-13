@@ -26,7 +26,8 @@ namespace UniversityApi.API.Repositories
 
         public bool ConfirmedAccountRequired()
         {
-            return _userManager.Options.SignIn.RequireConfirmedAccount;
+            //return _userManager.Options.SignIn.RequireConfirmedAccount;
+            return false;
         }
 
         public Task<IdentityResult> CreateUserAsync(ApiUser user, string password)
@@ -51,9 +52,11 @@ namespace UniversityApi.API.Repositories
             return user.Id;
         }
 
-        public async Task<SignInResult> PasswordSignInAsync(LoginDto loginDto, bool rememberMe, bool lockoutOnFailure)
+        public async Task<SignInResult> PasswordSignInAsync(LoginDto user, bool rememberMe, bool lockoutOnFailure)
         {
-            var result = await _signInManager.PasswordSignInAsync("admin@admin.com", "P@ssw0rd", false, false);
+            //TODO rememberMe to be implemented
+            var apiUser = await _userManager.FindByEmailAsync(user.Email);
+            var result = await _signInManager.CheckPasswordSignInAsync(apiUser, user.Password, lockoutOnFailure);
             return result;
         }
 

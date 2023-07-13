@@ -19,7 +19,7 @@ namespace UniversityApi.API.Contracts
 
         Task<IEnumerable<AuthenticationScheme>> GetExternalAuthenticationSchemesAsync();
 
-        Task<SignInResult> PasswordSignInAsync(LoginDto loginDto, bool rememberMe, bool lockoutOnFailure);
+        Task<SignInResult> PasswordSignInAsync(LoginDto user, bool rememberMe, bool lockoutOnFailure);
 
         Task SignInAsync(string userId, bool isPersistent);
     }

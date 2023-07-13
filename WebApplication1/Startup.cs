@@ -10,6 +10,12 @@ using WebApplication1.Policies.Handlers;
 using WebApplication1.Configurations;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Scrutor;
+using System;
+using WebApplication1.Services;
+using WebApplication1.Database;
+using WebApplication1.ApiServices.GenericRepositories.Students;
+using WebApplication1.Contracts;
+using WebApplication1.LocalServices;
 
 namespace WebApplication1
 {
@@ -25,7 +31,11 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = Configuration.GetConnectionString("DefaultWebDbConnection");
+            services.AddDbContext<WebAppDbContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddDefaultIdentity<WebAppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<WebAppDbContext>();
 
             services.AddRazorPages();
 
@@ -63,6 +73,9 @@ namespace WebApplication1
                     .WithScopedLifetime();
             });
 
+            services.AddScoped<IAuthenticationRepository, LocalAuthenticationRepository>();
+            services.AddScoped<IUserRepository, LocalUserRepository>();
+
             //services.AddScoped(typeof(IGenericGetRepository<>), typeof(GenericGetRepository<,>));
             //services.AddScoped(typeof(IGenericPostRepository<>), typeof(GenericPostRepository<,>));
             //services.AddScoped(typeof(IGenericPutRepository<>), typeof(GenericPutRepository<,>));
@@ -73,7 +86,7 @@ namespace WebApplication1
             //services.AddScoped(typeof(IGenericPutRepository<,>), typeof(GenericPutRepository<,>));
             //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-            
+
 
             //services.AddScoped<IProfessorsRepository, ProfessorRepository>();
             //services.AddScoped<ICoursesRepository, CourseRepository>();

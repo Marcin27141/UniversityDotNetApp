@@ -9,6 +9,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
     {
         public CourseGetRepository(IMapper mapper) : base(mapper)
         {
+            _apiPath += "/Courses";
         }
     }
 }

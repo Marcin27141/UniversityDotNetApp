@@ -4,6 +4,7 @@ using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using ApiDtoLibrary.Users;
 using AutoMapper;
+using WebApplication1.Database;
 using WebApplication1.Services;
 using WebApplication1.Services.People;
 
@@ -37,6 +38,9 @@ namespace WebApplication1.Configurations
             //Models/ApplicationUser
             CreateMap<ApiUserDto, ApplicationUser>().ReverseMap();
             CreateMap<LoginDto, ApplicationUser>().ReverseMap();
+
+            //WebAppUser
+            CreateMap<WebAppUser, ApplicationUser>().ReverseMap();
         }
 
         private void MapPersonalData<S, T>(IMappingExpression<S, T> mapping)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UniversityApi.API.Contracts;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
@@ -44,7 +45,7 @@ namespace WebApplication1.Pages
 
             ApplicationUsers = _userRepository.GetAllUsersAsync().Result.Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
             var courses = _coursesRepository.GetAllAsync().Result;
-            TempData["Courses"] = courses;
+            TempData["Courses"] = JsonConvert.SerializeObject(courses);
             AvailableCourses = courses.Select(c => new SelectListItem() { Text = c.ToString(), Value = c.EntityCourseID.ToString() });
         }
         public void OnGet()

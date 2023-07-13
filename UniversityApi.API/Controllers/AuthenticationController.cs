@@ -1,4 +1,5 @@
-﻿using ApiDtoLibrary.Users;
+﻿using ApiDtoLibrary.Authentication;
+using ApiDtoLibrary.Users;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
@@ -34,14 +35,15 @@ namespace UniversityApi.API.Controllers
 
         // POST: api/Authentication/PasswordSignIn
         [HttpPost]
-        //[Route("PasswordSignIn/rememberMe={rememberMe}/lockoutOnFailure={lockoutOnFailure}")]
-        [Route("PasswordSignIn")]
-        public async Task<ActionResult> PasswordSignInAsync(LoginDto loginDto)
+        [Route("PasswordSignIn/rememberMe={rememberMe}/lockoutOnFailure={lockoutOnFailure}")]
+        //[Route("PasswordSignIn")]
+        public async Task<ActionResult> PasswordSignInAsync([FromBody] LoginDto loginDto, bool rememberMe, bool lockoutOnFailure)
         {
-            var result = await _authenticationRepository.PasswordSignInAsync(new LoginDto(), false, false);
+            var result = await _authenticationRepository.PasswordSignInAsync(loginDto, rememberMe, lockoutOnFailure);
             if (result.Succeeded)
             {
-                return Ok(result);
+                var dto = _mapper.Map<SignInResultDto>(result);
+                return Ok(dto);
             }
             return BadRequest(result);
         }

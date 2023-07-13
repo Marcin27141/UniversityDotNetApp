@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
@@ -99,21 +100,7 @@ namespace WebApplication1.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
                     user.Id = await _authenticationRespository.GetIdByUsernameAsync(user.UserName);
 
-                    //Name claim
-                    var nameClaim = new Claim("Name", Input.FirstName);
-                    await _authenticationRespository.AddClaimAsync(user, nameClaim);
-
-                    //IsAdmin claim
-                    if (Input.HasAdminRights)
-                    {
-                        var adminClaim = new Claim("IsAdmin", Input.HasAdminRights.ToString());
-                        await _authenticationRespository.AddClaimAsync(user, adminClaim);
-                    }
-
-                    //Status claim {Admin/Student/Professor}
-                    var statusClaim = GetStatusString();
-                    if (statusClaim != null)
-                        await _authenticationRespository.AddClaimAsync(user, new Claim("Status", statusClaim));
+                    await AddNecessaryClaims(user);
                     
                     var code = await _authenticationRespository.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -141,6 +128,25 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task AddNecessaryClaims(ApplicationUser user)
+        {
+            //Name claim
+            var nameClaim = new Claim(ClaimTypes.NameIdentifier, user.Id);
+            await _authenticationRespository.AddClaimAsync(user, nameClaim);
+
+            //IsAdmin claim
+            if (Input.HasAdminRights)
+            {
+                var adminClaim = new Claim("IsAdmin", Input.HasAdminRights.ToString());
+                await _authenticationRespository.AddClaimAsync(user, adminClaim);
+            }
+
+            //Status claim {Admin/Student/Professor}
+            var statusClaim = GetStatusString();
+            if (statusClaim != null)
+                await _authenticationRespository.AddClaimAsync(user, new Claim("Status", statusClaim));
         }
 
         private string GetStatusString()

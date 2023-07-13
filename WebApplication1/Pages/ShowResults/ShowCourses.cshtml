@@ -27,9 +27,9 @@
                 @course.CourseCode
             </td>
             <td>
-                <a asp-page="/EditElement/EditCourse" asp-route-courseCode="@course.CourseCode">Edit</a> |
-                <a asp-page="/ShowResults/ShowCourse" asp-route-courseCode="@course.CourseCode">Details</a> |
-                <a asp-page="/ShowResults/ShowCourses" asp-page-handler="delete" asp-route-courseCode="@course.CourseCode">Delete</a>
+                <a asp-page="/EditElement/EditCourse" asp-route-id="@course.EntityCourseID">Edit</a> |
+                <a asp-page="/ShowResults/ShowCourse" asp-route-id="@course.EntityCourseID">Details</a> |
+                <a asp-page="/ShowResults/ShowCourses" asp-page-id="delete" asp-route-id="@course.EntityCourseID">Delete</a>
             </td>
         </tr>
     }

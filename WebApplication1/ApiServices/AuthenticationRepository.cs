@@ -1,4 +1,5 @@
-﻿using ApiDtoLibrary.Users;
+﻿using ApiDtoLibrary.Authentication;
+using ApiDtoLibrary.Users;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -121,20 +122,28 @@ namespace WebApplication1.ApiServices
 
         public async Task<SignInResult> PasswordSignInAsync(ApplicationUser user, bool rememberMe, bool lockoutOnFailure)
         {
-            //string path = $"{_apiPath}/PasswordSignIn/rememberMe={rememberMe}/lockoutOnFailure={lockoutOnFailure}";
-            string path = $"{_apiPath}/PasswordSignIn";
-            //var mappedUser = _mapper.Map<LoginDto>(user);
-            //var serializedUser = GetSerializedContent(mappedUser);
-            var serializedUser = GetSerializedContent(new LoginDto());
+            string path = $"{_apiPath}/PasswordSignIn/rememberMe={rememberMe}/lockoutOnFailure={lockoutOnFailure}";
+            var mappedUser = _mapper.Map<LoginDto>(user);
+            var serializedUser = GetSerializedContent(mappedUser);
             var response = await _httpClient.PostAsync(path, serializedUser);
-            var result = await response.Content.ReadFromJsonAsync<SignInResult>();
-            return result;
+            var dto = await response.Content.ReadFromJsonAsync<SignInResultDto>();
+            return new ManualSignInResult(dto);
         }
 
         public async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
             string path = $"{_apiPath}/SignIn/{user.Id}/isPersistent={isPersistent}";
             await _httpClient.GetAsync(path);
+        }
+    }
+
+    class ManualSignInResult : SignInResult
+    {
+        public ManualSignInResult(SignInResultDto dto)
+        {
+            Succeeded = dto.Succeeded;
+            RequiresTwoFactor = dto.RequiresTwoFactor;
+            IsLockedOut = dto.IsLockedOut;
         }
     }
 }

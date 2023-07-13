@@ -5,9 +5,9 @@
 }
 
 <div class="text-center">
-    <p><a asp-page="/ShowResults/ShowStudent" asp-route-index="@Model.Student.Index">Show Profile</a>.</p>
+    <p><a asp-page="/ShowResults/ShowStudent" asp-route-id="@Model.Student?.EntityPersonID">Show Profile</a>.</p>
 </div>
 
 <div class="text-center">
-    <p><a asp-page="/EditElement/EditPerson/EditStudent" asp-route-index="@Model.Student.Index">Edit Profile</a>.</p>
+    <p><a asp-page="/EditElement/EditPerson/EditStudent" asp-route-id="@Model.Student?.EntityPersonID">Edit Profile</a>.</p>
 </div>
