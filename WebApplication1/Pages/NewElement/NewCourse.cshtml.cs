@@ -46,8 +46,8 @@ namespace WebApplication1.Pages
             if (!ModelState.IsValid)
                 return Page();
             CreatedCourse.Professor = await _professorsRepository.GetAsync(Guid.Parse(ProfessorId));
-            var courseId = await _coursesRespository.AddAsync(CreatedCourse);
-            return RedirectToPage("/ShowResults/ShowCourse", new { id = courseId });
+            var addedEntity = await _coursesRespository.AddAsync(CreatedCourse);
+            return RedirectToPage("/ShowResults/ShowCourse", new { id = addedEntity.EntityCourseID });
         }                            
     }
 }

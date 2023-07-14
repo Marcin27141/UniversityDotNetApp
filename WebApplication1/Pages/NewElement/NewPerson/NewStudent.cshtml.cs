@@ -69,8 +69,8 @@ namespace WebApplication1.Pages
                 return Page();
 
             await AssignStudentProperties();
-            var id = await _studentsRepository.AddAsync(this.Student);
-            return RedirectToPage("/ShowResults/ShowStudent", new { id = id });
+            var addedEntity = await _studentsRepository.AddAsync(this.Student);
+            return RedirectToPage("/ShowResults/ShowStudent", new { id = addedEntity.EntityPersonID.ToString() });
         }
 
         private async Task AssignStudentProperties()

@@ -4,7 +4,7 @@ using System;
 
 namespace WebApplication1.Services.People
 {
-    public abstract class Person : IDistinguishableEntity
+    public class Person : IDistinguishableEntity
     {
         public PersonStatus PersonStatus { get; set; }
         public Guid EntityPersonID { get; set; }

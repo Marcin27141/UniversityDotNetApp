@@ -23,7 +23,7 @@ namespace WebApplication1.Pages.ShowResults
 
         //authorization?
         //results=0 => all people; results=1 => selected people from TempData["PeopleList"]
-        public void OnGet(int results)
+        public void OnGet(int results=0)
         {
             if (results == 1)
             {

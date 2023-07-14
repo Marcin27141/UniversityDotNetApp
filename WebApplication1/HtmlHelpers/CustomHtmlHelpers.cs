@@ -31,6 +31,7 @@ namespace WebApplication1.HtmlHelpers
 
         public static IHtmlContent CreateDetailsLinkForPerson(this IHtmlHelper helper, PersonStatus personStatus, Guid id)
         {
+
             string output = personStatus switch
             {
                 PersonStatus.Student => String.Format($"<a href=\"/ShowResults/ShowStudent/{id}\">Details</a>"),

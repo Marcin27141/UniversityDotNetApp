@@ -52,8 +52,8 @@ namespace WebApplication1.Pages.NewPerson
                 return Page();
 
             await AssingProfessorProperties();
-            var id = await _professorsRepository.AddAsync(this.Professor);
-            return RedirectToPage("/ShowResults/ShowProfessor", new { id = id });
+            var addedEntity = await _professorsRepository.AddAsync(this.Professor);
+            return RedirectToPage("/ShowResults/ShowProfessor", new { id = addedEntity.EntityPersonID });
         }
 
         private async Task AssingProfessorProperties()
