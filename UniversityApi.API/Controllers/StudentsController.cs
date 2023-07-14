@@ -45,7 +45,7 @@ namespace UniversityApi.API.Controllers
         }
 
         // GET: api/Students/Index/123123
-        [HttpGet("Index/{index}")]
+        [HttpGet("IndexCheck/{index}")]
         public async Task<ActionResult<GetStudent>> CheckIfIndexOccupied(string index)
         {
             return Ok(await _repository.IndexIsOccupied(index));

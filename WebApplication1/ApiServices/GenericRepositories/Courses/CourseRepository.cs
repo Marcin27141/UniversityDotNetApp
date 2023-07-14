@@ -19,7 +19,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
 
         public async Task<bool> CourseCodeIsOccupied(string courseCode)
         {
-            string checkCourseCodePath = $"{_apiPath}/Course/CourseCode";
+            string checkCourseCodePath = $"{_apiPath}/CourseCode";
             var response = await _httpClient.GetAsync(checkCourseCodePath);
             if (response.IsSuccessStatusCode)
             {
@@ -36,7 +36,5 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
                 .FilterCoursesBy(filterByOption, filter)
                 .ToList();
         }
-
-        protected override string GetPathForDelete(object entityId) => $"{_apiPath}/Courses/{entityId}";
     }
 }

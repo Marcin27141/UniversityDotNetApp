@@ -20,7 +20,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
 
         public async Task<bool> IndexIsOccupied(string index)
         {
-            string checkIndexPath = $"{_apiPath}/Student/Index";
+            string checkIndexPath = $"{_apiPath}/IndexCheck/{index}";
             var response = await _httpClient.GetAsync(checkIndexPath);
             if (response.IsSuccessStatusCode)
             {
@@ -31,7 +31,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
 
         public async Task RemoveStudentCourseAsync(Guid studentId, Guid courseId)
         {
-            string deletePath = $"{_apiPath}/Students/{studentId}/{courseId}";
+            string deletePath = $"{_apiPath}/{studentId}/{courseId}";
             await _httpClient.DeleteAsync(deletePath);
         }
 
@@ -58,7 +58,5 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
             //    return updatedEntity.EntityId;
             return default;
         }
-
-        protected override string GetPathForDelete(object entityId) => $"{_apiPath}/Students/{entityId}";
     }
 }

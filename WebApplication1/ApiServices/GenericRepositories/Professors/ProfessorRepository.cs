@@ -19,7 +19,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Professors
 
         public async Task<bool> IdCodeIsOccupied(string idCode)
         {
-            string checkIdCodePath = $"{_apiPath}/Professors/IdCode";
+            string checkIdCodePath = $"{_apiPath}/IdCode";
             var response = await _httpClient.GetAsync(checkIdCodePath);
             if (response.IsSuccessStatusCode)
             {
@@ -36,7 +36,5 @@ namespace WebApplication1.ApiServices.GenericRepositories.Professors
                 .FilterProfessorsBy(filterByOption, filter)
                 .ToList();
         }
-
-        protected override string GetPathForDelete(object entityId) => $"{_apiPath}/Professors/{entityId}";
     }
 }
