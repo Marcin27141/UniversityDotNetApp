@@ -30,7 +30,7 @@
             <td>
                 @Html.CreateEditLinkForPerson(person.PersonStatus, person.EntityPersonID) |
                 @Html.CreateDetailsLinkForPerson(person.PersonStatus, person.EntityPersonID) |
-                <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-personType="@((int)person.PersonStatus)" asp-route-id="@person.Key">Delete</a>
+                <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-id="@person.EntityPersonID">Delete</a>
             </td>
         </tr>
     }

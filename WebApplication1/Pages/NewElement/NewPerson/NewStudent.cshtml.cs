@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiDtoLibrary.Person;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -67,13 +68,18 @@ namespace WebApplication1.Pages
             if (!ModelState.IsValid)
                 return Page();
 
+            await AssignStudentProperties();
+            var id = await _studentsRepository.AddAsync(this.Student);
+            return RedirectToPage("/ShowResults/ShowStudent", new { id = id });
+        }
+
+        private async Task AssignStudentProperties()
+        {
+            this.Student.PersonStatus = PersonStatus.Student;
             this.Student.ApplicationUser = await _userRepository.GetUserAsync(ApplicationUserId);
             this.Student.PersonalData = PersonalData;
             var courses = await _coursesRepository.GetAllAsync();
             this.Student.Courses = courses.Where(c => SelectedCourses.Contains(c.EntityCourseID.ToString())).ToList();
-
-            var id = await _studentsRepository.AddAsync(this.Student);
-            return RedirectToPage("/ShowResults/ShowStudent", new { id = id });
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiDtoLibrary.Person;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -50,10 +51,16 @@ namespace WebApplication1.Pages.NewPerson
             if (!ModelState.IsValid)
                 return Page();
 
+            await AssingProfessorProperties();
+            var id = await _professorsRepository.AddAsync(this.Professor);
+            return RedirectToPage("/ShowResults/ShowProfessor", new { id = id });
+        }
+
+        private async Task AssingProfessorProperties()
+        {
+            this.Professor.PersonStatus = PersonStatus.Professor;
             this.Professor.ApplicationUser = await _userRepository.GetUserAsync(ApplicationUserId);
             this.Professor.PersonalData = this.PersonalData;
-            var id = await _professorsRepository.AddAsync(this.Professor);
-            return RedirectToPage("/ShowResults/ShowProfessor", new { id = id});
         }
     }
 }

@@ -8,8 +8,9 @@ namespace ApiDtoLibrary.Person
 {
     public enum PersonStatus
     {
-        Admin = 0,
+        Unidentified = 0,
         Student = 1,
-        Professor = 2
+        Professor = 2,
+        Admin = 3,
     }
 }
