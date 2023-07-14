@@ -19,10 +19,6 @@ namespace WebApplication1.Services.People
 
         public List<Course> Courses { get; set; }
 
-        public override string Key => Index;
-
-        public override int EntityClassId => STUDENT_ENTITY_CLASS_ID;
-
         public override string ToString() => PersonalData.ToString();
     }
 }

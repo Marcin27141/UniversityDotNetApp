@@ -21,10 +21,6 @@ namespace WebApplication1.Services.People
         [Range(0, int.MaxValue, ErrorMessage = "Salary must be greater than 0")]
         public int Salary { get; set; }
 
-        public override string Key => IdCode;
-
-        public override int EntityClassId => PROFESSOR_ENTITY_CLASS_ID;
-
         public override string ToString() => PersonalData.ToString();
     }
 }

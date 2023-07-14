@@ -30,15 +30,7 @@ namespace WebApplication1.Services
 
         public List<Student> EnrolledStudents { get; set; }
 
-
-
-        public string Key => CourseCode;
-
         public Guid EntityId => EntityCourseID;
-
-        public int EntityClassId => COURSE_ENTITY_CLASS_ID;
-
-
 
         public override string ToString() => $"{Name} ({CourseCode})";
 
