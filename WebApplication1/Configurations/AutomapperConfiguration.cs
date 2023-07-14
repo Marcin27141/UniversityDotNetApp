@@ -22,6 +22,7 @@ namespace WebApplication1.Configurations
 
             //Models/People
             CreateInOutMapping<PostPersonDto, Person>();
+            CreateInOutMapping<GetPersonDto, Person>();
 
             //Models/Professors
             CreateInOutMapping<FullProfessor, Professor>();

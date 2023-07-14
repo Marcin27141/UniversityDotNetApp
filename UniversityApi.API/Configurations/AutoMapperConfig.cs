@@ -29,8 +29,9 @@ namespace UniversityApi.API.Configurations
             CreateMap<EntityCourse, PostCourse>().ReverseMap();
             CreateMap<EntityCourse, PutCourse>().ReverseMap();
 
-            //Models/Professors
+            //Models/People
             CreateMap<PostPersonDto, EntityPerson>().ReverseMap();
+            CreateMap<GetPersonDto, EntityPerson>().ReverseMap();
 
             //Models/Professors
             CreateMap<EntityProfessor, FullProfessor>().ReverseMap();
