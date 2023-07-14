@@ -21,19 +21,19 @@ namespace WebApplication1.Configurations
             CreateMap<Course, PutCourse>().ReverseMap();
 
             //Models/People
-            MapPersonalData(CreateMap<PostPersonDto, Person>());
+            CreateInOutMapping<PostPersonDto, Person>();
 
             //Models/Professors
-            MapPersonalData(CreateMap<FullProfessor, Professor>());
-            MapPersonalData(CreateMap<GetProfessor, Professor>());
-            MapPersonalData(CreateMap<PostProfessor, Professor>());
-            MapPersonalData(CreateMap<PutProfessor, Professor>());
+            CreateInOutMapping<FullProfessor, Professor>();
+            CreateInOutMapping<GetProfessor, Professor>();
+            CreateInOutMapping<PostProfessor, Professor>();
+            CreateInOutMapping<PutProfessor, Professor>();
 
             //Models/Students
-            MapPersonalData(CreateMap<FullStudent, Student>());
-            MapPersonalData(CreateMap<GetStudent, Student>());
-            MapPersonalData(CreateMap<PostStudent, Student>());
-            MapPersonalData(CreateMap<PutStudent, Student>());
+            CreateInOutMapping<FullStudent, Student>();
+            CreateInOutMapping<GetStudent, Student>();
+            CreateInOutMapping<PostStudent, Student>();
+            CreateInOutMapping<PutStudent, Student>();
 
             //Models/ApplicationUser
             CreateMap<ApiUserDto, ApplicationUser>().ReverseMap();
@@ -43,7 +43,15 @@ namespace WebApplication1.Configurations
             CreateMap<WebAppUser, ApplicationUser>().ReverseMap();
         }
 
-        private void MapPersonalData<S, T>(IMappingExpression<S, T> mapping)
+        private void CreateInOutMapping<S, T>()
+            where S : PostPersonDto
+            where T : Person
+        {
+            MapPersonalDataInside(CreateMap<S, T>());
+            MapPersonalDataOutside(CreateMap<T, S>());
+        }
+
+        private void MapPersonalDataInside<S, T>(IMappingExpression<S, T> mapping)
             where S : PostPersonDto
             where T : Person
         {
@@ -54,7 +62,19 @@ namespace WebApplication1.Configurations
                 PESEL = src.PESEL,
                 Birthday = src.Birthday,
                 Motherland = src.Motherland
-            })).ReverseMap();
+            }));
+        }
+
+        private void MapPersonalDataOutside<S, T>(IMappingExpression<S, T> mapping)
+            where S : Person
+            where T : PostPersonDto
+        {
+            mapping
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.PersonalData.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.PersonalData.LastName))
+                .ForMember(dest => dest.PESEL, opt => opt.MapFrom(src => src.PersonalData.PESEL))
+                .ForMember(dest => dest.Birthday, opt => opt.MapFrom(src => src.PersonalData.Birthday))
+                .ForMember(dest => dest.Motherland, opt => opt.MapFrom(src => src.PersonalData.Motherland));
         }
     }
 }
