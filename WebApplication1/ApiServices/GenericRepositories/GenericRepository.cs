@@ -8,16 +8,16 @@ using WebApplication1.Services;
 
 namespace WebApplication1.ApiServices.GenericRepositories
 {
-    public abstract class GenericRepository<T> : ApiRepository, IGenericRepository<T>
+    public abstract class GenericRepository<T, U> : ApiRepository, IGenericRepository<T,U>
         where T : IDistinguishableEntity
     {
         private readonly IGenericGetRepository<T> _getRepository;
-        private readonly IGenericPostRepository<T> _postRepository;
+        private readonly IGenericPostRepository<T, U> _postRepository;
         private readonly IGenericPutRepository<T> _putRepository;
 
         protected GenericRepository(IMapper mapper,
             IGenericGetRepository<T> getRepository,
-            IGenericPostRepository<T> postRepository,
+            IGenericPostRepository<T, U> postRepository,
             IGenericPutRepository<T> putRepository) : base(mapper)
         {
             _getRepository = getRepository;
@@ -25,7 +25,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
             _putRepository = putRepository;
         }
 
-        public Task<Guid> AddAsync(T entity) => _postRepository.AddAsync(entity);
+        public Task<U> AddAsync(T entity) => _postRepository.AddAsync(entity);
 
         public async Task DeleteAsync(Guid id)
         {

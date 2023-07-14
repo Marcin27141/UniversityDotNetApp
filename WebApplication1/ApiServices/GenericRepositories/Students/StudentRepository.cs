@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ApiDtoLibrary.Students;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ using WebApplication1.Services.People;
 
 namespace WebApplication1.ApiServices.GenericRepositories.Students
 {
-    public class StudentRepository : GenericRepository<Student>, IStudentsRepository
+    public class StudentRepository : GenericRepository<Student, GetStudent>, IStudentsRepository
     {
-        public StudentRepository(IMapper mapper, IGenericGetRepository<Student> getRepository, IGenericPostRepository<Student> postRepository, IGenericPutRepository<Student> putRepository) : base(mapper, getRepository, postRepository, putRepository)
+        public StudentRepository(IMapper mapper, IGenericGetRepository<Student> getRepository, IGenericPostRepository<Student, GetStudent> postRepository, IGenericPutRepository<Student> putRepository) : base(mapper, getRepository, postRepository, putRepository)
         {
             _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Student);
         }

@@ -137,8 +137,9 @@ namespace UniversityApi.API.Controllers
         {
             var student = _mapper.Map<EntityStudent>(postStudent);
             await _repository.AddAsync(student);
+            var getStudent = _mapper.Map<GetStudent>(student);
 
-            return CreatedAtAction(nameof(GetStudent), new { id = student.EntityPersonID }, student);
+            return Ok(getStudent);
         }
 
         // DELETE: api/Students/someGuidValue

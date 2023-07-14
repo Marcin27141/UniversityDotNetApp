@@ -4,8 +4,8 @@ using WebApplication1.Services;
 
 namespace WebApplication1.Contracts
 {
-    public interface IGenericPostRepository<T> where T : IDistinguishableEntity
+    public interface IGenericPostRepository<T, U> where T : IDistinguishableEntity
     {
-        Task<Guid> AddAsync(T entity);
+        Task<U> AddAsync(T entity);
     }
 }

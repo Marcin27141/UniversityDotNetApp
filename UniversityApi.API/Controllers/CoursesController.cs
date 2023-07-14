@@ -92,8 +92,9 @@ namespace UniversityApi.API.Controllers
         {
             var course = _mapper.Map<EntityCourse>(postCourse);
             await _repository.AddAsync(course);
+            var getCourse = _mapper.Map<GetCourse>(course);
 
-            return CreatedAtAction(nameof(GetCourse), new { id = course.EntityCourseID }, course);
+            return Ok(getCourse);
         }
 
         // DELETE: api/Courses/someGuidValue

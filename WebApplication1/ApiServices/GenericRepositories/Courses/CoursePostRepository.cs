@@ -6,7 +6,7 @@ using WebApplication1.Services;
 
 namespace WebApplication1.ApiServices.GenericRepositories.Courses
 {
-    public class CoursePostRepository : GenericPostRepository<Course, PostCourse>, IGenericPostRepository<Course>
+    public class CoursePostRepository : GenericPostRepository<Course, PostCourse, GetCourse>, IGenericPostRepository<Course, GetCourse>
     {
         public CoursePostRepository(IMapper mapper) : base(mapper)
         {

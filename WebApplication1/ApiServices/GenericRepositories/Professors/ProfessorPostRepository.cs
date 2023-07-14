@@ -8,7 +8,7 @@ using WebApplication1.Services.People;
 
 namespace WebApplication1.ApiServices.GenericRepositories.Professors
 {
-    public class ProfessorPostRepository : GenericPostRepository<Professor, PostProfessor>, IGenericPostRepository<Professor>
+    public class ProfessorPostRepository : GenericPostRepository<Professor, PostProfessor, GetProfessor>, IGenericPostRepository<Professor, GetProfessor>
     {
         public ProfessorPostRepository(IMapper mapper) : base(mapper)
         {

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ApiDtoLibrary.Professors;
+using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ using WebApplication1.Services.People;
 
 namespace WebApplication1.ApiServices.GenericRepositories.Professors
 {
-    public class ProfessorRepository : GenericRepository<Professor>, IProfessorsRepository
+    public class ProfessorRepository : GenericRepository<Professor, GetProfessor>, IProfessorsRepository
     {
-        public ProfessorRepository(IMapper mapper, IGenericGetRepository<Professor> getRepository, IGenericPostRepository<Professor> postRepository, IGenericPutRepository<Professor> putRepository) : base(mapper, getRepository, postRepository, putRepository)
+        public ProfessorRepository(IMapper mapper, IGenericGetRepository<Professor> getRepository, IGenericPostRepository<Professor, GetProfessor> postRepository, IGenericPutRepository<Professor> putRepository) : base(mapper, getRepository, postRepository, putRepository)
         {
             _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Professor);
         }

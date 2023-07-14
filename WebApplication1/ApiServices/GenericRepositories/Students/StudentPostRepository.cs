@@ -9,7 +9,7 @@ using WebApplication1.Services.People;
 
 namespace WebApplication1.ApiServices.GenericRepositories.Students
 {
-    public class StudentPostRepository : GenericPostRepository<Student, PostStudent>, IGenericPostRepository<Student>
+    public class StudentPostRepository : GenericPostRepository<Student, PostStudent, GetStudent>, IGenericPostRepository<Student, GetStudent>
     {
         public StudentPostRepository(IMapper mapper) : base(mapper)
         {

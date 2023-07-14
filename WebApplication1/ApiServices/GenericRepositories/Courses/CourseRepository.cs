@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ApiDtoLibrary.Courses;
+using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ using WebApplication1.Services;
 
 namespace WebApplication1.ApiServices.GenericRepositories.Courses
 {
-    public class CourseRepository : GenericRepository<Course>, ICoursesRepository
+    public class CourseRepository : GenericRepository<Course, GetCourse>, ICoursesRepository
     {
-        public CourseRepository(IMapper mapper, IGenericGetRepository<Course> getRepository, IGenericPostRepository<Course> postRepository, IGenericPutRepository<Course> putRepository) : base(mapper, getRepository, postRepository, putRepository)
+        public CourseRepository(IMapper mapper, IGenericGetRepository<Course> getRepository, IGenericPostRepository<Course, GetCourse> postRepository, IGenericPutRepository<Course> putRepository) : base(mapper, getRepository, postRepository, putRepository)
         {
             _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Course);
         }

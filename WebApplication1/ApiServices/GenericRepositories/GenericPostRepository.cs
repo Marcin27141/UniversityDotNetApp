@@ -10,7 +10,7 @@ using WebApplication1.Services;
 
 namespace WebApplication1.ApiServices.GenericRepositories
 {
-    public abstract class GenericPostRepository<T, U> : ApiRepository, IGenericPostRepository<T>
+    public abstract class GenericPostRepository<T, U, V> : ApiRepository, IGenericPostRepository<T, V>
         where T : IDistinguishableEntity
         where U : class
     {
@@ -18,14 +18,17 @@ namespace WebApplication1.ApiServices.GenericRepositories
         {
         }
 
-        public async Task<Guid> AddAsync(T entity)
+        public async Task<V> AddAsync(T entity)
         {
             var postEntity = _mapper.Map<U>(entity);
             var serializedContent = GetSerializedContent(postEntity);
             string createPath = GetPathForCreate();
             var response = await _httpClient.PostAsync(createPath, serializedContent);
             if (response.IsSuccessStatusCode)
-                return entity.EntityId;
+            {
+                var postResult = await response.Content.ReadFromJsonAsync<V>();
+                return postResult;
+            }
             return default;
         }
 

@@ -108,8 +108,9 @@ namespace UniversityApi.API.Controllers
         {
             var entityProfessor = _mapper.Map<EntityProfessor>(postProfessor);
             await _repository.AddAsync(entityProfessor);
+            var getProfessor = _mapper.Map<GetProfessor>(entityProfessor);
 
-            return CreatedAtAction(nameof(GetProfessor), new { id = entityProfessor.EntityPersonID }, entityProfessor);
+            return Ok(getProfessor);
         }
 
         [Authorize(Roles = "Administrator")]
