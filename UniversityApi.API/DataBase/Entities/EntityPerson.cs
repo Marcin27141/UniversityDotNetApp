@@ -1,4 +1,6 @@
-﻿namespace UniversityApi.API.DataBase.Entities
+﻿using ApiDtoLibrary.Person;
+
+namespace UniversityApi.API.DataBase.Entities
 {
     public abstract class EntityPerson
     {
@@ -8,6 +10,7 @@
         public string PESEL { get; set; }
         public DateTime Birthday { get; set; }
         public string Motherland { get; set; }
+        public PersonStatus PersonStatus { get; set; }
 
         public bool SoftDeleted { get; set; }
     }
