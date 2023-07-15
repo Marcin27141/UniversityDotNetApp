@@ -26,8 +26,8 @@ namespace UniversityApi.API.DataBase
                 .ToTable("Professors");
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
-            modelBuilder.ApplyConfiguration(new StudentConfiguration());
-            modelBuilder.ApplyConfiguration(new ProfessorConfiguration());
+            //modelBuilder.ApplyConfiguration(new StudentConfiguration());
+            //modelBuilder.ApplyConfiguration(new ProfessorConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
         }
     }

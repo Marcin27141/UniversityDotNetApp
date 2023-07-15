@@ -21,7 +21,7 @@ namespace WebApplication1.Policies.Handlers
             var appUser = await _userRepository.GetUserAsync(context.User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (appUser == null)
                 return;
-            if (resource.ApplicationUser?.Id == appUser.Id)
+            if (resource.ApplicationUserId == appUser.Id)
                 context.Succeed(requirement);
         }
     }

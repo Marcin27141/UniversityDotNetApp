@@ -17,7 +17,6 @@ namespace UniversityApi.API.DataBase.Configuration
                     Name = "Databases",
                     ECTS = 2,
                     IsFinishedWithExam = false,
-                    ProfessorID = 4
                 },
                 new EntityCourse
                 {
@@ -26,7 +25,6 @@ namespace UniversityApi.API.DataBase.Configuration
                     Name = "Algorithms",
                     ECTS = 3,
                     IsFinishedWithExam = true,
-                    ProfessorID = 4
                 },
                 new EntityCourse
                 {
@@ -35,7 +33,6 @@ namespace UniversityApi.API.DataBase.Configuration
                     Name = "Computer science",
                     ECTS = 4,
                     IsFinishedWithExam = true,
-                    ProfessorID = 5
                 }); ;
         }
     }

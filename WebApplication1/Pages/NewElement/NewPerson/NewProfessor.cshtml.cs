@@ -51,15 +51,15 @@ namespace WebApplication1.Pages.NewPerson
             if (!ModelState.IsValid)
                 return Page();
 
-            await AssingProfessorProperties();
+            AssingProfessorProperties();
             var addedEntity = await _professorsRepository.AddAsync(this.Professor);
             return RedirectToPage("/ShowResults/ShowProfessor", new { id = addedEntity.EntityPersonID });
         }
 
-        private async Task AssingProfessorProperties()
+        private void AssingProfessorProperties()
         {
             this.Professor.PersonStatus = PersonStatus.Professor;
-            this.Professor.ApplicationUser = await _userRepository.GetUserAsync(ApplicationUserId);
+            this.Professor.ApplicationUserId = ApplicationUserId;
             this.Professor.PersonalData = this.PersonalData;
         }
     }

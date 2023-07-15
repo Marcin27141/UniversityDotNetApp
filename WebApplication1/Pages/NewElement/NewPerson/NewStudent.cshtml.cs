@@ -76,7 +76,7 @@ namespace WebApplication1.Pages
         private async Task AssignStudentProperties()
         {
             this.Student.PersonStatus = PersonStatus.Student;
-            this.Student.ApplicationUser = await _userRepository.GetUserAsync(ApplicationUserId);
+            this.Student.ApplicationUserId = ApplicationUserId;
             this.Student.PersonalData = PersonalData;
             var courses = await _coursesRepository.GetAllAsync();
             this.Student.Courses = courses.Where(c => SelectedCourses.Contains(c.EntityCourseID.ToString())).ToList();

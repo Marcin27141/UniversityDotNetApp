@@ -8,7 +8,7 @@ namespace WebApplication1.Services.People
     {
         public PersonStatus PersonStatus { get; set; }
         public Guid EntityPersonID { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserId { get; set; }
         public PersonalData PersonalData { get; set; }
 
         public Guid EntityId => EntityPersonID;

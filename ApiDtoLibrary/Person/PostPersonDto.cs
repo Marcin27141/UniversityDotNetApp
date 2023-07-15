@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ApiDtoLibrary.Users;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApiDtoLibrary.Person
 {
     public class PostPersonDto
     {
         public PersonStatus PersonStatus { get; set; }
+
+        public string ApplicationUserId { get; set; }
 
         [Required]
         [Display(Name = "First name")]

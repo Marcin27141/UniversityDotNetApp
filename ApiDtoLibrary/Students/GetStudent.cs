@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ApiDtoLibrary.Courses;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApiDtoLibrary.Students
 {
@@ -11,5 +12,7 @@ namespace ApiDtoLibrary.Students
         [DataType(DataType.Date)]
         [Display(Name = "First day of studying")]
         public DateTime BeginningOfStudying { get; set; }
+
+        public List<GetCourse> Courses { get; set; }
     }
 }
