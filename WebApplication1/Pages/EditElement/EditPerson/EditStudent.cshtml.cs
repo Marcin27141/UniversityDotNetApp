@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiDtoLibrary.Students;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -26,8 +27,14 @@ namespace WebApplication1.Pages.EditElement.EditPerson
         [BindProperty]
         public Student Student { get; set; }
 
+        private IEnumerable<string> _selectedCourses;
+
         [BindProperty]
-        public IEnumerable<string> SelectedCourses { get { return SelectedCourses.Where(c => c != null);  } set { } }
+        public IEnumerable<string> SelectedCourses
+        {
+            get { return _selectedCourses?.Where(c => c != null); }
+            set { _selectedCourses = value; }
+        }
 
         public EditStudentModel(IStudentsRepository studentsRepository, ICoursesRepository coursesRepository, IAuthorizationService authorizationService)
         {
@@ -40,8 +47,11 @@ namespace WebApplication1.Pages.EditElement.EditPerson
         public async Task<IActionResult> OnGet(Guid id)
         {
             this.Student = await _studentsRepository.GetAsync(id);
-            this.PersonalData = Student?.PersonalData;
-            SelectedCourses = Student?.Courses.Select(i => i.EntityCourseID.ToString());
+
+            if (this.Student == null) return NotFound(id);
+
+            this.PersonalData = Student.PersonalData;
+            SelectedCourses = Student.Courses.Select(i => i.EntityCourseID.ToString());
 
             var authResult = await _authService.AuthorizeAsync(User, Student, "CanEditStudent");
             if (!authResult.Succeeded)
@@ -57,7 +67,7 @@ namespace WebApplication1.Pages.EditElement.EditPerson
                 return Page();
 
             this.Student.PersonalData = this.PersonalData;
-            var id = await _studentsRepository.UpdateAsync(this.Student);
+            var id = await _studentsRepository.UpdateStudentWithCoursesAsync(this.Student, SelectedCourses.Select(Guid.Parse));
             return RedirectToPage("/ShowResults/ShowStudent", new { id });
         }
     }

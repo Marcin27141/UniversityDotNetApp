@@ -4,6 +4,7 @@ using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using ApiDtoLibrary.Users;
 using AutoMapper;
+using System.Linq;
 using WebApplication1.Database;
 using WebApplication1.Services;
 using WebApplication1.Services.People;
@@ -33,8 +34,8 @@ namespace WebApplication1.Configurations
             //Models/Students
             CreateInOutMapping<FullStudent, Student>();
             CreateInOutMapping<GetStudent, Student>();
-            CreateInOutMapping<PostStudent, Student>();
-            CreateInOutMapping<PutStudent, Student>();
+            MapOutgoingStudents<Student, PostStudent>();
+            MapOutgoingStudents<Student, PutStudent>();
 
             //Models/ApplicationUser
             CreateMap<ApiUserDto, ApplicationUser>().ReverseMap();
@@ -45,7 +46,7 @@ namespace WebApplication1.Configurations
         }
 
         private void CreateInOutMapping<S, T>()
-            where S : PostPersonDto
+            where S : BasePersonDto
             where T : Person
         {
             MapPersonalDataInside(CreateMap<S, T>());
@@ -53,7 +54,7 @@ namespace WebApplication1.Configurations
         }
 
         private void MapPersonalDataInside<S, T>(IMappingExpression<S, T> mapping)
-            where S : PostPersonDto
+            where S : BasePersonDto
             where T : Person
         {
             mapping.ForMember(dest => dest.PersonalData, opt => opt.MapFrom(src => new PersonalData
@@ -68,7 +69,7 @@ namespace WebApplication1.Configurations
 
         private void MapPersonalDataOutside<S, T>(IMappingExpression<S, T> mapping)
             where S : Person
-            where T : PostPersonDto
+            where T : BasePersonDto
         {
             mapping
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.PersonalData.FirstName))
@@ -76,6 +77,23 @@ namespace WebApplication1.Configurations
                 .ForMember(dest => dest.PESEL, opt => opt.MapFrom(src => src.PersonalData.PESEL))
                 .ForMember(dest => dest.Birthday, opt => opt.MapFrom(src => src.PersonalData.Birthday))
                 .ForMember(dest => dest.Motherland, opt => opt.MapFrom(src => src.PersonalData.Motherland));
+        }
+
+        private void MapOutgoingStudents<S, T>()
+            where S : Student
+            where T : ToApiStudent
+        {
+            var map = CreateMap<S, T>();
+            MapPersonalDataOutside<S, T>(map);
+            MapCoursesToIds<S, T>(map);
+        }
+
+        private void MapCoursesToIds<S, T>(IMappingExpression<S, T> mapping)
+            where S : Student
+            where T : ToApiStudent
+        {
+            mapping
+                .ForMember(dest => dest.CoursesIds, opt => opt.MapFrom(src => src.Courses.Select(c => c.EntityCourseID.ToString())));
         }
     }
 }

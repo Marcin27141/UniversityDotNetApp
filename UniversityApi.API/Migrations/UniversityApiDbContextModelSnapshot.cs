@@ -66,15 +66,15 @@ namespace UniversityApi.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "92346aea-5fcd-4d68-ab3b-a1b21239bf58",
-                            ConcurrencyStamp = "84d5146f-85b4-47b3-8b53-010f4933202b",
+                            Id = "cb032d0b-cca2-4a20-8c17-b4c599345e03",
+                            ConcurrencyStamp = "85780104-cae0-4dfc-9bdd-baf55c000c96",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "e8545da7-86d6-4638-8b4c-3689cd854a4f",
-                            ConcurrencyStamp = "0d0d4d5e-8801-46e4-94b2-9d2b4caff29c",
+                            Id = "4467d9c1-61a5-4d5a-b9ef-ccf9dbbb1357",
+                            ConcurrencyStamp = "f0e2337a-9725-4de9-a6c0-a7a7e59f085e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -222,7 +222,7 @@ namespace UniversityApi.API.Migrations
                     b.HasData(
                         new
                         {
-                            EntityCourseID = new Guid("3ff0a2dc-0e6a-4a1e-8404-d495c1193c34"),
+                            EntityCourseID = new Guid("ac462fde-a21c-4dc9-b294-22b221034e3d"),
                             CourseCode = "C01",
                             ECTS = 2,
                             IsFinishedWithExam = false,
@@ -231,7 +231,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityCourseID = new Guid("2eaa21b8-3629-4890-91e5-e08bd6f0e466"),
+                            EntityCourseID = new Guid("6ec85534-e05d-4b89-a9d9-2f2990d72260"),
                             CourseCode = "C02",
                             ECTS = 3,
                             IsFinishedWithExam = true,
@@ -240,7 +240,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityCourseID = new Guid("1ee39cc1-83af-433d-91b0-273451b65e0c"),
+                            EntityCourseID = new Guid("8f269107-9346-4739-b0e8-1622cade77bb"),
                             CourseCode = "C03",
                             ECTS = 4,
                             IsFinishedWithExam = true,
@@ -255,8 +255,8 @@ namespace UniversityApi.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
@@ -374,53 +374,6 @@ namespace UniversityApi.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Professors", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            EntityPersonID = new Guid("5b787535-3514-462b-8f55-3d03af6ff059"),
-                            Birthday = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Danuta",
-                            LastName = "Dobrzycka",
-                            Motherland = "Poland",
-                            PESEL = "14444444444",
-                            PersonStatus = 0,
-                            SoftDeleted = false,
-                            FirstDayAtJob = new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IdCode = "11111",
-                            Salary = 10000,
-                            Subject = "Programming"
-                        },
-                        new
-                        {
-                            EntityPersonID = new Guid("23b23c60-6879-462d-a90e-25801c14e0b2"),
-                            Birthday = new DateTime(1999, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Eustachy",
-                            LastName = "Epoletnik",
-                            Motherland = "Poland",
-                            PESEL = "15555555555",
-                            PersonStatus = 0,
-                            SoftDeleted = false,
-                            FirstDayAtJob = new DateTime(2018, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IdCode = "22222",
-                            Salary = 9000,
-                            Subject = "Science"
-                        },
-                        new
-                        {
-                            EntityPersonID = new Guid("d5113967-eb87-466b-afea-75bb6268dc08"),
-                            Birthday = new DateTime(1998, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Filomena",
-                            LastName = "Fomicz",
-                            Motherland = "Poland",
-                            PESEL = "16666666666",
-                            PersonStatus = 0,
-                            SoftDeleted = false,
-                            FirstDayAtJob = new DateTime(2017, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IdCode = "33333",
-                            Salary = 8000,
-                            Subject = "Philosophy"
-                        });
                 });
 
             modelBuilder.Entity("UniversityApi.API.DataBase.Entities.EntityStudent", b =>
@@ -434,47 +387,6 @@ namespace UniversityApi.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Students", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            EntityPersonID = new Guid("9d090a5e-d330-447b-a1bc-6c70ead5d2c8"),
-                            Birthday = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Adam",
-                            LastName = "Adamczyk",
-                            Motherland = "Poland",
-                            PESEL = "01111111111",
-                            PersonStatus = 0,
-                            SoftDeleted = false,
-                            BeginningOfStudying = new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Index = "111111"
-                        },
-                        new
-                        {
-                            EntityPersonID = new Guid("b5d4d0be-f9db-4e5e-9ac0-cd2149ba83ce"),
-                            Birthday = new DateTime(1999, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Bartosz",
-                            LastName = "Bednarek",
-                            Motherland = "Poland",
-                            PESEL = "0222222222",
-                            PersonStatus = 0,
-                            SoftDeleted = false,
-                            BeginningOfStudying = new DateTime(2018, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Index = "222222"
-                        },
-                        new
-                        {
-                            EntityPersonID = new Guid("69abb32a-8371-4655-a50c-8bcb2c217c4a"),
-                            Birthday = new DateTime(1998, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Celina",
-                            LastName = "Czarna",
-                            Motherland = "Poland",
-                            PESEL = "03333333333",
-                            PersonStatus = 0,
-                            SoftDeleted = false,
-                            BeginningOfStudying = new DateTime(2017, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Index = "333333"
-                        });
                 });
 
             modelBuilder.Entity("EntityCourseEntityStudent", b =>

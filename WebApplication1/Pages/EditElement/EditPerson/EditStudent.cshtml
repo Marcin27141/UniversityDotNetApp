@@ -5,6 +5,8 @@
     ViewData["Title"] = "Edit Student";
 }
 
+<input type="hidden" asp-for="Student.EntityPersonID" />
+
 @await Html.PartialAsync("_PersonalDataPartial", Model.PersonalData)
 
 <div class="form-group">

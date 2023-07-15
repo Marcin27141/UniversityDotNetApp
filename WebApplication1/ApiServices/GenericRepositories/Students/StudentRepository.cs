@@ -45,18 +45,15 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
                 .ToList();
         }
 
-        public Task<Guid> UpdateStudentWithCoursesAsync(Student updatedStudent, IEnumerable<Guid> coursesIds)
+        public async Task<Guid> UpdateStudentWithCoursesAsync(Student updatedStudent, IEnumerable<Guid> coursesIds)
         {
-            //var postEntity = _mapper.Map<PostStudent>(updatedStudent);
-            //var serializedContent = GetSerializedContent(new
-            //{
-            //    Object1Serialized = GetSerializedContent(postEntity),
-            //    Object2Serialized = GetSerializedContent(anotherObject)
-            //};);
-            //string updatePath = $"{_apiPath}/Students/Courses/{updatedStudent.EntityPersonID}";
-            //var response = await _httpClient.PutAsync(updatePath, serializedContent);
-            //if (response.IsSuccessStatusCode)
-            //    return updatedEntity.EntityId;
+            var putEntity = _mapper.Map<PutStudent>(updatedStudent);
+            putEntity.CoursesIds = coursesIds.ToList();
+            var serializedContent = GetSerializedContent(putEntity);
+            string updatePath = $"{_apiPath}/{putEntity.EntityPersonID}";
+            var response = await _httpClient.PutAsync(updatePath, serializedContent);
+            if (response.IsSuccessStatusCode)
+                return putEntity.EntityPersonID;
             return default;
         }
     }

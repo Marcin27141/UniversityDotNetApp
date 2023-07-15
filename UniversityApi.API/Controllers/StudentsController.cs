@@ -68,10 +68,15 @@ namespace UniversityApi.API.Controllers
 
         // PUT: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut]
-        public async Task<IActionResult> PutStudent(PutStudent putStudent)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutStudent(Guid id, PutStudent putStudent)
         {
-            var student = await _repository.GetAsync(putStudent.EntityPersonID);
+            if (id != putStudent.EntityPersonID)
+            {
+                return BadRequest("Invalid Record id");
+            }
+
+            var student = await _repository.GetAsync(id);
             if (student == null)
             {
                 return NotFound();
@@ -81,7 +86,7 @@ namespace UniversityApi.API.Controllers
 
             try
             {
-                await _repository.UpdateAsync(student);
+                await _repository.UpdateWithCoursesAsync(student, putStudent.CoursesIds);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -97,38 +102,6 @@ namespace UniversityApi.API.Controllers
 
             return NoContent();
         }
-
-        // PUT: api/Students/Courses/
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        /*[HttpPut("Courses")]
-        public async Task<IActionResult> PutStudentWithCourses(PutStudent putStudent)
-        {
-            var student = await _repository.GetAsync(putStudent.EntityPersonID);
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(putStudent, student);
-
-            try
-            {
-                await _repository.UpdateWithCoursesAsync(student, coursesIds);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await EntityStudentExists(putStudent.EntityPersonID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }*/
 
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

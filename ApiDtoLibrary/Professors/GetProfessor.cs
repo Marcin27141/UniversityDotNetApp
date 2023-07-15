@@ -1,12 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ApiDtoLibrary.Person;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApiDtoLibrary.Professors
 {
     public class GetProfessor : BaseProfessor
     {
-        [Required]
-        [Display(Name = "Id")]
         public Guid EntityPersonID { get; set; }
+
+        public string ApplicationUserId { get; set; }
+
+        public PersonStatus PersonStatus { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "First day at job")]

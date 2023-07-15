@@ -1,13 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ApiDtoLibrary.Courses;
+using ApiDtoLibrary.Person;
 
 namespace ApiDtoLibrary.Students
 {
     public class FullStudent : BaseStudent
     {
-        [Required]
-        [Display(Name = "Id")]
-        public Guid EntityPersonID { get; set; }
+        public Guid EntityPersonId { get; set; }
+
+        public string ApplicationUserId { get; set; }
+
+        public PersonStatus PersonStatus { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "First day of studying")]

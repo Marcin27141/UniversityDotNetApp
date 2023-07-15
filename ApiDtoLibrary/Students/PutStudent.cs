@@ -3,7 +3,7 @@ using ApiDtoLibrary.Courses;
 
 namespace ApiDtoLibrary.Students
 {
-    public class PutStudent : BaseStudent
+    public class PutStudent : ToApiStudent
     {
         [Required]
         [Display(Name = "Id")]
@@ -12,7 +12,5 @@ namespace ApiDtoLibrary.Students
         [DataType(DataType.Date)]
         [Display(Name = "First day of studying")]
         public DateTime BeginningOfStudying { get; set; }
-
-        public List<FullCourse> Courses { get; set; }
     }
 }

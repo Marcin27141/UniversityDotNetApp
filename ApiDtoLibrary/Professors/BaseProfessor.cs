@@ -3,7 +3,7 @@ using ApiDtoLibrary.Person;
 
 namespace ApiDtoLibrary.Professors
 {
-    public class BaseProfessor : PostPersonDto
+    public class BaseProfessor : BasePersonDto
     {
         [Required]
         [RegularExpression(@"\d{5}", ErrorMessage = "ID must be 5 digits")]
