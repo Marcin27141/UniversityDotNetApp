@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ApiDtoLibrary.Professors
 {
-    public class GetProfessor : BaseProfessor
+    public class GetProfessor : BaseGetProfessor
     {
-        public Guid EntityPersonID { get; set; }
-
         public string ApplicationUserId { get; set; }
 
         public PersonStatus PersonStatus { get; set; }
+
+        public string Subject { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "First day at job")]

@@ -9,7 +9,5 @@ namespace ApiDtoLibrary.Professors
         [RegularExpression(@"\d{5}", ErrorMessage = "ID must be 5 digits")]
         [Display(Name = "Id code")]
         public string IdCode { get; set; }
-
-        public string Subject { get; set; }
     }
 }

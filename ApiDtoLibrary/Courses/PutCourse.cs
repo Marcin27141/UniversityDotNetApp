@@ -10,8 +10,13 @@ namespace ApiDtoLibrary.Courses
         [Display(Name = "Id")]
         public Guid EntityCourseID { get; set; }
 
-        public FullProfessor Professor { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public int ECTS { get; set; }
 
-        public List<FullStudent> EnrolledStudents { get; set; }
+        [Display(Name = "Is finished with exam?")]
+        public bool IsFinishedWithExam { get; set; }
+
+        public BaseProfessor Professor { get; set; }
     }
 }

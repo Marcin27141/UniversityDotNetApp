@@ -24,7 +24,7 @@ namespace UniversityApi.API.Configurations
         public AutoMapperConfig()
         {
             //Models/Courses
-            CreateMap<EntityCourse, FullCourse>().ReverseMap();
+            CreateMap<EntityCourse, BaseGetCourse>().ReverseMap();
             CreateMap<EntityCourse, GetCourse>().ReverseMap();
             CreateMap<EntityCourse, PostCourse>().ReverseMap();
             CreateMap<EntityCourse, PutCourse>().ReverseMap();
@@ -34,13 +34,13 @@ namespace UniversityApi.API.Configurations
             CreateMap<GetPersonDto, EntityPerson>().ReverseMap();
 
             //Models/Professors
-            CreateMap<EntityProfessor, FullProfessor>().ReverseMap();
+            CreateMap<EntityProfessor, BaseGetProfessor>().ReverseMap();
             CreateMap<EntityProfessor, GetProfessor>().ReverseMap();
             CreateMap<EntityProfessor, PostProfessor>().ReverseMap();
             CreateMap<EntityProfessor, PutProfessor>().ReverseMap();
 
             //Models/Students
-            CreateMap<EntityStudent, FullStudent>().ReverseMap();
+            CreateMap<EntityStudent, BaseGetStudent>().ReverseMap();
             CreateMap<EntityStudent, GetStudent>().ReverseMap();
             CreateMap<EntityStudent, PostStudent>().ReverseMap();
             CreateMap<EntityStudent, PutStudent>().ReverseMap();

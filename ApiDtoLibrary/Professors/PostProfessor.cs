@@ -11,6 +11,8 @@ namespace ApiDtoLibrary.Professors
 
         public PersonStatus PersonStatus { get; set; }
 
+        public string Subject { get; set; }
+
         [DataType(DataType.Date)]
         [Display(Name = "First day at job")]
         public DateTime FirstDayAtJob { get; set; }

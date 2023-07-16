@@ -28,7 +28,7 @@ namespace WebApplication1.Services
         [Display(Name="Is finished with exam?")]
         public bool IsFinishedWithExam { get; set; }
 
-        public List<Student> EnrolledStudents { get; set; }
+        public List<Student> Students { get; set; }
 
         public Guid EntityId => EntityCourseID;
 

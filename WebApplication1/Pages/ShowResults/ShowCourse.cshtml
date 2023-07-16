@@ -37,7 +37,7 @@
             Students enrolled
         </td>
         <td>
-            @Model.CourseToShow.EnrolledStudents.Count()
+            @Model.CourseToShow.Students.Count()
         </td>
     </tr>
     <tr>
@@ -76,7 +76,7 @@
 
 
 
-        @foreach (var student in Model.CourseToShow.EnrolledStudents)
+        @foreach (var student in Model.CourseToShow.Students)
         {
             <tr>
                 <td>

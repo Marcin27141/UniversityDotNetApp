@@ -18,7 +18,5 @@ namespace WebApplication1.Services.People
         public DateTime BeginningOfStudying { get; set; }
 
         public List<Course> Courses { get; set; }
-
-        public override string ToString() => PersonalData.ToString();
     }
 }

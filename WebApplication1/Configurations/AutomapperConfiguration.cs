@@ -16,7 +16,7 @@ namespace WebApplication1.Configurations
         public AutomapperConfiguration()
         {
             //Models/Courses
-            CreateMap<Course, FullCourse>().ReverseMap();
+            CreateMap<Course, BaseGetCourse>().ReverseMap();
             CreateMap<Course, GetCourse>().ReverseMap();
             CreateMap<Course, PostCourse>().ReverseMap();
             CreateMap<Course, PutCourse>().ReverseMap();
@@ -26,13 +26,13 @@ namespace WebApplication1.Configurations
             CreateInOutMapping<GetPersonDto, Person>();
 
             //Models/Professors
-            CreateInOutMapping<FullProfessor, Professor>();
+            CreateInOutMapping<BaseGetProfessor, Professor>();
             CreateInOutMapping<GetProfessor, Professor>();
             CreateInOutMapping<PostProfessor, Professor>();
             CreateInOutMapping<PutProfessor, Professor>();
 
             //Models/Students
-            CreateInOutMapping<FullStudent, Student>();
+            CreateInOutMapping<BaseGetStudent, Student>();
             CreateInOutMapping<GetStudent, Student>();
             MapOutgoingStudents<Student, PostStudent>();
             MapOutgoingStudents<Student, PutStudent>();

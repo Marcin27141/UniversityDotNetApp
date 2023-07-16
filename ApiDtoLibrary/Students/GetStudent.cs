@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ApiDtoLibrary.Students
 {
-    public class GetStudent : BaseStudent
+    public class GetStudent : BaseGetStudent
     {
-        public Guid EntityPersonID { get; set; }
-
         public string ApplicationUserId { get; set; }
 
         public PersonStatus PersonStatus { get; set; }
@@ -16,6 +14,6 @@ namespace ApiDtoLibrary.Students
         [Display(Name = "First day of studying")]
         public DateTime BeginningOfStudying { get; set; }
 
-        public List<GetCourse> Courses { get; set; }
+        public List<BaseGetCourse> Courses { get; set; }
     }
 }
