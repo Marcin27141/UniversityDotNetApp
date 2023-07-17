@@ -8,7 +8,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
 {
     public class CoursePostRepository : GenericPostRepository<Course, PostCourse, GetCourse>, IGenericPostRepository<Course, GetCourse>
     {
-        public CoursePostRepository(IMapper mapper) : base(mapper)
+        public CoursePostRepository(IMapper mapper, IAuthenticationRepository authenticationRepository) : base(mapper, authenticationRepository)
         {
             _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Course);
         }

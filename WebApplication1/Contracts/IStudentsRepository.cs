@@ -12,6 +12,7 @@ namespace UniversityApi.API.Contracts
     {
         List<Student> SortFilterStudents(StudentOrderByOptions orderByOption, StudentFilterByOptions filterByOption, string filter);
         Task RemoveStudentCourseAsync(Guid studentId, Guid courseId);
+        Task<Student> AddStudentWithCoursesAsync(Student updatedStudent, IEnumerable<Guid> coursesIds);
         Task<Guid> UpdateStudentWithCoursesAsync(Student updatedStudent, IEnumerable<Guid> coursesIds);
         Task<bool> IndexIsOccupied(string index);
     }

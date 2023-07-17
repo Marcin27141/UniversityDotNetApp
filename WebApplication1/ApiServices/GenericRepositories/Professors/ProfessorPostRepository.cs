@@ -13,12 +13,9 @@ namespace WebApplication1.ApiServices.GenericRepositories.Professors
 {
     public class ProfessorPostRepository : GenericPostRepository<Professor, PostProfessor, GetProfessor>, IGenericPostRepository<Professor, GetProfessor>
     {
-        private readonly IAuthenticationRepository _authenticationRepository;
-
-        public ProfessorPostRepository(IMapper mapper, IAuthenticationRepository authenticationRepository) : base(mapper)
+        public ProfessorPostRepository(IMapper mapper, IAuthenticationRepository authenticationRepository) : base(mapper, authenticationRepository)
         {
             _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Professor);
-            _authenticationRepository = authenticationRepository;
         }
 
         public override async Task<GetProfessor> AddAsync(Professor entity)
@@ -26,7 +23,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Professors
             var response = await base.AddAsync(entity);
 
             var entityPersonIdClaim = new Claim("EntityPersonId", response.EntityPersonID.ToString());
-            await _authenticationRepository.AddClaimAsync(response.ApplicationUserId, entityPersonIdClaim);
+            await base.AddClaimAfterPostAsync(response.EntityPersonID.ToString(), entityPersonIdClaim);
 
             return response;
         }

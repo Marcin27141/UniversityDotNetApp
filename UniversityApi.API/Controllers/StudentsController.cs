@@ -109,7 +109,7 @@ namespace UniversityApi.API.Controllers
         public async Task<ActionResult<EntityStudent>> PostStudent(PostStudent postStudent)
         {
             var student = _mapper.Map<EntityStudent>(postStudent);
-            await _repository.AddAsync(student);
+            await _repository.AddWithCoursesAsync(student, postStudent.CoursesIds);
             var getStudent = _mapper.Map<GetStudent>(student);
 
             return Ok(getStudent);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
@@ -40,5 +41,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
         public Task<T> GetByUserAsync(string userId) => _getRepository.GetByUserAsync(userId);
 
         public Task<Guid> UpdateAsync(T updatedEntity) => _putRepository.UpdateAsync(updatedEntity);
+
+        public Task AddClaimAfterPostAsync(string userId, Claim claim) => _postRepository.AddClaimAfterPostAsync(userId, claim);
     }
 }

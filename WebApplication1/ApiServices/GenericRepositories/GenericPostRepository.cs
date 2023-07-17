@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Azure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
@@ -14,8 +16,16 @@ namespace WebApplication1.ApiServices.GenericRepositories
         where T : IDistinguishableEntity
         where U : class
     {
-        protected GenericPostRepository(IMapper mapper) : base(mapper)
+        private readonly IAuthenticationRepository _authenticationRepository;
+
+        protected GenericPostRepository(IMapper mapper, IAuthenticationRepository authenticationRepository) : base(mapper)
         {
+            _authenticationRepository = authenticationRepository;
+        }
+
+        public async Task AddClaimAfterPostAsync(string userId, Claim claim)
+        {
+            await _authenticationRepository.AddClaimAsync(userId, claim);
         }
 
         public virtual async Task<V> AddAsync(T entity)

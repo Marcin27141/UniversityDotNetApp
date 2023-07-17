@@ -64,6 +64,9 @@ namespace WebApplication1
             //    .AsMatchingInterface()
             //    .WithScopedLifetime());
 
+            services.AddScoped<IAuthenticationRepository, LocalAuthenticationRepository>();
+            services.AddScoped<IUserRepository, LocalUserRepository>();
+
             services.Scan(scan =>
             {
                 scan.FromAssemblyOf<Startup>()
@@ -71,10 +74,7 @@ namespace WebApplication1
                     .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                     .AsImplementedInterfaces()
                     .WithScopedLifetime();
-            });
-
-            services.AddScoped<IAuthenticationRepository, LocalAuthenticationRepository>();
-            services.AddScoped<IUserRepository, LocalUserRepository>();
+            });            
 
             //services.AddScoped(typeof(IGenericGetRepository<>), typeof(GenericGetRepository<,>));
             //services.AddScoped(typeof(IGenericPostRepository<>), typeof(GenericPostRepository<,>));

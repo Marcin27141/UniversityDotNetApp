@@ -57,5 +57,16 @@ namespace UniversityApi.API.Repositories
         {
             return await _context.Set<EntityStudent>().AnyAsync(s => s.Index.Equals(index));
         }
+
+        public async Task<EntityStudent> AddWithCoursesAsync(EntityStudent createdStudent, IEnumerable<Guid> coursesIds)
+        {
+            var studentsCourses = coursesIds
+                .Select(id => _context.Courses.Find(id))
+                .ToList();
+            createdStudent.Courses = studentsCourses;
+            var result = await _context.AddAsync(createdStudent);
+            await _context.SaveChangesAsync();
+            return createdStudent;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -68,18 +69,16 @@ namespace WebApplication1.Pages
             if (!ModelState.IsValid)
                 return Page();
 
-            await AssignStudentProperties();
-            var addedEntity = await _studentsRepository.AddAsync(this.Student);
+            AssignStudentProperties();
+            var addedEntity = await _studentsRepository.AddStudentWithCoursesAsync(this.Student, SelectedCourses.Select(Guid.Parse));
             return RedirectToPage("/ShowResults/ShowStudent", new { id = addedEntity.EntityPersonID.ToString() });
         }
 
-        private async Task AssignStudentProperties()
+        private void AssignStudentProperties()
         {
             this.Student.PersonStatus = PersonStatus.Student;
             this.Student.ApplicationUserId = ApplicationUserId;
             this.Student.PersonalData = PersonalData;
-            var courses = await _coursesRepository.GetAllAsync();
-            this.Student.Courses = courses.Where(c => SelectedCourses.Contains(c.EntityCourseID.ToString())).ToList();
         }
     }
 }
