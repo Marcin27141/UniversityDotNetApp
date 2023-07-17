@@ -8,5 +8,8 @@ namespace ApiDtoLibrary.Courses
         [RegularExpression(@"[A-Z]\d{2}", ErrorMessage = "Course code must be a capital letter and two digits")]
         [Display(Name = "Course code")]
         public string CourseCode { get; set; }
+
+        [Required]
+        public string Name { get; set; }
     }
 }

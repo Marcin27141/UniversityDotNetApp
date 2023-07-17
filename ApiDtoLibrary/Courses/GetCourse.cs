@@ -6,8 +6,6 @@ namespace ApiDtoLibrary.Courses
 {
     public class GetCourse : BaseGetCourse
     {
-        [Required]
-        public string Name { get; set; }
         public int ECTS { get; set; }
 
         [Display(Name = "Is finished with exam?")]

@@ -10,8 +10,6 @@ namespace ApiDtoLibrary.Courses
         [Display(Name = "Id")]
         public Guid EntityCourseID { get; set; }
 
-        [Required]
-        public string Name { get; set; }
         public int ECTS { get; set; }
 
         [Display(Name = "Is finished with exam?")]
