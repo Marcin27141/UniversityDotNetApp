@@ -9,7 +9,7 @@ namespace WebApplication1.Contracts
 {
     public interface IUserRepository
     {
-        Task<List<ApplicationUser>> GetAllUsersAsync();
+        Task<List<ApplicationUser>> GetUnsetNonadminUsersAsync();
         Task<ApplicationUser> GetUserAsync(string id);
         bool IsSignedIn(ClaimsPrincipal user);
     }

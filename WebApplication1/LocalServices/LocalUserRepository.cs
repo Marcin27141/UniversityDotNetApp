@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ApiDtoLibrary.Person;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,22 +33,31 @@ namespace WebApplication1.LocalServices
             _signInManager = signInManager;
             _userManager = userManager;
         }
-        public async Task<List<ApplicationUser>> GetAllUsersAsync()
+        public async Task<List<ApplicationUser>> GetUnsetNonadminUsersAsync()
         {
             //var users = await _context.Users.ToListAsync();
             //return _mapper.Map<List<ApplicationUser>>(users);
 
             var users = await _context.Users.ToListAsync();
-            var nonAdminUsers = new List<WebAppUser>();
+            var result = new List<ApplicationUser>();
 
             foreach (var user in users)
             {
                 var userClaims = await _userManager.GetClaimsAsync(user);
+
                 var isAdmin = userClaims.Any(c => c.Type == "IsAdmin");
-                if (!isAdmin) nonAdminUsers.Add(user);
+                var isSet = userClaims.Any(c => c.Type == "EntityPersonId");
+                var status = userClaims.FirstOrDefault(c => c.Type == "Status").Value;
+
+                if (!isAdmin && !isSet)
+                {
+                    var applicationUser = _mapper.Map<ApplicationUser>(user);
+                    applicationUser.Status = Enum.Parse<PersonStatus>(status); // Assign the "Status" property
+                    result.Add(applicationUser);
+                }
             }
 
-            return _mapper.Map<List<ApplicationUser>>(nonAdminUsers);
+            return result;
         }
 
         public async Task<ApplicationUser> GetUserAsync(string id)

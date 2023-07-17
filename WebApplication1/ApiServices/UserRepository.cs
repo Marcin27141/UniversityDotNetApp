@@ -19,7 +19,7 @@ namespace WebApplication1.ApiServices
             _apiPath += "/Users";
         }
 
-        public async Task<List<ApplicationUser>> GetAllUsersAsync()
+        public async Task<List<ApplicationUser>> GetUnsetNonadminUsersAsync()
         {
             var response = await _httpClient.GetAsync(_apiPath);
             if (response.IsSuccessStatusCode)

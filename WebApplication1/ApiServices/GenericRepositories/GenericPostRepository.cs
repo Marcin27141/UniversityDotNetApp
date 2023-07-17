@@ -18,7 +18,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
         {
         }
 
-        public async Task<V> AddAsync(T entity)
+        public virtual async Task<V> AddAsync(T entity)
         {
             var postEntity = _mapper.Map<U>(entity);
             var serializedContent = GetSerializedContent(postEntity);

@@ -21,7 +21,7 @@ namespace UniversityApi.API.Repositories
             _signInManager = signInManager;
             _userManager = userManager;
         }
-        public async Task<List<ApiUser>> GetAllUsersAsync()
+        public async Task<List<ApiUser>> GetUnsetNonadminUsersAsync()
         {
             //return _context.Users.ToListAsync();
             var users = await _context.Users.ToListAsync();
@@ -30,8 +30,9 @@ namespace UniversityApi.API.Repositories
             foreach (var user in users)
             {
                 var userClaims = await _userManager.GetClaimsAsync(user);
-                var isAdmin = userClaims.Any(c => c.Type == "IsAdmin" && c.Value == "true");
-                if (!isAdmin) nonAdminUsers.Add(user);
+                var isAdmin = userClaims.Any(c => c.Type == "IsAdmin");
+                var isSet = userClaims.Any(c => c.Type == "EntityPersonId");
+                if (!isAdmin && !isSet) nonAdminUsers.Add(user);
             }
 
             return nonAdminUsers;

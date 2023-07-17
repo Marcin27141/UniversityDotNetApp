@@ -100,7 +100,7 @@ namespace WebApplication1.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
                     user.Id = await _authenticationRespository.GetIdByUsernameAsync(user.UserName);
 
-                    await AddNecessaryClaims(user);
+                    await AddNecessaryClaims(user.Id);
                     
                     var code = await _authenticationRespository.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -130,23 +130,23 @@ namespace WebApplication1.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private async Task AddNecessaryClaims(ApplicationUser user)
+        private async Task AddNecessaryClaims(string userId)
         {
             //Name claim
-            var nameClaim = new Claim(ClaimTypes.NameIdentifier, user.Id);
-            await _authenticationRespository.AddClaimAsync(user, nameClaim);
+            var nameClaim = new Claim(ClaimTypes.NameIdentifier, userId);
+            await _authenticationRespository.AddClaimAsync(userId, nameClaim);
 
             //IsAdmin claim
             if (Input.HasAdminRights)
             {
                 var adminClaim = new Claim("IsAdmin", Input.HasAdminRights.ToString());
-                await _authenticationRespository.AddClaimAsync(user, adminClaim);
+                await _authenticationRespository.AddClaimAsync(userId, adminClaim);
             }
 
             //Status claim {Admin/Student/Professor}
             var statusClaim = GetStatusString();
             if (statusClaim != null)
-                await _authenticationRespository.AddClaimAsync(user, new Claim("Status", statusClaim));
+                await _authenticationRespository.AddClaimAsync(userId, new Claim("Status", statusClaim));
         }
 
         private string GetStatusString()

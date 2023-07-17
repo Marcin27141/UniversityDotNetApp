@@ -22,9 +22,9 @@ namespace WebApplication1.LocalServices
             _signInManager = signInManager;
             _userManager = userManager;
         }
-        public async Task<IdentityResult> AddClaimAsync(ApplicationUser user, Claim claim)
+        public async Task<IdentityResult> AddClaimAsync(string userId, Claim claim)
         {
-            var appUser = await _userManager.FindByIdAsync(user.Id);
+            var appUser = await _userManager.FindByIdAsync(userId);
             return await _userManager.AddClaimAsync(appUser, claim);
         }
 

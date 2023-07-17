@@ -6,7 +6,7 @@ namespace UniversityApi.API.Contracts
 {
     public interface IUsersRepository
     {
-        Task<List<ApiUser>> GetAllUsersAsync();
+        Task<List<ApiUser>> GetUnsetNonadminUsersAsync();
         Task<ApiUser> GetUserAsync(string id);
         bool IsSignedIn(string id);
     }

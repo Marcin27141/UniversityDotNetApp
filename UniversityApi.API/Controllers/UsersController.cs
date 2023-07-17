@@ -23,7 +23,7 @@ namespace UniversityApi.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ApiUserDto>>> GetUsers()
         {
-            var users = await _repository.GetAllUsersAsync();
+            var users = await _repository.GetUnsetNonadminUsersAsync();
             var output = _mapper.Map<IEnumerable<ApiUserDto>>(users);
             return Ok(output);
         }

@@ -34,7 +34,7 @@ namespace WebApplication1.Pages.NewPerson
         public NewProfessorModel(IProfessorsRepository professorsRepository, IUserRepository userRepository) {
             _professorsRepository = professorsRepository;
             _userRepository = userRepository;
-            ApplicationUsers = _userRepository.GetAllUsersAsync().Result.Select(p => new SelectListItem() { Text = p.ToString() + ", " + p.Id, Value = p.Id });
+            ApplicationUsers = _userRepository.GetUnsetNonadminUsersAsync().Result.Where(u => u.Status == PersonStatus.Professor).Select(p => new SelectListItem() { Text = p.Email + ", " + p.Id, Value = p.Id });
         }
 
 

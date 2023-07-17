@@ -27,9 +27,9 @@ namespace WebApplication1.ApiServices
             _apiPath += "/Authentication";
         }
 
-        public async Task<IdentityResult> AddClaimAsync(ApplicationUser user, Claim claim)
+        public async Task<IdentityResult> AddClaimAsync(string userId, Claim claim)
         {
-            string path = $"{_apiPath}/Claims/{user.Id}";
+            string path = $"{_apiPath}/Claims/{userId}";
             var serializedClaim = GetSerializedContent(claim);
             var response = await _httpClient.PostAsync(path, serializedClaim);
             //var result = await response.Content.ReadFromJsonAsync<IdentityResult>(options);

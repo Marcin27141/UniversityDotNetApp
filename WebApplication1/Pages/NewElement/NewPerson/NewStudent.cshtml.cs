@@ -50,7 +50,7 @@ namespace WebApplication1.Pages
             _coursesRepository = coursesRepository;
             _userRepository = userRepository;
 
-            ApplicationUsers = _userRepository.GetAllUsersAsync().Result.Select(p => new SelectListItem() { Text = p.Email, Value = p.Id });
+            ApplicationUsers = _userRepository.GetUnsetNonadminUsersAsync().Result.Where(u => u.Status == PersonStatus.Student).Select(p => new SelectListItem() { Text = p.Email, Value = p.Id });
             var courses = _coursesRepository.GetAllAsync().Result;
             AvailableCourses = courses.Select(c => new SelectListItem() { Text = c.ToString(), Value = c.EntityCourseID.ToString() });
         }
