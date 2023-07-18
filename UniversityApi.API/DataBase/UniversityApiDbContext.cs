@@ -29,6 +29,9 @@ namespace UniversityApi.API.DataBase
             //modelBuilder.ApplyConfiguration(new StudentConfiguration());
             //modelBuilder.ApplyConfiguration(new ProfessorConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
+
+            modelBuilder.Entity<EntityPerson>().HasQueryFilter(pd => !pd.SoftDeleted);
+            modelBuilder.Entity<EntityCourse>().HasQueryFilter(c => !c.SoftDeleted);
         }
     }
 }

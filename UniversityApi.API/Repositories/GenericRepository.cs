@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
+using UniversityApi.API.DataBase.Entities;
 using UniversityApi.API.DataBase.Identity;
 
 namespace UniversityApi.API.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : SoftRemovableEntity
     {
         protected readonly UniversityApiDbContext _context;
         protected readonly UserManager<ApiUser> _userManager;
@@ -27,7 +28,8 @@ namespace UniversityApi.API.Repositories
         public async Task DeleteAsync(Guid id)
         {
             var entity = await GetAsync(id);
-            _context.Set<T>().Remove(entity);
+            //_context.Set<T>().Remove(entity);
+            entity.SoftDeleted = true;
             await _context.SaveChangesAsync();
         }
 

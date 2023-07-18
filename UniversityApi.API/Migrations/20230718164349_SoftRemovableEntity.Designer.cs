@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityApi.API.DataBase;
 
@@ -11,9 +12,11 @@ using UniversityApi.API.DataBase;
 namespace UniversityApi.API.Migrations
 {
     [DbContext(typeof(UniversityApiDbContext))]
-    partial class UniversityApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230718164349_SoftRemovableEntity")]
+    partial class SoftRemovableEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

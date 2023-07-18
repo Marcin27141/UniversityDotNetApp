@@ -2,7 +2,7 @@
 
 namespace UniversityApi.API.DataBase.Entities
 {
-    public abstract class EntityPerson
+    public abstract class EntityPerson : SoftRemovableEntity
     {
         public Guid EntityPersonID { get; set; }
         public Guid ApplicationUserId { get; set; }
@@ -12,7 +12,5 @@ namespace UniversityApi.API.DataBase.Entities
         public DateTime Birthday { get; set; }
         public string Motherland { get; set; }
         public PersonStatus PersonStatus { get; set; }
-
-        public bool SoftDeleted { get; set; }
     }
 }

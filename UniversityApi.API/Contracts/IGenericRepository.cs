@@ -1,6 +1,8 @@
-﻿namespace UniversityApi.API.Contracts
+﻿using UniversityApi.API.DataBase.Entities;
+
+namespace UniversityApi.API.Contracts
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : SoftRemovableEntity
     {
         Task<T> GetAsync(Guid id);
         Task<T> GetByUserAsync(string userId);
