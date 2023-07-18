@@ -8,6 +8,6 @@ namespace WebApplication1.Contracts
     public interface IGenericRepository<T, U> : IGenericGetRepository<T>, IGenericPostRepository<T, U>, IGenericPutRepository<T>
         where T : IDistinguishableEntity
     {
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(T entity);
     }
 }

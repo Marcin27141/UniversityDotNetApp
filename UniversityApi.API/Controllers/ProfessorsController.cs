@@ -1,7 +1,6 @@
 ﻿using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.Contracts;
@@ -113,7 +112,6 @@ namespace UniversityApi.API.Controllers
             return Ok(getProfessor);
         }
 
-        [Authorize(Roles = "Administrator")]
         // DELETE: api/Professors/someGuidValue
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEntityProfessor(Guid id)

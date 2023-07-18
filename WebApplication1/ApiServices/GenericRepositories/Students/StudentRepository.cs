@@ -17,7 +17,13 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
 {
     public class StudentRepository : GenericRepository<Student, GetStudent>, IStudentsRepository
     {
-        public StudentRepository(IMapper mapper, IGenericGetRepository<Student> getRepository, IGenericPostRepository<Student, GetStudent> postRepository, IGenericPutRepository<Student> putRepository) : base(mapper, getRepository, postRepository, putRepository)
+        public StudentRepository(
+            IMapper mapper,
+            IAuthenticationRepository authenticationRepository,
+            IGenericGetRepository<Student> getRepository,
+            IGenericPostRepository<Student, GetStudent> postRepository,
+            IGenericPutRepository<Student> putRepository
+            ) : base(mapper, authenticationRepository, getRepository, postRepository, putRepository)
         {
             _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Student);
         }
@@ -78,6 +84,12 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
             if (response.IsSuccessStatusCode)
                 return putEntity.EntityPersonID;
             return default;
+        }
+
+        public override async Task DeleteAsync(Student entity)
+        {
+            await base.DeleteAsync(entity);
+            await RemoveClaimAfterDeleteAsync(entity.ApplicationUserId, "EntityPersonId");     
         }
     }
 }

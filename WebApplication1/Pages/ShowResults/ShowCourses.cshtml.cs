@@ -25,7 +25,8 @@ namespace WebApplication1.Pages.ShowResults
 
         public async Task<IActionResult> OnGetDelete(Guid id)
         {
-            await _coursesRepository.DeleteAsync(id);
+            var course = await _coursesRepository.GetAsync(id);
+            await _coursesRepository.DeleteAsync(course);
             return RedirectToPage();
         }
     }

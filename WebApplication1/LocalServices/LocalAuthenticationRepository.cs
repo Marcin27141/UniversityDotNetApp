@@ -3,7 +3,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using WebApplication1.Contracts;
 using WebApplication1.Database;
@@ -59,6 +61,14 @@ namespace WebApplication1.LocalServices
         public Task<SignInResult> PasswordSignInAsync(ApplicationUser user, bool rememberMe, bool lockoutOnFailure)
         {
             return _signInManager.PasswordSignInAsync(user.Email, user.Password, rememberMe, lockoutOnFailure);
+        }
+
+        public async Task<IdentityResult> RemoveClaimAsync(string userId, string claimType)
+        {
+            var appUser = await _userManager.FindByIdAsync(userId);
+            var claims = await _userManager.GetClaimsAsync(appUser);
+            var claimToDelete = claims.FirstOrDefault(c => c.Type == claimType);
+            return await _userManager.RemoveClaimAsync(appUser, claimToDelete);
         }
 
         public async Task SignInAsync(ApplicationUser user, bool isPersistent)

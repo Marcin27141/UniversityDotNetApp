@@ -37,7 +37,8 @@ namespace WebApplication1.Pages.ShowResults
 
         public async Task<IActionResult> OnGetDelete(Guid id)
         {
-            await _peopleRepository.DeleteAsync(id);
+            var person = await _peopleRepository.GetPerson(id);
+            await _peopleRepository.DeleteAsync(person);
             return RedirectToPage();
         }
     }

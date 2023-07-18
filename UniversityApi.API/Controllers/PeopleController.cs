@@ -1,6 +1,5 @@
 ﻿using ApiDtoLibrary.Person;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using UniversityApi.API.Contracts;
@@ -19,6 +18,15 @@ namespace UniversityApi.API.Controllers
             _mapper = mapper;
         }
 
+        // GET: api/People/someGuidValue
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetPersonDto>> GetPerson(Guid id)
+        {
+            var person = await _repository.GetAsync(id);
+            var output = _mapper.Map<GetPersonDto>(person);
+            return Ok(output);
+        }
+
         // GET: api/People
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetPersonDto>>> GetPeople()
@@ -28,7 +36,6 @@ namespace UniversityApi.API.Controllers
             return Ok(output);
         }
 
-        [Authorize(Roles = "Administrator")]
         // DELETE: api/People/someGuidValue
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEntityPerson(Guid id)

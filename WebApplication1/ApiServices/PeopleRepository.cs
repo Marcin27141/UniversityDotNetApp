@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
@@ -13,9 +14,12 @@ namespace WebApplication1.ApiServices
 {
     public class PeopleRepository : ApiRepository, IPeopleRepository
     {
-        public PeopleRepository(IMapper mapper) : base(mapper)
+        private readonly IAuthenticationRepository _authenticationRepository;
+
+        public PeopleRepository(IMapper mapper, IAuthenticationRepository authenticationRepository) : base(mapper)
         {
             _apiPath += "/People";
+            _authenticationRepository = authenticationRepository;
         }
 
         public List<Person> GetAllPersonalData()
@@ -30,10 +34,24 @@ namespace WebApplication1.ApiServices
             return default;
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Person person)
         {
-            string deletePath = $"{_apiPath}/{id}";
+            string deletePath = $"{_apiPath}/{person.EntityPersonID}";
             await _httpClient.DeleteAsync(deletePath);
+            await _authenticationRepository.RemoveClaimAsync(person.ApplicationUserId, "EntityPersonId");
+        }
+
+        public async Task<Person> GetPerson(Guid id)
+        {
+            string getPath = $"{_apiPath}/{id}";
+            var response = await _httpClient.GetAsync(getPath);
+            if (response.IsSuccessStatusCode)
+            {
+                var getResult = await response.Content.ReadFromJsonAsync<GetPersonDto>();
+                var result = _mapper.Map<Person>(getResult);
+                return result;
+            }
+            return default;
         }
     }
 }

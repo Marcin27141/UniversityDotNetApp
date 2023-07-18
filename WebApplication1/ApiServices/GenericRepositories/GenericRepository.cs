@@ -12,15 +12,19 @@ namespace WebApplication1.ApiServices.GenericRepositories
     public abstract class GenericRepository<T, U> : ApiRepository, IGenericRepository<T,U>
         where T : IDistinguishableEntity
     {
+        private readonly IAuthenticationRepository _authenticationRepository;
         private readonly IGenericGetRepository<T> _getRepository;
         private readonly IGenericPostRepository<T, U> _postRepository;
         private readonly IGenericPutRepository<T> _putRepository;
 
-        protected GenericRepository(IMapper mapper,
+        protected GenericRepository(
+            IMapper mapper,
+            IAuthenticationRepository authenticationRepository,
             IGenericGetRepository<T> getRepository,
             IGenericPostRepository<T, U> postRepository,
             IGenericPutRepository<T> putRepository) : base(mapper)
         {
+            _authenticationRepository = authenticationRepository;
             _getRepository = getRepository;
             _postRepository = postRepository;
             _putRepository = putRepository;
@@ -28,9 +32,9 @@ namespace WebApplication1.ApiServices.GenericRepositories
 
         public Task<U> AddAsync(T entity) => _postRepository.AddAsync(entity);
 
-        public async Task DeleteAsync(Guid id)
+        public virtual async Task DeleteAsync(T entity)
         {
-            string deletePath = GetPathForDelete(id);
+            string deletePath = GetPathForDelete(entity.EntityId);
             await _httpClient.DeleteAsync(deletePath);
         }
 
@@ -43,5 +47,10 @@ namespace WebApplication1.ApiServices.GenericRepositories
         public Task<Guid> UpdateAsync(T updatedEntity) => _putRepository.UpdateAsync(updatedEntity);
 
         public Task AddClaimAfterPostAsync(string userId, Claim claim) => _postRepository.AddClaimAfterPostAsync(userId, claim);
+
+        public async Task RemoveClaimAfterDeleteAsync(string userId, string claimType)
+        {
+            await _authenticationRepository.RemoveClaimAsync(userId, claimType);
+        }
     }
 }

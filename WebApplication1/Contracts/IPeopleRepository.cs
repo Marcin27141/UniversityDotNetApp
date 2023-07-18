@@ -8,7 +8,8 @@ namespace WebApplication1.Contracts
 {
     public interface IPeopleRepository
     {
+        Task<Person> GetPerson(Guid id);
         List<Person> GetAllPersonalData();
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(Person person);
     }
 }

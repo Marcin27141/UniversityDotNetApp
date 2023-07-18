@@ -131,6 +131,11 @@ namespace WebApplication1.ApiServices
             return new ManualSignInResult(dto);
         }
 
+        public Task<IdentityResult> RemoveClaimAsync(string userId, string claimType)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
             string path = $"{_apiPath}/SignIn/{user.Id}/isPersistent={isPersistent}";
