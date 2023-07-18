@@ -34,7 +34,7 @@ namespace WebApplication1.Pages.NewPerson
         public NewProfessorModel(IProfessorsRepository professorsRepository, IUserRepository userRepository) {
             _professorsRepository = professorsRepository;
             _userRepository = userRepository;
-            ApplicationUsers = _userRepository.GetUnsetNonadminUsersAsync().Result.Where(u => u.Status == PersonStatus.Professor).Select(p => new SelectListItem() { Text = p.Email + ", " + p.Id, Value = p.Id });
+            ApplicationUsers = _userRepository.GetUnsetNonadminUsersAsync().Result.Where(u => u.Status == PersonStatus.Professor).Select(p => new SelectListItem() { Text = p.Email, Value = p.Id });
         }
 
 
@@ -46,7 +46,7 @@ namespace WebApplication1.Pages.NewPerson
         {
             if (await _professorsRepository.IdCodeIsOccupied(this.Professor.IdCode))
                 ModelState.AddModelError("Professor.IdCode", "Professor with given id is already added");
-            if (await _userRepository.GetUserAsync(ApplicationUserId) != null)
+            if (await _professorsRepository.GetByUserAsync(ApplicationUserId) != null)
                 ModelState.AddModelError("ApplicationUserId", "There already is a connected account");
             if (!ModelState.IsValid)
                 return Page();
