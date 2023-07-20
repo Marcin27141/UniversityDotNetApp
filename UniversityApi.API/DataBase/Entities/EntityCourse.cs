@@ -11,7 +11,6 @@
         //----------
         //relationships
 #nullable enable
-        public int? ProfessorID { get; set; }
         public EntityProfessor? Professor { get; set; }
 #nullable disable
 

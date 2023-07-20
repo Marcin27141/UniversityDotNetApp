@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
-using UniversityApi.API.DataBase.Identity;
 namespace UniversityApi.API.Configurations
 {
     public class AutoMapperConfig : Profile
@@ -26,8 +25,8 @@ namespace UniversityApi.API.Configurations
             //Models/Courses
             CreateMap<EntityCourse, BaseGetCourse>().ReverseMap();
             CreateMap<EntityCourse, GetCourse>().ReverseMap();
-            CreateMap<EntityCourse, PostCourse>().ReverseMap();
-            CreateMap<EntityCourse, PutCourse>().ReverseMap();
+            CreateMap<PostCourse, EntityCourse>();
+            CreateMap<PutCourse, EntityCourse>();
 
             //Models/People
             CreateMap<PostPersonDto, EntityPerson>().ReverseMap();
@@ -44,10 +43,6 @@ namespace UniversityApi.API.Configurations
             CreateMap<EntityStudent, GetStudent>().ReverseMap();
             CreateMap<EntityStudent, PostStudent>().ReverseMap();
             CreateMap<EntityStudent, PutStudent>().ReverseMap();
-
-            //Models/Users
-            CreateMap<ApiUserDto, ApiUser>().ReverseMap();
-            CreateMap<LoginDto, ApiUser>().ReverseMap();
 
             //Authentication
             CreateMap<SignInResultDto, SignInResult>().ReverseMap();

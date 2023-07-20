@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.DataBase.Configuration;
 using UniversityApi.API.DataBase.Entities;
-using UniversityApi.API.DataBase.Identity;
 
 namespace UniversityApi.API.DataBase
 {
-    public class UniversityApiDbContext : IdentityDbContext<ApiUser>
+    public class UniversityApiDbContext : DbContext
     {
         public UniversityApiDbContext(DbContextOptions options) : base(options)
         {
@@ -25,7 +23,6 @@ namespace UniversityApi.API.DataBase
             modelBuilder.Entity<EntityProfessor>()
                 .ToTable("Professors");
 
-            modelBuilder.ApplyConfiguration(new RoleConfiguration());
             //modelBuilder.ApplyConfiguration(new StudentConfiguration());
             //modelBuilder.ApplyConfiguration(new ProfessorConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
