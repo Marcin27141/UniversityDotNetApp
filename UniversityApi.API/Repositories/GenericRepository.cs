@@ -1,24 +1,20 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
-using UniversityApi.API.DataBase.Identity;
 
 namespace UniversityApi.API.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : SoftRemovableEntity
     {
         protected readonly UniversityApiDbContext _context;
-        protected readonly UserManager<ApiUser> _userManager;
 
-        public GenericRepository(UniversityApiDbContext dbContext, UserManager<ApiUser> userManager)
+        public GenericRepository(UniversityApiDbContext dbContext)
         {
             _context = dbContext;
-            _userManager = userManager;
         }
 
-        public async Task<T> AddAsync(T entity)
+        public virtual async Task<T> AddAsync(T entity)
         {
             var result = await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
@@ -47,14 +43,6 @@ namespace UniversityApi.API.Repositories
         public virtual async Task<T> GetAsync(Guid id)
         {
             return await _context.Set<T>().FindAsync(id);
-        }
-
-        public virtual async Task<T> GetByUserAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            var claims = await _userManager.GetClaimsAsync(user);
-            var entityPersonId = claims.FirstOrDefault(c => c.Type == "EntityPersonId")?.Value;
-            return await GetAsync(Guid.Parse(entityPersonId));
         }
 
         public virtual async Task UpdateAsync(T entity)

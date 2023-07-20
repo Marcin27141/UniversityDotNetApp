@@ -5,7 +5,6 @@ namespace UniversityApi.API.Contracts
     public interface IGenericRepository<T> where T : SoftRemovableEntity
     {
         Task<T> GetAsync(Guid id);
-        Task<T> GetByUserAsync(string userId);
         Task<List<T>> GetAllAsync();
         Task<T> AddAsync(T entity);
         Task DeleteAsync(Guid id);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiDtoLibrary.Students;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -22,10 +23,11 @@ namespace WebApplication1.Pages
 
         [BindProperty]
         public Course CreatedCourse { get; set; }
+#nullable enable
         //TODO error message for dropdown list
         [BindProperty]
-        [Required(ErrorMessage ="Please select a professor or create a new one")]
-        public string ProfessorId { get; set; }
+        public string? ProfessorId { get; set; }
+#nullable disable
         public IEnumerable<SelectListItem> CreatedProfessors { get; set; }
 
         public NewCourseModel(ICoursesRepository coursesRespository, IProfessorsRepository professorsRepository)
@@ -45,9 +47,9 @@ namespace WebApplication1.Pages
                 ModelState.AddModelError("CreatedCourse.CourseCode", "Course with given code is already added");
             if (!ModelState.IsValid)
                 return Page();
-            CreatedCourse.Professor = await _professorsRepository.GetAsync(Guid.Parse(ProfessorId));
+            if (ProfessorId != null) CreatedCourse.Professor = await _professorsRepository.GetAsync(Guid.Parse(ProfessorId));
             var addedEntity = await _coursesRespository.AddAsync(CreatedCourse);
-            return RedirectToPage("/ShowResults/ShowCourse", new { id = addedEntity.EntityCourseID });
+            return RedirectToPage("/ShowResults/ShowCourse", new { id = addedEntity.EntityCourseId });
         }                            
     }
 }

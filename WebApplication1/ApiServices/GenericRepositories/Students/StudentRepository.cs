@@ -79,10 +79,10 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
             var putEntity = _mapper.Map<PutStudent>(updatedStudent);
             putEntity.CoursesIds = coursesIds.ToList();
             var serializedContent = GetSerializedContent(putEntity);
-            string updatePath = $"{_apiPath}/{putEntity.EntityPersonID}";
+            string updatePath = $"{_apiPath}/{putEntity.EntityPersonId}";
             var response = await _httpClient.PutAsync(updatePath, serializedContent);
             if (response.IsSuccessStatusCode)
-                return putEntity.EntityPersonID;
+                return putEntity.EntityPersonId;
             return default;
         }
 

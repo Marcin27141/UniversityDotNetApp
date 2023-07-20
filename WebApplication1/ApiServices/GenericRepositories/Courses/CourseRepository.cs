@@ -26,7 +26,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
 
         public async Task<bool> CourseCodeIsOccupied(string courseCode)
         {
-            string checkCourseCodePath = $"{_apiPath}/CourseCode";
+            string checkCourseCodePath = $"{_apiPath}/CourseCode/{courseCode}";
             var response = await _httpClient.GetAsync(checkCourseCodePath);
             if (response.IsSuccessStatusCode)
             {

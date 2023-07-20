@@ -22,8 +22,8 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
         {
             var response = await base.AddAsync(entity);
 
-            var entityPersonIdClaim = new Claim("EntityPersonId", response.EntityPersonID.ToString());
-            await base.AddClaimAfterPostAsync(response.EntityPersonID.ToString(), entityPersonIdClaim);
+            var entityPersonIdClaim = new Claim("EntityPersonId", response.EntityPersonId.ToString());
+            await base.AddClaimAfterPostAsync(response.EntityPersonId.ToString(), entityPersonIdClaim);
 
             return response;
         }

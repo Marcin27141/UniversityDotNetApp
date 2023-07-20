@@ -8,6 +8,6 @@ namespace ApiDtoLibrary.Students
 {
     public class BaseGetStudent : BaseStudent
     {
-        public Guid EntityPersonID { get; set; }
+        public Guid EntityPersonId { get; set; }
     }
 }

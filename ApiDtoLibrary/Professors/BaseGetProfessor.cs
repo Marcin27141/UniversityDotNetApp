@@ -8,6 +8,6 @@ namespace ApiDtoLibrary.Professors
 {
     public class BaseGetProfessor : BaseProfessor
     {
-        public Guid EntityPersonID { get; set; }
+        public Guid EntityPersonId { get; set; }
     }
 }

@@ -12,6 +12,6 @@ namespace ApiDtoLibrary.Courses
     {
         [Required]
         [Display(Name = "Id")]
-        public Guid EntityCourseID { get; set; }
+        public Guid EntityCourseId { get; set; }
     }
 }

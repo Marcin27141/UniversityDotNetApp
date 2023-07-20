@@ -53,7 +53,7 @@ namespace WebApplication1.Pages.NewPerson
 
             AssingProfessorProperties();
             var addedEntity = await _professorsRepository.AddAsync(this.Professor);
-            return RedirectToPage("/ShowResults/ShowProfessor", new { id = addedEntity.EntityPersonID });
+            return RedirectToPage("/ShowResults/ShowProfessor", new { id = addedEntity.EntityPersonId });
         }
 
         private void AssingProfessorProperties()

@@ -47,7 +47,7 @@ namespace UniversityApi.API.Controllers
         }
 
         // GET: api/Courses/CourseCode/C01
-        [HttpGet("CousreCode/{courseCode}")]
+        [HttpGet("CourseCode/{courseCode}")]
         public async Task<ActionResult<GetCourse>> CheckIfCourseCodeOccupied(string courseCode)
         {
             return Ok(await _repository.CourseCodeIsOccupied(courseCode));
@@ -58,7 +58,7 @@ namespace UniversityApi.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEntityCourse(PutCourse putCourse)
         {
-            var course = await _repository.GetAsync(putCourse.EntityCourseID);
+            var course = await _repository.GetAsync(putCourse.EntityCourseId);
             if (course == null)
             {
                 return NotFound();
@@ -72,7 +72,7 @@ namespace UniversityApi.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await EntityCourseExists(putCourse.EntityCourseID))
+                if (!await EntityCourseExists(putCourse.EntityCourseId))
                 {
                     return NotFound();
                 }
@@ -91,7 +91,10 @@ namespace UniversityApi.API.Controllers
         public async Task<ActionResult<EntityCourse>> PostEntityCourse(PostCourse postCourse)
         {
             var course = _mapper.Map<EntityCourse>(postCourse);
-            await _repository.AddAsync(course);
+            if (postCourse.ProfessorId is null)
+                await _repository.AddAsync(course);
+            else
+                await _repository.AddWithProfessorId(course, postCourse.ProfessorId.Value);
             var getCourse = _mapper.Map<GetCourse>(course);
 
             return Ok(getCourse);

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -8,8 +7,6 @@ using System.Text;
 using UniversityApi.API.Configurations;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
-using UniversityApi.API.DataBase.Identity;
-using UniversityApi.API.Middleware;
 using UniversityApi.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,14 +19,6 @@ builder.Services.AddDbContext<UniversityApiDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
-builder.Services.AddIdentityCore<ApiUser>()
-    .AddRoles<IdentityRole>()
-    .AddTokenProvider<DataProtectorTokenProvider<ApiUser>>("UniversityApi")
-    .AddEntityFrameworkStores<UniversityApiDbContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddScoped<UserManager<ApiUser>>();
-builder.Services.AddScoped<SignInManager<ApiUser>>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
@@ -54,10 +43,6 @@ builder.Services.AddScoped<IPeopleRespository, PeopleRepository>();
 builder.Services.AddScoped<IProfessorsRepository, ProfessorsRepository>();
 builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
 builder.Services.AddScoped<ICoursesRepository, CoursesRepository>();
-
-builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
-builder.Services.AddScoped<IUsersRepository, UserRepository>();
-builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 builder.Services.AddAuthentication(options =>
 {

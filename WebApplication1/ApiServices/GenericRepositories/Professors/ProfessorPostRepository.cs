@@ -22,7 +22,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Professors
         {
             var response = await base.AddAsync(entity);
 
-            var entityPersonIdClaim = new Claim("EntityPersonId", response.EntityPersonID.ToString());
+            var entityPersonIdClaim = new Claim("EntityPersonId", response.EntityPersonId.ToString());
             await base.AddClaimAfterPostAsync(response.ApplicationUserId.ToString(), entityPersonIdClaim);
 
             return response;

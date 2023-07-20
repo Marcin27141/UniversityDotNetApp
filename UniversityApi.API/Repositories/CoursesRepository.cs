@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
-using UniversityApi.API.DataBase.Identity;
 
 namespace UniversityApi.API.Repositories
 {
     public class CoursesRepository : GenericRepository<EntityCourse>, ICoursesRepository
     {
-        public CoursesRepository(UniversityApiDbContext dbContext, UserManager<ApiUser> userManager) : base(dbContext, userManager)
+        public CoursesRepository(UniversityApiDbContext dbContext) : base(dbContext)
         {
         }
 
@@ -21,9 +19,11 @@ namespace UniversityApi.API.Repositories
                 .SingleOrDefaultAsync(c => c.EntityCourseID == id);
         }
 
-        public override Task<EntityCourse> GetByUserAsync(string id)
+        public override async Task<EntityCourse> AddAsync(EntityCourse entity)
         {
-            throw new System.InvalidOperationException();
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public override async Task<List<EntityCourse>> GetAllAsync()
@@ -37,6 +37,14 @@ namespace UniversityApi.API.Repositories
         public async Task<bool> CourseCodeIsOccupied(string courseCode)
         {
             return await _context.Set<EntityCourse>().AnyAsync(s => s.CourseCode.Equals(courseCode));
+        }
+
+        public async Task<EntityCourse> AddWithProfessorId(EntityCourse entity, Guid professorId)
+        {
+            entity.Professor = await _context.Set<EntityProfessor>().FindAsync(professorId);
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace ApiDtoLibrary.Professors
     {
         [Required]
         [Display(Name = "Id")]
-        public Guid EntityPersonID { get; set; }
+        public Guid EntityPersonId { get; set; }
 
         public string Subject { get; set; }
 

@@ -51,27 +51,12 @@ namespace UniversityApi.API.Controllers
             return Ok(await _repository.IndexIsOccupied(index));
         }
 
-        // GET: api/Students/ByUser/SomeUserId929304
-        [HttpGet("User/{id}")]
-        public async Task<ActionResult<GetStudent>> GetStudentByUser(string id)
-        {
-            var entityStudent = await _repository.GetByUserAsync(id);
-
-            if (entityStudent == null)
-            {
-                return NotFound();
-            }
-
-            var output = _mapper.Map<GetStudent>(entityStudent);
-            return output;
-        }
-
         // PUT: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStudent(Guid id, PutStudent putStudent)
         {
-            if (id != putStudent.EntityPersonID)
+            if (id != putStudent.EntityPersonId)
             {
                 return BadRequest("Invalid Record id");
             }
@@ -90,7 +75,7 @@ namespace UniversityApi.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await EntityStudentExists(putStudent.EntityPersonID))
+                if (!await EntityStudentExists(putStudent.EntityPersonId))
                 {
                     return NotFound();
                 }

@@ -18,8 +18,8 @@ namespace WebApplication1.Configurations
             //Models/Courses
             CreateMap<Course, BaseGetCourse>().ReverseMap();
             CreateMap<Course, GetCourse>().ReverseMap();
-            CreateMap<Course, PostCourse>().ReverseMap();
-            CreateMap<Course, PutCourse>().ReverseMap();
+            MapProfessorToId(CreateMap<Course, PostCourse>());
+            MapProfessorToId(CreateMap<Course, PutCourse>());
 
             //Models/People
             CreateInOutMapping<PostPersonDto, Person>();
@@ -94,6 +94,14 @@ namespace WebApplication1.Configurations
         {
             mapping
                 .ForMember(dest => dest.CoursesIds, opt => opt.MapFrom(src => src.Courses.Select(c => c.EntityCourseID.ToString())));
+        }
+
+        private void MapProfessorToId<S, T>(IMappingExpression<S, T> mapping)
+            where S : Course
+            where T : ToApiCourse
+        {
+            mapping
+                .ForMember(dest => dest.ProfessorId, opt => opt.MapFrom(src => src.Professor.EntityPersonID));
         }
     }
 }

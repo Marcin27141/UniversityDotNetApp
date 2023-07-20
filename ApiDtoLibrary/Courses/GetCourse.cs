@@ -11,8 +11,9 @@ namespace ApiDtoLibrary.Courses
         [Display(Name = "Is finished with exam?")]
         public bool IsFinishedWithExam { get; set; }
 
-        public BaseProfessor Professor { get; set; }
-
         public List<BaseGetStudent> Students { get; set; }
+
+#nullable enable
+        public BaseGetProfessor? Professor { get; set; }
     }
 }

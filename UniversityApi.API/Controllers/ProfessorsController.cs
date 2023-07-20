@@ -53,27 +53,12 @@ namespace UniversityApi.API.Controllers
             return Ok(await _repository.IdCodeIsOccupied(idCode));
         }
 
-        // GET: api/Professors/User/SomeUserId93850327
-        [HttpGet("User/{id}")]
-        public async Task<ActionResult<GetProfessor>> GetProfessorByUser(string id)
-        {
-            var entityProfessor = await _repository.GetByUserAsync(id);
-
-            if (entityProfessor == null)
-            {
-                return NotFound();
-            }
-
-            var output = _mapper.Map<GetProfessor>(entityProfessor);
-            return output;
-        }
-
         // PUT: api/Professors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfessor(PutProfessor putProfessor)
         {
-            var professor = await _repository.GetAsync(putProfessor.EntityPersonID);
+            var professor = await _repository.GetAsync(putProfessor.EntityPersonId);
             if (professor == null)
             {
                 return NotFound();
@@ -87,7 +72,7 @@ namespace UniversityApi.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await EntityProfessorExists(putProfessor.EntityPersonID))
+                if (!await EntityProfessorExists(putProfessor.EntityPersonId))
                 {
                     return NotFound();
                 }
