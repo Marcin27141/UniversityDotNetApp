@@ -68,7 +68,11 @@ namespace UniversityApi.API.Controllers
 
             try
             {
-                await _repository.UpdateAsync(course);
+                if (putCourse.ProfessorId.HasValue)
+                    await _repository.UpdateWithProfessorId(course, putCourse.ProfessorId.Value);
+                else
+                    course.Professor = null;
+                    await _repository.UpdateAsync(course);
             }
             catch (DbUpdateConcurrencyException)
             {

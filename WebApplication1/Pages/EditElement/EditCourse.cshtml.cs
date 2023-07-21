@@ -23,9 +23,10 @@ namespace WebApplication1.Pages.EditElement
         [BindProperty]
         public Course Course { get; set; }
 
+#nullable enable
         [BindProperty]
-        [Required(ErrorMessage = "Please select a professor or create a new one")]
-        public string ProfessorId { get; set; }
+        public string? ProfessorId { get; set; }
+#nullable disable
 
         public EditCourseModel(ICoursesRepository coursesRepository, IProfessorsRepository professorsRepository)
         {
@@ -37,7 +38,7 @@ namespace WebApplication1.Pages.EditElement
         public async Task OnGetAsync(Guid id)
         {
             Course = await _coursesRepository.GetAsync(id);
-            ProfessorId = Course?.Professor?.IdCode;
+            ProfessorId = Course?.Professor?.EntityPersonID.ToString();
         }
 
         public async Task<IActionResult> OnPost()
@@ -45,7 +46,7 @@ namespace WebApplication1.Pages.EditElement
             if (!ModelState.IsValid)
                 return Page();
 
-            this.Course.Professor = await _professorsRepository.GetAsync(Guid.Parse(ProfessorId));
+            if (ProfessorId != null) Course.Professor = await _professorsRepository.GetAsync(Guid.Parse(ProfessorId));
             var id = await _coursesRepository.UpdateAsync(this.Course);
             return RedirectToPage("/ShowResults/ShowCourse", new { id });
         }

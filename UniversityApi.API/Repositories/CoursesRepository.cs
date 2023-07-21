@@ -46,5 +46,13 @@ namespace UniversityApi.API.Repositories
             await _context.SaveChangesAsync();
             return entity;
         }
+
+        public async Task<EntityCourse> UpdateWithProfessorId(EntityCourse course, Guid professorId)
+        {
+            course.Professor = _context.Set<EntityProfessor>().Find(professorId);
+            _context.Update(course);
+            await _context.SaveChangesAsync();
+            return course;
+        }
     }
 }

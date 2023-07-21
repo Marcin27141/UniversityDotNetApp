@@ -5,6 +5,8 @@
     ViewData["Title"] = "Edit Course";
 }
 
+<input type="hidden" asp-for="Course.EntityCourseID" />
+
 <div class="form-group">
     <label asp-for="Course.Name"></label>
     <input class="form-control" asp-for="Course.Name" />
