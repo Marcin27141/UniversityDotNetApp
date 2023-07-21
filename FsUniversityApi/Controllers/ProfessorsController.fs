@@ -8,6 +8,7 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
 open FsUniversityApi
 open FsUniversityApi.Database.FsDbContext
+open FsUniversityApi.Database.Entities.Professor
 
 [<ApiController>]
 [<Route("[controller]")>]
@@ -17,4 +18,4 @@ type ProfessorsController (context : FsDbContext) =
 
     [<HttpGet>]
     member _.Get() =
-        _context.Professors
+        _context.Set<Professor>

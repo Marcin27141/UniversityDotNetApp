@@ -5,11 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Database\Entities\SoftRemovableEntity.fs" />
+    <Compile Include="Database\Entities\Person.fs" />
     <Compile Include="Database\Entities\Professor.fs" />
+    <Compile Include="Database\Entities\StudentAndCourse.fs" />
+    <Compile Include="Database\Entities\Course.fs" />
+    <Compile Include="Database\Entities\Student.fs" />
+    <Compile Include="Database\Configurations\PersonConfiguration.fs" />
     <Compile Include="Database\Configurations\ProfessorConfiguration.fs" />
+    <Compile Include="Database\Configurations\CourseConfiguration.fs" />
+    <Compile Include="Database\Configurations\StudentConfiguration.fs" />
     <Compile Include="Database\FsDbContext.fs" />
     <Compile Include="Controllers\ProfessorsController.fs" />
-    <Compile Include="Migrations\20230721141206_InitialMigration.fs" />
+    <Compile Include="Migrations\20230721204301_RemainingEntities.fs" />
     <Compile Include="Migrations\FsDbContextModelSnapshot.fs" />
     <Compile Include="Program.fs" />
 	  
@@ -23,6 +31,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApiDtoLibrary\ApiDtoLibrary.csproj" />
   </ItemGroup>
 
 </Project>

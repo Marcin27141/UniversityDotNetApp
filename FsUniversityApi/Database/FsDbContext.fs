@@ -2,9 +2,11 @@
 
 open Microsoft.EntityFrameworkCore
 open FsUniversityApi.Database.Entities.Professor
+open FsUniversityApi.Database.Entities.Person
+open FsUniversityApi.Database.Entities.Student
+open FsUniversityApi.Database.Entities.Course
 open FsUniversityApi.Database.Configurations
-open System.Linq
-open System
+open EntityFrameworkCore.FSharp.Extensions
 
 module FsDbContext =
 
@@ -12,12 +14,34 @@ module FsDbContext =
         inherit DbContext(options)
 
         [<DefaultValue>]
-        val mutable Professors : DbSet<Professor>
-        member public this._Professors  with    get()   = this.Professors 
-                                        and     set value  = this.Professors <- value
+        val mutable PeopleSet : DbSet<PersonInfo>
+        member public this.People   with get()   = this.PeopleSet 
+                                    and     set value  = this.PeopleSet <- value
+
+        [<DefaultValue>]
+        val mutable CoursesSet : DbSet<Course>
+        member public this.Courses  with    get()   = this.CoursesSet 
+                                    and     set value  = this.CoursesSet <- value
+
+        //[<DefaultValue>]
+        //val mutable StudentCourse : DbSet<CourseEnrollments>
+        //member public this.CourseEnrollments  with    get()   = this.StudentCourse 
+        //                                        and     set value  = this.StudentCourse <- value
 
         override this.OnModelCreating(modelBuilder : ModelBuilder) =
             base.OnModelCreating(modelBuilder)
-            modelBuilder.ApplyConfiguration(ProfessorConfiguration()) |> ignore
+
+            modelBuilder.Entity<Student>().ToTable("Students") |> ignore
+            modelBuilder.Entity<Professor>().ToTable("Professors") |> ignore
+
+            modelBuilder.RegisterOptionTypes()
+
+            modelBuilder.Entity<Professor>().HasOne(fun p -> p.PersonInfo).WithOne() |> ignore
+            modelBuilder.Entity<Student>().HasOne(fun s -> s.PersonInfo).WithOne() |> ignore
+
+            modelBuilder.ApplyConfiguration(PersonConfiguration()) |> ignore
+            //modelBuilder.ApplyConfiguration(ProfessorConfiguration()) |> ignore
+            modelBuilder.ApplyConfiguration(CourseConfiguration()) |> ignore
+            //modelBuilder.ApplyConfiguration(StudentConfiguration()) |> ignore
 
     
