@@ -38,7 +38,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
             await _httpClient.DeleteAsync(deletePath);
         }
 
-        protected virtual string GetPathForDelete(object entityId) => _apiPath;
+        protected virtual string GetPathForDelete(object entityId) => $"{_apiPath}/{entityId}";
 
         public Task<List<T>> GetAllAsync() => _getRepository.GetAllAsync();
         public Task<T> GetAsync(Guid id) => _getRepository.GetAsync(id);
