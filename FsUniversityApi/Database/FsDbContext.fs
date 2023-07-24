@@ -3,8 +3,7 @@
 open Microsoft.EntityFrameworkCore
 open FsUniversityApi.Database.Entities.Professor
 open FsUniversityApi.Database.Entities.Person
-open FsUniversityApi.Database.Entities.Student
-open FsUniversityApi.Database.Entities.Course
+open FsUniversityApi.Database.Entities.StudentAndCourse
 open FsUniversityApi.Database.Configurations
 open EntityFrameworkCore.FSharp.Extensions
 
@@ -39,9 +38,9 @@ module FsDbContext =
             modelBuilder.Entity<Professor>().HasOne(fun p -> p.PersonInfo).WithOne() |> ignore
             modelBuilder.Entity<Student>().HasOne(fun s -> s.PersonInfo).WithOne() |> ignore
 
-            modelBuilder.ApplyConfiguration(PersonConfiguration()) |> ignore
+            //modelBuilder.ApplyConfiguration(PersonConfiguration()) |> ignore
             //modelBuilder.ApplyConfiguration(ProfessorConfiguration()) |> ignore
-            modelBuilder.ApplyConfiguration(CourseConfiguration()) |> ignore
+            //modelBuilder.ApplyConfiguration(CourseConfiguration()) |> ignore
             //modelBuilder.ApplyConfiguration(StudentConfiguration()) |> ignore
 
     

@@ -1,9 +1,9 @@
 ﻿namespace FsUniversityApi.Database.Configurations
 
-open FsUniversityApi.Database.Entities.Student
-open Microsoft.EntityFrameworkCore
-open Microsoft.EntityFrameworkCore.Metadata.Builders
-open System
+//open FsUniversityApi.Database.Entities.Student
+//open Microsoft.EntityFrameworkCore
+//open Microsoft.EntityFrameworkCore.Metadata.Builders
+//open System
 
 //type StudentConfiguration() =
 //    let initialPersonInfo = PersonConfiguration.initialPersonInfos

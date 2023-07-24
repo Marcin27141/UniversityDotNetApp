@@ -10,8 +10,8 @@ open Microsoft.EntityFrameworkCore.Migrations
 open Microsoft.EntityFrameworkCore.Storage.ValueConversion
 
 [<DbContext(typeof<FsDbContext.FsDbContext>)>]
-[<Migration("20230721204301_RemainingEntities")>]
-type RemainingEntities() =
+[<Migration("20230724114243_pending")>]
+type pending() =
     inherit Migration()
 
     override this.Up(migrationBuilder:MigrationBuilder) =
@@ -194,26 +194,62 @@ type RemainingEntities() =
                 )
         ) |> ignore
 
-        migrationBuilder.InsertData(
-            table = "Courses",
-            columns = [| "CourseId"; "CourseCode"; "CourseName"; "ECTS"; "IsFinishedWithExam"; "SoftDeleted" |],
-            values = array2D [ [ Guid("752480f3-d89c-41f8-aec3-269755b18e68") :> obj; "C01" :> obj; "Java course" :> obj; 2 :> obj; false :> obj; false :> obj ]; [ Guid("919aaa3f-db4d-4888-a4a4-9dd75e8e5140") :> obj; "C02" :> obj; "Databases" :> obj; 4 :> obj; true :> obj; false :> obj ]; [ Guid("c17343d0-9c27-4492-8f06-18d14be7418a") :> obj; "C03" :> obj; "Algorithms" :> obj; 5 :> obj; true :> obj; false :> obj ] ]
+        migrationBuilder.CreateTable(
+            name = "CourseStudent"
+            ,columns = (fun table -> 
+            {|
+                CoursesCourseId =
+                    table.Column<Guid>(
+                        nullable = false
+                        ,``type`` = "uniqueidentifier"
+                    )
+                StudentsPersonInfoId =
+                    table.Column<Guid>(
+                        nullable = false
+                        ,``type`` = "uniqueidentifier"
+                    )
+            |})
+            , constraints =
+                (fun table -> 
+                    table.PrimaryKey("PK_CourseStudent", (fun x -> (x.CoursesCourseId, x.StudentsPersonInfoId) :> obj)
+                    ) |> ignore
+                    table.ForeignKey(
+                        name = "FK_CourseStudent_Courses_CoursesCourseId"
+                        ,column = (fun x -> (x.CoursesCourseId) :> obj)
+                        ,principalTable = "Courses"
+                        ,principalColumn = "CourseId"
+                        ,onDelete = ReferentialAction.Cascade
+                        ) |> ignore
+
+                    table.ForeignKey(
+                        name = "FK_CourseStudent_Students_StudentsPersonInfoId"
+                        ,column = (fun x -> (x.StudentsPersonInfoId) :> obj)
+                        ,principalTable = "Students"
+                        ,principalColumn = "PersonInfoId"
+                        ,onDelete = ReferentialAction.Cascade
+                        ) |> ignore
+
+                )
         ) |> ignore
 
-        migrationBuilder.InsertData(
-            table = "People",
-            columns = [| "PersonInfoId"; "ApplicationUserId"; "Birthday"; "FirstName"; "LastName"; "MotherLand"; "PESEL"; "PersonStatus"; "SoftDeleted" |],
-            values = array2D [ [ Guid("0bb05af6-6733-4d45-95f7-1ffa43fbc019") :> obj; Guid("2c46788e-bef0-44dc-b738-5499e8c9f409") :> obj; DateTime(1990, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) :> obj; "Celina" :> obj; "Domczyk" :> obj; "Poland" :> obj; "03333333333" :> obj; 2 :> obj; false :> obj ]; [ Guid("51a163c4-0aa4-4b18-b7ea-2972337675a5") :> obj; Guid("b4d0090b-846a-428b-b220-0fc03903a581") :> obj; DateTime(1980, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) :> obj; "Alan" :> obj; "Turner" :> obj; "USA" :> obj; "01111111111" :> obj; 2 :> obj; false :> obj ]; [ Guid("7be1963d-ac7c-4e42-9ff3-211407a19115") :> obj; Guid("f5d7ec13-dbd8-4de9-9f9c-b1a550814756") :> obj; DateTime(1999, 4, 23, 0, 0, 0, 0, DateTimeKind.Unspecified) :> obj; "Hans" :> obj; "Zammer" :> obj; "Germany" :> obj; "05555555555" :> obj; 1 :> obj; false :> obj ]; [ Guid("856aab27-535f-4531-8d46-317a05e18b07") :> obj; Guid("3b1a2509-1699-490c-8553-eafb0d36efd5") :> obj; DateTime(2000, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) :> obj; "Daniel" :> obj; "Danielczyk" :> obj; "Poland" :> obj; "04444444444" :> obj; 1 :> obj; false :> obj ]; [ Guid("9b8c7ee3-6223-4545-ad28-307b662e704b") :> obj; Guid("d5507b20-8bd2-434a-999a-d674812a3948") :> obj; DateTime(1975, 6, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) :> obj; "Bonnie" :> obj; "Clyde" :> obj; "USA" :> obj; "02222222222" :> obj; 2 :> obj; false :> obj ]; [ Guid("9f00a682-386b-49cc-9228-3b5e6f97d261") :> obj; Guid("96479ff8-cfd1-4c3f-840b-f36aacebd5c8") :> obj; DateTime(2001, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified) :> obj; "Juan" :> obj; "Garcia" :> obj; "Spain" :> obj; "06666666666" :> obj; 1 :> obj; false :> obj ] ]
-        ) |> ignore
+        migrationBuilder.CreateIndex(
+            name = "IX_CourseStudent_StudentsPersonInfoId"
+            ,table = "CourseStudent"
+            ,column = "StudentsPersonInfoId"
+            ) |> ignore
 
 
     override this.Down(migrationBuilder:MigrationBuilder) =
         migrationBuilder.DropTable(
-            name = "Courses"
+            name = "CourseStudent"
             ) |> ignore
 
         migrationBuilder.DropTable(
             name = "Professors"
+            ) |> ignore
+
+        migrationBuilder.DropTable(
+            name = "Courses"
             ) |> ignore
 
         migrationBuilder.DropTable(
@@ -230,51 +266,27 @@ type RemainingEntities() =
             .HasAnnotation("ProductVersion", "6.0.7")
             .HasAnnotation("Relational:MaxIdentifierLength", 128) |> ignore
 
-        modelBuilder.Entity("FsUniversityApi.Database.Entities.Course+Course", (fun b ->
+        modelBuilder.Entity("CourseStudent", (fun b ->
 
-            b.Property<Guid>("CourseId")
+            b.Property<Guid>("CoursesCourseId")
                 .IsRequired(true)
-                .ValueGeneratedOnAdd()
                 .HasColumnType("uniqueidentifier")
                 |> ignore
 
-            b.Property<string>("CourseCode")
+            b.Property<Guid>("StudentsPersonInfoId")
                 .IsRequired(true)
-                .HasColumnType("nvarchar(max)")
+                .HasColumnType("uniqueidentifier")
                 |> ignore
 
-            b.Property<string>("CourseName")
-                .IsRequired(true)
-                .HasColumnType("nvarchar(max)")
-                |> ignore
-
-            b.Property<int>("ECTS")
-                .IsRequired(true)
-                .HasColumnType("int")
-                |> ignore
-
-            b.Property<bool>("IsFinishedWithExam")
-                .IsRequired(true)
-                .HasColumnType("bit")
-                |> ignore
-
-            b.Property<bool>("SoftDeleted")
-                .IsRequired(true)
-                .HasColumnType("bit")
-                |> ignore
-
-            b.HasKey("CourseId")
+            b.HasKey("CoursesCourseId", "StudentsPersonInfoId")
                 |> ignore
 
 
-            b.ToTable("Courses") |> ignore
+            b.HasIndex("StudentsPersonInfoId")
+                |> ignore
 
+            b.ToTable("CourseStudent") |> ignore
 
-            b.HasData([|
-                {| CourseId = Guid("752480f3-d89c-41f8-aec3-269755b18e68"); CourseCode = "C01"; CourseName = "Java course"; ECTS = 2; IsFinishedWithExam = false; SoftDeleted = false |}
-                {| CourseId = Guid("919aaa3f-db4d-4888-a4a4-9dd75e8e5140"); CourseCode = "C02"; CourseName = "Databases"; ECTS = 4; IsFinishedWithExam = true; SoftDeleted = false |}
-                {| CourseId = Guid("c17343d0-9c27-4492-8f06-18d14be7418a"); CourseCode = "C03"; CourseName = "Algorithms"; ECTS = 5; IsFinishedWithExam = true; SoftDeleted = false |}
-             |]) |> ignore
         )) |> ignore
 
         modelBuilder.Entity("FsUniversityApi.Database.Entities.Person+PersonInfo", (fun b ->
@@ -331,15 +343,6 @@ type RemainingEntities() =
 
             b.ToTable("People") |> ignore
 
-
-            b.HasData([|
-                {| PersonInfoId = Guid("51a163c4-0aa4-4b18-b7ea-2972337675a5"); ApplicationUserId = Guid("b4d0090b-846a-428b-b220-0fc03903a581"); Birthday = DateTime(1980, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Alan"; LastName = "Turner"; MotherLand = "USA"; PESEL = "01111111111"; PersonStatus = 2; SoftDeleted = false |}
-                {| PersonInfoId = Guid("9b8c7ee3-6223-4545-ad28-307b662e704b"); ApplicationUserId = Guid("d5507b20-8bd2-434a-999a-d674812a3948"); Birthday = DateTime(1975, 6, 4, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Bonnie"; LastName = "Clyde"; MotherLand = "USA"; PESEL = "02222222222"; PersonStatus = 2; SoftDeleted = false |}
-                {| PersonInfoId = Guid("0bb05af6-6733-4d45-95f7-1ffa43fbc019"); ApplicationUserId = Guid("2c46788e-bef0-44dc-b738-5499e8c9f409"); Birthday = DateTime(1990, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Celina"; LastName = "Domczyk"; MotherLand = "Poland"; PESEL = "03333333333"; PersonStatus = 2; SoftDeleted = false |}
-                {| PersonInfoId = Guid("856aab27-535f-4531-8d46-317a05e18b07"); ApplicationUserId = Guid("3b1a2509-1699-490c-8553-eafb0d36efd5"); Birthday = DateTime(2000, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Daniel"; LastName = "Danielczyk"; MotherLand = "Poland"; PESEL = "04444444444"; PersonStatus = 1; SoftDeleted = false |}
-                {| PersonInfoId = Guid("7be1963d-ac7c-4e42-9ff3-211407a19115"); ApplicationUserId = Guid("f5d7ec13-dbd8-4de9-9f9c-b1a550814756"); Birthday = DateTime(1999, 4, 23, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Hans"; LastName = "Zammer"; MotherLand = "Germany"; PESEL = "05555555555"; PersonStatus = 1; SoftDeleted = false |}
-                {| PersonInfoId = Guid("9f00a682-386b-49cc-9228-3b5e6f97d261"); ApplicationUserId = Guid("96479ff8-cfd1-4c3f-840b-f36aacebd5c8"); Birthday = DateTime(2001, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Juan"; LastName = "Garcia"; MotherLand = "Spain"; PESEL = "06666666666"; PersonStatus = 1; SoftDeleted = false |}
-             |]) |> ignore
         )) |> ignore
 
         modelBuilder.Entity("FsUniversityApi.Database.Entities.Professor+Professor", (fun b ->
@@ -377,7 +380,48 @@ type RemainingEntities() =
 
         )) |> ignore
 
-        modelBuilder.Entity("FsUniversityApi.Database.Entities.Student+Student", (fun b ->
+        modelBuilder.Entity("FsUniversityApi.Database.Entities.StudentAndCourse+Course", (fun b ->
+
+            b.Property<Guid>("CourseId")
+                .IsRequired(true)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("uniqueidentifier")
+                |> ignore
+
+            b.Property<string>("CourseCode")
+                .IsRequired(true)
+                .HasColumnType("nvarchar(max)")
+                |> ignore
+
+            b.Property<string>("CourseName")
+                .IsRequired(true)
+                .HasColumnType("nvarchar(max)")
+                |> ignore
+
+            b.Property<int>("ECTS")
+                .IsRequired(true)
+                .HasColumnType("int")
+                |> ignore
+
+            b.Property<bool>("IsFinishedWithExam")
+                .IsRequired(true)
+                .HasColumnType("bit")
+                |> ignore
+
+            b.Property<bool>("SoftDeleted")
+                .IsRequired(true)
+                .HasColumnType("bit")
+                |> ignore
+
+            b.HasKey("CourseId")
+                |> ignore
+
+
+            b.ToTable("Courses") |> ignore
+
+        )) |> ignore
+
+        modelBuilder.Entity("FsUniversityApi.Database.Entities.StudentAndCourse+Student", (fun b ->
 
             b.Property<Guid>("PersonInfoId")
                 .IsRequired(true)
@@ -401,6 +445,21 @@ type RemainingEntities() =
             b.ToTable("Students") |> ignore
 
         )) |> ignore
+        modelBuilder.Entity("CourseStudent", (fun b ->
+            b.HasOne("FsUniversityApi.Database.Entities.StudentAndCourse+Course", null)
+                .WithMany()
+                .HasForeignKey("CoursesCourseId")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired()
+                |> ignore
+            b.HasOne("FsUniversityApi.Database.Entities.StudentAndCourse+Student", null)
+                .WithMany()
+                .HasForeignKey("StudentsPersonInfoId")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired()
+                |> ignore
+
+        )) |> ignore
         modelBuilder.Entity("FsUniversityApi.Database.Entities.Professor+Professor", (fun b ->
             b.HasOne("FsUniversityApi.Database.Entities.Person+PersonInfo", "PersonInfo")
                 .WithOne()
@@ -410,10 +469,10 @@ type RemainingEntities() =
                 |> ignore
 
         )) |> ignore
-        modelBuilder.Entity("FsUniversityApi.Database.Entities.Student+Student", (fun b ->
+        modelBuilder.Entity("FsUniversityApi.Database.Entities.StudentAndCourse+Student", (fun b ->
             b.HasOne("FsUniversityApi.Database.Entities.Person+PersonInfo", "PersonInfo")
                 .WithOne()
-                .HasForeignKey("FsUniversityApi.Database.Entities.Student+Student", "PersonInfoId")
+                .HasForeignKey("FsUniversityApi.Database.Entities.StudentAndCourse+Student", "PersonInfoId")
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired()
                 |> ignore
