@@ -2,16 +2,16 @@
 
 open Microsoft.AspNetCore.Mvc
 open FsUniversityApi.Database.FsDbContext
-open FsUniversityApi.Database.Entities.Professor
+open FsUniversityApi.Database.Entities.StudentAndCourse
 open Microsoft.EntityFrameworkCore
 
 
 [<ApiController>]
 [<Route("[controller]")>]
-type ProfessorsController (context : FsDbContext) =
+type CoursesController (context : FsDbContext) =
     inherit ControllerBase()
     let _context = context
 
     [<HttpGet>]
     member _.Get() =
-        _context.Set<Professor>().Include(fun p -> p.PersonInfo).ToListAsync()
+        _context.Set<Course>().Include(fun c -> c.Students).ToListAsync()

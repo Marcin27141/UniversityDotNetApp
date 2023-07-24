@@ -25,9 +25,11 @@ module StudentAndCourse =
             SoftDeleted : bool
 
             Students: Student ResizeArray
+            Professor : Professor
         }
         interface ISoftRemovableEntity with
             member x.SoftDeleted = x.SoftDeleted
+            member x.SetSoftDeleted flag = { x with SoftDeleted = flag }
     and [<CLIMutable>] Student =
         {
             [<Key>]
@@ -42,4 +44,7 @@ module StudentAndCourse =
             Courses : Course ResizeArray
         }
         interface IPerson with
-                member x.PersonInfo = x.PersonInfo
+            member x.PersonInfo = x.PersonInfo
+        interface ISoftRemovableEntity with
+            member x.SoftDeleted = x.PersonInfo.SoftDeleted
+            member x.SetSoftDeleted flag = { x with PersonInfo = { x.PersonInfo with SoftDeleted = flag } }

@@ -31,6 +31,7 @@ module Person =
         }
         interface ISoftRemovableEntity with
             member x.SoftDeleted = x.SoftDeleted
+            member x.SetSoftDeleted flag = { x with SoftDeleted = flag }
 
     type IPerson = 
         abstract PersonInfo : PersonInfo

@@ -3,6 +3,7 @@
 open System.ComponentModel.DataAnnotations
 open System
 open Person
+open FsUniversityApi.Database.Entities.ISoftRemovableEntity
 
 module Professor = 
     [<CLIMutable>]
@@ -23,4 +24,7 @@ module Professor =
             }
             interface IPerson with
                 member x.PersonInfo = x.PersonInfo
+            interface ISoftRemovableEntity with
+                member x.SoftDeleted = x.PersonInfo.SoftDeleted
+                member x.SetSoftDeleted flag = { x with PersonInfo = { x.PersonInfo with SoftDeleted = flag } }
                 
