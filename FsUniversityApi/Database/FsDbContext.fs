@@ -22,11 +22,6 @@ module FsDbContext =
         member public this.Courses  with    get()   = this.CoursesSet 
                                     and     set value  = this.CoursesSet <- value
 
-        //[<DefaultValue>]
-        //val mutable StudentCourse : DbSet<CourseEnrollments>
-        //member public this.CourseEnrollments  with    get()   = this.StudentCourse 
-        //                                        and     set value  = this.StudentCourse <- value
-
         override this.OnModelCreating(modelBuilder : ModelBuilder) =
             base.OnModelCreating(modelBuilder)
 
@@ -36,11 +31,9 @@ module FsDbContext =
             modelBuilder.RegisterOptionTypes()
 
             modelBuilder.Entity<Professor>().HasOne(fun p -> p.PersonInfo).WithOne() |> ignore
-            modelBuilder.Entity<Student>().HasOne(fun s -> s.PersonInfo).WithOne() |> ignore
+            modelBuilder.Entity<Student>().HasOne(fun s -> s.PersonInfo).WithOne()|> ignore
 
-            //modelBuilder.ApplyConfiguration(PersonConfiguration()) |> ignore
-            //modelBuilder.ApplyConfiguration(ProfessorConfiguration()) |> ignore
-            //modelBuilder.ApplyConfiguration(CourseConfiguration()) |> ignore
-            //modelBuilder.ApplyConfiguration(StudentConfiguration()) |> ignore
+            modelBuilder.ApplyConfiguration(PersonConfiguration()) |> ignore
+            modelBuilder.ApplyConfiguration(CourseConfiguration()) |> ignore
 
     

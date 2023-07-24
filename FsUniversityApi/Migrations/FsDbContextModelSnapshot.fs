@@ -95,6 +95,15 @@ type FsDbContextModelSnapshot() =
 
             b.ToTable("People") |> ignore
 
+
+            b.HasData([|
+                {| PersonInfoId = Guid("81ec5919-4e8c-4c77-8c46-b8daa77174c6"); ApplicationUserId = Guid("e6284d25-f8c2-46bc-abc5-8a7fb1498b77"); Birthday = DateTime(1980, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Alan"; LastName = "Turner"; MotherLand = "USA"; PESEL = "01111111111"; PersonStatus = 2; SoftDeleted = false |}
+                {| PersonInfoId = Guid("723dd56d-5282-4e21-b4c2-d04acd597318"); ApplicationUserId = Guid("583ff3bf-746a-4b78-8834-aab5d6d159d5"); Birthday = DateTime(1975, 6, 4, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Bonnie"; LastName = "Clyde"; MotherLand = "USA"; PESEL = "02222222222"; PersonStatus = 2; SoftDeleted = false |}
+                {| PersonInfoId = Guid("98e38a1a-38ac-43df-8fcc-656619395e1d"); ApplicationUserId = Guid("865e4bfa-3948-4aec-a2d4-6a59a32c2c6b"); Birthday = DateTime(1990, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Celina"; LastName = "Domczyk"; MotherLand = "Poland"; PESEL = "03333333333"; PersonStatus = 2; SoftDeleted = false |}
+                {| PersonInfoId = Guid("dc2214aa-9fcb-4c1d-a874-0185d8587cc0"); ApplicationUserId = Guid("b43a7bfc-0dba-4885-90f2-131ae5e2a7c4"); Birthday = DateTime(2000, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Daniel"; LastName = "Danielczyk"; MotherLand = "Poland"; PESEL = "04444444444"; PersonStatus = 1; SoftDeleted = false |}
+                {| PersonInfoId = Guid("ef67d8e3-4b56-47ce-a36f-d3e41e264cc7"); ApplicationUserId = Guid("8a94f47b-465e-4ee7-975a-588f3fd4bcda"); Birthday = DateTime(1999, 4, 23, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Hans"; LastName = "Zammer"; MotherLand = "Germany"; PESEL = "05555555555"; PersonStatus = 1; SoftDeleted = false |}
+                {| PersonInfoId = Guid("05b15fa0-f987-484b-8c14-41c6402c5fcd"); ApplicationUserId = Guid("751fc2a2-16fb-4e58-b8ed-42e202a28d5b"); Birthday = DateTime(2001, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified); FirstName = "Juan"; LastName = "Garcia"; MotherLand = "Spain"; PESEL = "06666666666"; PersonStatus = 1; SoftDeleted = false |}
+             |]) |> ignore
         )) |> ignore
 
         modelBuilder.Entity("FsUniversityApi.Database.Entities.Professor+Professor", (fun b ->
@@ -171,6 +180,12 @@ type FsDbContextModelSnapshot() =
 
             b.ToTable("Courses") |> ignore
 
+
+            b.HasData([|
+                {| CourseId = Guid("e799209f-9706-4ee2-8141-bf0ea6bd12c9"); CourseCode = "C01"; CourseName = "Java course"; ECTS = 2; IsFinishedWithExam = false; SoftDeleted = false |}
+                {| CourseId = Guid("fc4c9961-bf83-45b7-9d0c-69da9d86cfe0"); CourseCode = "C02"; CourseName = "Databases"; ECTS = 4; IsFinishedWithExam = true; SoftDeleted = false |}
+                {| CourseId = Guid("f877bd95-b5a5-4270-9176-8dc6f9d1830e"); CourseCode = "C03"; CourseName = "Algorithms"; ECTS = 5; IsFinishedWithExam = true; SoftDeleted = false |}
+             |]) |> ignore
         )) |> ignore
 
         modelBuilder.Entity("FsUniversityApi.Database.Entities.StudentAndCourse+Student", (fun b ->

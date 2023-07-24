@@ -17,7 +17,7 @@
     <Compile Include="Database\Configurations\StudentConfiguration.fs" />
     <Compile Include="Database\FsDbContext.fs" />
     <Compile Include="Controllers\ProfessorsController.fs" />
-    <Compile Include="Migrations\20230724114243_pending.fs" />
+    <Compile Include="Migrations\20230724120341_AddedSeeding.fs" />
     <Compile Include="Migrations\FsDbContextModelSnapshot.fs" />
     <Compile Include="Program.fs" />
 	  
