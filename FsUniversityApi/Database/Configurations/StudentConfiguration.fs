@@ -1,6 +1,6 @@
 ﻿namespace FsUniversityApi.Database.Configurations
 
-open FsUniversityApi.Database.Entities.StudentAndCourse
+open FsUniversityApi.Database.Entities.StudentCourseProfessor
 open Microsoft.EntityFrameworkCore
 open Microsoft.EntityFrameworkCore.Metadata.Builders
 open System

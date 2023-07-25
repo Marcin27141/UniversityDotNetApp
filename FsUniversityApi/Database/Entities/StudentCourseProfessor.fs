@@ -2,12 +2,11 @@
 
 open System.ComponentModel.DataAnnotations
 open System
-open FsUniversityApi.Database.Entities.Professor
 open ISoftRemovableEntity
 open System.ComponentModel.DataAnnotations.Schema
 open Person
 
-module StudentAndCourse =
+module StudentCourseProfessor =
     [<CLIMutable>]
     type Course =
         {
@@ -25,7 +24,7 @@ module StudentAndCourse =
             SoftDeleted : bool
 
             Students: Student ResizeArray
-            Professor : Professor
+            Professors: Professor ResizeArray
         }
         interface ISoftRemovableEntity with
             member x.SoftDeleted = x.SoftDeleted
@@ -48,3 +47,25 @@ module StudentAndCourse =
         interface ISoftRemovableEntity with
             member x.SoftDeleted = x.PersonInfo.SoftDeleted
             member x.SetSoftDeleted flag = { x with PersonInfo = { x.PersonInfo with SoftDeleted = flag } }
+    and [<CLIMutable>] Professor =
+            {
+                [<Key>]
+                PersonInfoId : Guid
+                PersonInfo : PersonInfo
+
+                [<Required>]
+                IdCode : string
+
+                [<Required>]
+                Subject : string
+
+                FirstDayAtJob : DateTime
+                Salary : int
+
+                Courses: Course ResizeArray
+            }
+            interface IPerson with
+                member x.PersonInfo = x.PersonInfo
+            interface ISoftRemovableEntity with
+                member x.SoftDeleted = x.PersonInfo.SoftDeleted
+                member x.SetSoftDeleted flag = { x with PersonInfo = { x.PersonInfo with SoftDeleted = flag } }

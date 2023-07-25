@@ -1,15 +1,16 @@
 ﻿namespace FsUniversityApi.Database.Configurations
 
-open FsUniversityApi.Database.Entities.StudentAndCourse
+open FsUniversityApi.Database.Entities.StudentCourseProfessor
 open Microsoft.EntityFrameworkCore
 open Microsoft.EntityFrameworkCore.Metadata.Builders
 open System
 
 type CourseConfiguration() =
+    let initialPersonInfo = PersonConfiguration.initialPersonInfos
     interface IEntityTypeConfiguration<Course> with
         member this.Configure(builder : EntityTypeBuilder<Course>) =
             builder.HasData(
-                { CourseId = Guid.NewGuid(); CourseCode = "C01"; CourseName = "Java course"; IsFinishedWithExam = false; ECTS = 2; SoftDeleted = false; Students = ResizeArray<Student>() },
-                { CourseId = Guid.NewGuid(); CourseCode = "C02"; CourseName = "Databases"; IsFinishedWithExam = true; ECTS = 4; SoftDeleted = false; Students = ResizeArray<Student>() },
-                { CourseId = Guid.NewGuid(); CourseCode = "C03"; CourseName = "Algorithms"; IsFinishedWithExam = true; ECTS = 5; SoftDeleted = false; Students = ResizeArray<Student>() }
+                { CourseId = Guid.NewGuid(); CourseCode = "C01"; CourseName = "Java course"; IsFinishedWithExam = false; ECTS = 2; SoftDeleted = false; Students = ResizeArray<Student>(); Professors = ResizeArray() },
+                { CourseId = Guid.NewGuid(); CourseCode = "C02"; CourseName = "Databases"; IsFinishedWithExam = true; ECTS = 4; SoftDeleted = false; Students = ResizeArray<Student>(); Professors = ResizeArray() },
+                { CourseId = Guid.NewGuid(); CourseCode = "C03"; CourseName = "Algorithms"; IsFinishedWithExam = true; ECTS = 5; SoftDeleted = false; Students = ResizeArray<Student>(); Professors = ResizeArray() }
                 ) |> ignore
