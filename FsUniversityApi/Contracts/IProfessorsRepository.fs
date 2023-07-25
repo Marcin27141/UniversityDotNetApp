@@ -1,6 +1,6 @@
 ﻿namespace FsUniversityApi.Contracts
 
-open FsUniversityApi.Database.Entities.Professor
+open FsUniversityApi.Database.Entities.StudentCourseProfessor
 open System.Threading.Tasks
 
 type IProfessorsRepository =

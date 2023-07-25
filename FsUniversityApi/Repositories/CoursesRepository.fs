@@ -1,74 +1,44 @@
 ﻿namespace FsUniversityApi.Repositories
 
 open FsUniversityApi.Database.FsDbContext
-open FsUniversityApi.Database.Entities.StudentAndCourse
-open FsUniversityApi.Database.Entities.Professor
+open FsUniversityApi.Database.Entities.StudentCourseProfessor
 open FsUniversityApi.Contracts
 open Microsoft.EntityFrameworkCore;
 open System
+open System.Threading.Tasks
 
 type CoursesRepository(context: FsDbContext) =
     inherit GenericRepository<Course>(context)
 
+    member this.GetAllAsync () =
+            context.Courses.Include(fun c -> c.Students).ToListAsync()
+
+    member this.GetAsync (id : Guid) =
+            context.Courses.Include(fun c -> c.Students).SingleOrDefaultAsync(fun c -> c.CourseId.Equals(id))
+
     interface ICoursesRepository with
+
         member this.CourseCodeIsOccupied (courseCode : string) =
             context.Set<Course>().AnyAsync(fun c -> c.CourseCode.Equals(courseCode));
 
-        member this.UpdateWithProfessorId (course : Course, professorId : Guid) =
-        //course.Professor = _context.Set<EntityProfessor>().Find(professorId);
-        //    _context.Update(course);
-        //    await _context.SaveChangesAsync();
-        //    return course;
-            let! professor = context.Set<Professor>().FindAsync(professorId) |> Async.AwaitTask
-            let updated = { course with Professor = professor }
-            context.Remove(entity) |> ignore
-            do! context.AddAsync(entity).AsTask() |> Async.AwaitTask |> Async.Ignore
-            return! context.SaveChangesAsync() |> Async.AwaitTask
-
-        //member this.AddWithProfessorId (course : Course, professorId : Guid) =
-        //    context.Set<Course>().AnyAsync(fun c -> c.CourseCode.Equals(courseCode));
-
-        //public override async Task<EntityCourse> GetAsync(Guid id)
-        //{
-        //    return await _context.Courses
-        //        .Include(c => c.Professor)
-        //        .Include(c => c.Students)
-        //        .SingleOrDefaultAsync(c => c.EntityCourseID == id);
-        //}
-
-        //public override async Task<EntityCourse> AddAsync(EntityCourse entity)
-        //{
-        //    await _context.AddAsync(entity);
-        //    await _context.SaveChangesAsync();
-        //    return entity;
-        //}
-
-        //public override async Task<List<EntityCourse>> GetAllAsync()
-        //{
-        //    return await _context.Courses
-        //        .Include(c => c.Professor)
-        //        .Include(c => c.Students)
-        //        .ToListAsync();
-        //}
-
-        //public async Task<bool> CourseCodeIsOccupied(string courseCode)
-        //{
-        //    return await _context.Set<EntityCourse>().AnyAsync(s => s.CourseCode.Equals(courseCode));
-        //}
-
-        //public async Task<EntityCourse> AddWithProfessorId(EntityCourse entity, Guid professorId)
-        //{
-        //    entity.Professor = await _context.Set<EntityProfessor>().FindAsync(professorId);
-        //    await _context.AddAsync(entity);
-        //    await _context.SaveChangesAsync();
-        //    return entity;
-        //}
-
-        //public async Task<EntityCourse> UpdateWithProfessorId(EntityCourse course, Guid professorId)
-        //{
-        //    course.Professor = _context.Set<EntityProfessor>().Find(professorId);
-        //    _context.Update(course);
-        //    await _context.SaveChangesAsync();
-        //    return course;
-        //}(*
+        member this.UpdateWithProfessorId (course : Course, professorId : Guid) : Task<Course> =
+            async {
+                let! professor = context.Set<Professor>().FindAsync(professorId).AsTask() |> Async.AwaitTask
+                let updated = { course with Professors = ResizeArray([professor])}
+                context.Remove(course) |> ignore
+                do! context.AddAsync(updated).AsTask() |> Async.AwaitTask |> Async.Ignore
+                do! context.SaveChangesAsync() |> Async.AwaitTask |> Async.Ignore
+                return course
+            }
+            |> Async.StartAsTask
+            
+        member this.AddWithProfessorId (course : Course, professorId : Guid) =
+            async {
+                let! professor = context.Set<Professor>().FindAsync(professorId).AsTask() |> Async.AwaitTask
+                let courseWithProfessor = { course with Professors = ResizeArray([professor]) }
+                do! context.AddAsync(courseWithProfessor).AsTask() |> Async.AwaitTask |> Async.Ignore
+                do! context.SaveChangesAsync() |> Async.AwaitTask |> Async.Ignore
+                return course
+            }
+            |> Async.StartAsTask
         

@@ -2,7 +2,7 @@
 
 open Microsoft.AspNetCore.Mvc
 open FsUniversityApi.Database.FsDbContext
-open FsUniversityApi.Database.Entities.Professor
+open FsUniversityApi.Database.Entities.StudentCourseProfessor
 open Microsoft.EntityFrameworkCore
 
 

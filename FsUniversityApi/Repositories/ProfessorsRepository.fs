@@ -1,7 +1,7 @@
 ﻿namespace FsUniversityApi.Repositories
 
 open FsUniversityApi.Database.FsDbContext
-open FsUniversityApi.Database.Entities.Professor
+open FsUniversityApi.Database.Entities.StudentCourseProfessor
 open FsUniversityApi.Contracts
 open Microsoft.EntityFrameworkCore;
 
