@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,13 @@ namespace WebApplication1.ApiServices.GenericRepositories
         where T : IDistinguishableEntity
         where U : class
     {
-        protected GenericGetRepository(IMapper mapper) : base(mapper)
-        {
-        }
+        private readonly IMemoryCache _memoryCache;
+        private const int CACHE_SECONDS_TIME = 120;
 
+        protected GenericGetRepository(IMapper mapper, IMemoryCache memoryCache) : base(mapper)
+        {
+            this._memoryCache = memoryCache;
+        }
         protected virtual string GetPathForGet(Guid id) => $"{_apiPath}/{id}";
         protected virtual string GetPathForGetByUser(string id) => $"{_apiPath}/User/{id}";
         protected virtual string GetPathForGetAll() => _apiPath;
@@ -35,7 +39,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
             return default;
         }
 
-        public async Task<List<T>> GetAllAsync()
+        private async Task<List<T>> GetAllFromApiAsync()
         {
             string byAllPath = GetPathForGetAll();
             var response = await _httpClient.GetAsync(byAllPath);
@@ -46,6 +50,19 @@ namespace WebApplication1.ApiServices.GenericRepositories
                 return result;
             }
             return Enumerable.Empty<T>().ToList();
+        }
+
+        protected abstract string GetCacheKeyForGetAll();
+
+        public Task<List<T>> GetAllAsync()
+        {
+            return _memoryCache.GetOrCreateAsync(
+                GetCacheKeyForGetAll(),
+                cacheEntry =>
+                {
+                    cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CACHE_SECONDS_TIME);
+                    return GetAllFromApiAsync();
+                });
         }
 
         public async virtual Task<T> GetByUserAsync(string userId)
