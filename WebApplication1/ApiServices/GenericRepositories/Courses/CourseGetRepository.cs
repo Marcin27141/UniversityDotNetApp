@@ -1,5 +1,10 @@
 ﻿using ApiDtoLibrary.Courses;
 using AutoMapper;
+using Microsoft.Build.Framework;
+using Microsoft.Extensions.Caching.Memory;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
@@ -8,9 +13,11 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
 {
     public class CourseGetRepository : GenericGetRepository<Course, GetCourse>, IGenericGetRepository<Course>
     {
-        public CourseGetRepository(IMapper mapper) : base(mapper)
+        public CourseGetRepository(IMapper mapper, IMemoryCache memoryCache) : base(mapper, memoryCache)
         {
             _apiPath += ApiPathAppendixDictionary.GetValue(ApiGenericTypes.Course);
         }
+
+        protected override string GetCacheKeyForGetAll() => "CoursesList";
     }
 }
