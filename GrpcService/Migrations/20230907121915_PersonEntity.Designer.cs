@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GrpcService.Migrations
 {
     [DbContext(typeof(GrpcDbContext))]
-    [Migration("20230906205049_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230907121915_PersonEntity")]
+    partial class PersonEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace GrpcService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("GrpcService.Models.PersonalData", b =>
+            modelBuilder.Entity("GrpcService.Models.Person", b =>
                 {
                     b.Property<Guid>("PersonId")
                         .ValueGeneratedOnAdd()
@@ -34,7 +34,7 @@ namespace GrpcService.Migrations
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("Birthday")
+                    b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
@@ -46,55 +46,20 @@ namespace GrpcService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Motherland")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PESEL")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PersonStatus")
                         .HasColumnType("int");
 
+                    b.Property<bool>("SoftDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("PersonId");
 
                     b.ToTable("People");
-                });
-
-            modelBuilder.Entity("GrpcService.Models.Professor", b =>
-                {
-                    b.Property<string>("IdCode")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("FirstDayAtJob")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("PersonalDataPersonId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Salary")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdCode");
-
-                    b.HasIndex("PersonalDataPersonId");
-
-                    b.ToTable("Professors");
-                });
-
-            modelBuilder.Entity("GrpcService.Models.Professor", b =>
-                {
-                    b.HasOne("GrpcService.Models.PersonalData", "PersonalData")
-                        .WithMany()
-                        .HasForeignKey("PersonalDataPersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PersonalData");
                 });
 #pragma warning restore 612, 618
         }

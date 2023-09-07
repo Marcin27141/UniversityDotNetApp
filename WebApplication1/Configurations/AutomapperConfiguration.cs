@@ -4,6 +4,7 @@ using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using ApiDtoLibrary.Users;
 using AutoMapper;
+using System;
 using System.Linq;
 using WebApplication1.Database;
 using WebApplication1.Services;
@@ -24,6 +25,19 @@ namespace WebApplication1.Configurations
             //Models/People
             CreateInOutMapping<PostPersonDto, Person>();
             CreateInOutMapping<GetPersonDto, Person>();
+            CreateMap<ReadPersonResponse, Person>()
+                .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => (PersonStatus)(int)src.PersonStatus))
+                .ForMember(dest => dest.EntityPersonID, opt => opt.MapFrom(src => Guid.Parse(src.PersonId)))
+                .ForMember(dest => dest.PersonalData, opt => opt.MapFrom(src => new PersonalData
+                {
+                    // Map PersonalData properties here
+                    FirstName = src.FirstName,
+                    LastName = src.LastName,
+                    PESEL = src.PESEL,
+                    Birthday = src.Birthday.ToDateTime(),
+                    Motherland = src.Motherland
+                }));
+
 
             //Models/Professors
             CreateInOutMapping<BaseGetProfessor, Professor>();

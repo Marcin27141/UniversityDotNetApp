@@ -14,15 +14,10 @@ namespace GrpcService.Database
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<PersonalData>()
-                .HasKey(p => p.PersonId);
-
-            modelBuilder.Entity<Professor>()
-                .HasKey(p => p.IdCode);
+            modelBuilder.Entity<Person>().HasQueryFilter(p => !p.SoftDeleted);
 
         }
 
-        public DbSet<PersonalData> People => Set<PersonalData>();
-        public DbSet<Professor> Professors => Set<Professor>();
+        public DbSet<Person> People => Set<Person>();
     }
 }

@@ -27,7 +27,7 @@ namespace GrpcService.Services
             VerifyGuidsValidity(guidChecklist);
 
 
-            var person = new PersonalData
+            var person = new Person
             {
                 ApplicationUserId = Guid.Parse(request.ApplicationUserId),
                 FirstName = request.FirstName,
@@ -137,7 +137,7 @@ namespace GrpcService.Services
                 throw new RpcException(new Status(StatusCode.NotFound, $"No person with id {personIdString} was found"));
         }
 
-        private void UpdatePersonProperties(UpdatePersonRequest request, PersonalData person)
+        private void UpdatePersonProperties(UpdatePersonRequest request, Person person)
         {
             person.FirstName = request.FirstName;
             person.LastName = request.LastName;
@@ -155,7 +155,7 @@ namespace GrpcService.Services
 
             if (person != null)
             {
-                _dbContext.Remove(person);
+                person.SoftDeleted = true;
                 await _dbContext.SaveChangesAsync();
                 return await Task.FromResult(new DeletePersonResponse()
                 {

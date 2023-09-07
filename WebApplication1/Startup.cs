@@ -74,7 +74,9 @@ namespace WebApplication1
                     .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                     .AsImplementedInterfaces()
                     .WithScopedLifetime();
-            });            
+            });
+
+            services.AddScoped<IPeopleRepository, GrpcServices.PeopleRepository>();
 
             //services.AddScoped(typeof(IGenericGetRepository<>), typeof(GenericGetRepository<,>));
             //services.AddScoped(typeof(IGenericPostRepository<>), typeof(GenericPostRepository<,>));

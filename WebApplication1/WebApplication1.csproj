@@ -7,8 +7,14 @@
   <ItemGroup>
 	  <PackageReference Include="AutoMapper" Version="12.0.1" />
 	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+	  <PackageReference Include="Google.Protobuf" Version="3.24.2" />
+	  <PackageReference Include="Grpc.Net.Client" Version="2.57.0" />
+	  <PackageReference Include="Grpc.Tools" Version="2.57.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,8 +29,13 @@
 	  <PackageReference Include="Scrutor" Version="4.2.1" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Protobuf Include="Protos\people.proto" GrpcServices="Client" />
+	</ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\ApiDtoLibrary\ApiDtoLibrary.csproj" />
+    <ProjectReference Include="..\GrpcService\GrpcService.csproj" />
   </ItemGroup>
 
 </Project>
