@@ -4,7 +4,9 @@ using Grpc.Core;
 using GrpcService.Database;
 using GrpcService.Models;
 using GrpcService.Protos;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using static Google.Rpc.Context.AttributeContext.Types;
 
 namespace GrpcService.Services
 {
@@ -19,8 +21,10 @@ namespace GrpcService.Services
 
         public override async Task<CreatePersonResponse> CreatePerson(CreatePersonRequest request, ServerCallContext context)
         {
-            VerifyStringsNullabilityRequirements(request);
-            VerifyGuidsValidity(request);
+            var nullChecklist = new List<String>() { request.ApplicationUserId.Value, request.FirstName, request.LastName };
+            VerifyStringsNullabilityRequirements(nullChecklist);
+            var guidChecklist = new List<String>() { request.ApplicationUserId.Value };
+            VerifyGuidsValidity(guidChecklist);
 
 
             var person = new PersonalData
@@ -43,10 +47,9 @@ namespace GrpcService.Services
             });
         }
 
-        private void VerifyStringsNullabilityRequirements(CreatePersonRequest request)
+        private void VerifyStringsNullabilityRequirements(List<String> strings)
         {
-            var checklist = new List<String>() { request.ApplicationUserId.Value, request.FirstName, request.LastName };
-            if (CheckIfAnyIsNullOrEmpty(checklist))
+            if (CheckIfAnyIsNullOrEmpty(strings))
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Nulls or empty strings were passed for non-nullable properties"));
             }
@@ -57,10 +60,9 @@ namespace GrpcService.Services
             return strings.Any(s => s.IsNullOrEmpty());
         }
 
-        private void VerifyGuidsValidity(CreatePersonRequest request)
+        private void VerifyGuidsValidity(List<String> strings)
         {
-            var checklist = new List<String>() { request.ApplicationUserId.Value };
-            if (!CheckIfAllStringAreGuid(checklist))
+            if (!CheckIfAllStringAreGuid(strings))
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Guids were expected for UUID properties"));
             }
@@ -69,6 +71,105 @@ namespace GrpcService.Services
         private bool CheckIfAllStringAreGuid(List<String> strings)
         {
             return strings.All(s => Guid.TryParse(s, out Guid _));
+        }
+
+        public override async Task<ReadPersonResponse> ReadPerson(ReadPersonRequest request, ServerCallContext context)
+        {
+            var personIdString = request.PersonId.Value;
+            VerifyGuidsValidity(new List<String>() { personIdString });
+
+
+            var person = await _dbContext.People.FindAsync(Guid.Parse(personIdString));
+
+            if (person != null)
+                return await Task.FromResult(new ReadPersonResponse
+                {
+                    PersonId = new GrpcUUID { Value = personIdString },
+                    ApplicationUserId = new GrpcUUID { Value = person.ApplicationUserId.ToString() },
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    PESEL = person.PESEL,
+                    Birthday = person.Birthday?.ToUniversalTime().ToTimestamp(),
+                    Motherland = person.Motherland,
+                    PersonStatus = (GrpcPersonStatus)(int)person.PersonStatus
+                });
+            else
+                throw new RpcException(new Status(StatusCode.NotFound, $"No person with id {personIdString} was found"));
+        }
+
+        public override async Task<ReadAllPeopleResponse> ReadPeople(ReadAllPeopleRequest request, ServerCallContext context)
+        {
+            var response = new ReadAllPeopleResponse();
+
+            var people = await _dbContext.People.ToListAsync();
+            people.ForEach(person => response.People.Add(new ReadPersonResponse
+            {
+                PersonId = new GrpcUUID { Value = person.PersonId.ToString() },
+                ApplicationUserId = new GrpcUUID { Value = person.ApplicationUserId.ToString() },
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                PESEL = person.PESEL,
+                Birthday = person.Birthday?.ToUniversalTime().ToTimestamp(),
+                Motherland = person.Motherland,
+                PersonStatus = (GrpcPersonStatus)(int)person.PersonStatus
+            }));
+
+            return await Task.FromResult(response);
+        }
+
+        public override async Task<UpdatePersonResponse> UpdatePerson(UpdatePersonRequest request, ServerCallContext context)
+        {
+            var personIdString = request.PersonId.Value;
+            VerifyGuidsValidity(new List<String>() { personIdString });
+
+            var person = await _dbContext.People.FindAsync(Guid.Parse(personIdString));
+
+            if (person != null)
+            {
+                UpdatePersonProperties(request, person);
+                await _dbContext.SaveChangesAsync();
+                return await Task.FromResult(new UpdatePersonResponse()
+                {
+                    PersonId = new GrpcUUID
+                    {
+                        Value = personIdString
+                    }
+                });
+            }
+            else
+                throw new RpcException(new Status(StatusCode.NotFound, $"No person with id {personIdString} was found"));
+        }
+
+        private void UpdatePersonProperties(UpdatePersonRequest request, PersonalData person)
+        {
+            person.FirstName = request.FirstName;
+            person.LastName = request.LastName;
+            person.PESEL = request.PESEL;
+            person.Birthday = request.Birthday?.ToDateTime();
+            person.Motherland = request.Motherland;
+        }
+
+        public override async Task<DeletePersonResponse> DeletePerson(DeletePersonRequest request, ServerCallContext context)
+        {
+            var personIdString = request.PersonId.Value;
+            VerifyGuidsValidity(new List<String>() { personIdString });
+
+            var person = await _dbContext.People.FindAsync(Guid.Parse(personIdString));
+
+            if (person != null)
+            {
+                _dbContext.Remove(person);
+                await _dbContext.SaveChangesAsync();
+                return await Task.FromResult(new DeletePersonResponse()
+                {
+                    PersonId = new GrpcUUID
+                    {
+                        Value = personIdString
+                    }
+                });
+            }
+            else
+                throw new RpcException(new Status(StatusCode.NotFound, $"No person with id {personIdString} was found"));
         }
     }
 }

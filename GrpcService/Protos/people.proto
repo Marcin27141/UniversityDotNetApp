@@ -63,7 +63,7 @@ message ReadPersonResponse {
 message ReadAllPeopleRequest {}
 
 message ReadAllPeopleResponse {
-    repeated ReadPersonResponse person = 1;
+    repeated ReadPersonResponse people = 1;
 }
 
 message UpdatePersonRequest {
