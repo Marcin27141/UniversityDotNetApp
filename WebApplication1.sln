@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversityApi.API", "Univer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiDtoLibrary", "ApiDtoLibrary\ApiDtoLibrary.csproj", "{6C75219C-0B04-4104-8628-FE32368C8705}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcService", "GrpcService\GrpcService.csproj", "{3488BB57-EC66-45E9-ACBC-114826A5B708}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcService", "GrpcService\GrpcService.csproj", "{3488BB57-EC66-45E9-ACBC-114826A5B708}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

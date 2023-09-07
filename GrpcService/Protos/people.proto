@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcService.Protos";
+
+import "google/protobuf/timestamp.proto";
+
+package people;
+
+service PeopleServer {
+
+    rpc CreatePerson(CreatePersonRequest) returns (CreatePersonResponse) {}
+
+    rpc ReadPerson(ReadPersonRequest) returns (ReadPersonResponse) {}
+
+    rpc ReadPeople(ReadAllPeopleRequest) returns (ReadAllPeopleResponse) {}
+
+    rpc UpdatePerson(UpdatePersonRequest) returns (UpdatePersonResponse) {}
+
+    rpc DeletePerson(DeletePersonRequest) returns (DeletePersonResponse) {}
+
+}
+
+message GrpcUUID {
+    string value = 1;
+}
+
+enum GrpcPersonStatus {
+    UNIDENTIFIED = 0;
+    STUDENT = 1;
+    PROFESSOR = 2;
+    ADMIN = 3;
+}
+
+message CreatePersonRequest {
+    GrpcUUID application_user_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string PESEL = 4;
+    google.protobuf.Timestamp birthday = 5;
+    string motherland = 6;
+    GrpcPersonStatus person_status = 7;
+}
+
+message CreatePersonResponse {
+    GrpcUUID person_id = 1;
+}
+
+message ReadPersonRequest {
+    GrpcUUID person_id = 1;
+}
+
+message ReadPersonResponse {
+    GrpcUUID person_id = 1;
+    GrpcUUID application_user_id = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string PESEL = 5;
+    google.protobuf.Timestamp birthday = 6;
+    string motherland = 7;
+    GrpcPersonStatus person_status = 8;
+}
+
+message ReadAllPeopleRequest {}
+
+message ReadAllPeopleResponse {
+    repeated ReadPersonResponse person = 1;
+}
+
+message UpdatePersonRequest {
+    GrpcUUID person_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string PESEL = 4;
+    google.protobuf.Timestamp birthday = 5;
+    string motherland = 6;
+}
+
+message UpdatePersonResponse {
+    GrpcUUID person_id = 1;
+}
+
+message DeletePersonRequest {
+    GrpcUUID person_id = 1;
+}
+
+message DeletePersonResponse {
+    GrpcUUID person_id = 1;
+}
+
+
