@@ -7,6 +7,7 @@ using System.Text;
 using UniversityApi.API.Configurations;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
+using UniversityApi.API.GraphQL;
 using UniversityApi.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -44,25 +49,6 @@ builder.Services.AddScoped<IProfessorsRepository, ProfessorsRepository>();
 builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
 builder.Services.AddScoped<ICoursesRepository, CoursesRepository>();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero,
-        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-        ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
-    };
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -73,6 +59,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseMiddleware<ExceptionMiddleware>();
+app.UseRouting();
 
 app.UseHttpsRedirection();
 
@@ -81,6 +68,10 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGraphQL();
+    app.MapControllers();
+});
 
 app.Run();

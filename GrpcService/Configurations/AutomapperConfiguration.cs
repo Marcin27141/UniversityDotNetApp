@@ -10,7 +10,7 @@ namespace GrpcService.Configurations
 {
     public class AutomapperConfiguration : Profile
     {
-        private readonly GrpcDbContext _context;
+        private readonly GrpcDbContext? _context;
 
         public AutomapperConfiguration(GrpcDbContext dbContext)
         {
