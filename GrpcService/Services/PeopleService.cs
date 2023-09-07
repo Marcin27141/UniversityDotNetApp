@@ -21,15 +21,15 @@ namespace GrpcService.Services
 
         public override async Task<CreatePersonResponse> CreatePerson(CreatePersonRequest request, ServerCallContext context)
         {
-            var nullChecklist = new List<String>() { request.ApplicationUserId.Value, request.FirstName, request.LastName };
+            var nullChecklist = new List<String>() { request.ApplicationUserId, request.FirstName, request.LastName };
             VerifyStringsNullabilityRequirements(nullChecklist);
-            var guidChecklist = new List<String>() { request.ApplicationUserId.Value };
+            var guidChecklist = new List<String>() { request.ApplicationUserId };
             VerifyGuidsValidity(guidChecklist);
 
 
             var person = new PersonalData
             {
-                ApplicationUserId = Guid.Parse(request.ApplicationUserId.Value),
+                ApplicationUserId = Guid.Parse(request.ApplicationUserId),
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 PESEL = request.PESEL,
@@ -43,7 +43,7 @@ namespace GrpcService.Services
 
             return await Task.FromResult(new CreatePersonResponse
             {
-                PersonId = new GrpcUUID { Value = person.PersonId.ToString() }
+                PersonId = person.PersonId.ToString()
             });
         }
 
@@ -75,7 +75,7 @@ namespace GrpcService.Services
 
         public override async Task<ReadPersonResponse> ReadPerson(ReadPersonRequest request, ServerCallContext context)
         {
-            var personIdString = request.PersonId.Value;
+            var personIdString = request.PersonId;
             VerifyGuidsValidity(new List<String>() { personIdString });
 
 
@@ -84,8 +84,8 @@ namespace GrpcService.Services
             if (person != null)
                 return await Task.FromResult(new ReadPersonResponse
                 {
-                    PersonId = new GrpcUUID { Value = personIdString },
-                    ApplicationUserId = new GrpcUUID { Value = person.ApplicationUserId.ToString() },
+                    PersonId = personIdString,
+                    ApplicationUserId = person.ApplicationUserId.ToString(),
                     FirstName = person.FirstName,
                     LastName = person.LastName,
                     PESEL = person.PESEL,
@@ -104,8 +104,8 @@ namespace GrpcService.Services
             var people = await _dbContext.People.ToListAsync();
             people.ForEach(person => response.People.Add(new ReadPersonResponse
             {
-                PersonId = new GrpcUUID { Value = person.PersonId.ToString() },
-                ApplicationUserId = new GrpcUUID { Value = person.ApplicationUserId.ToString() },
+                PersonId = person.PersonId.ToString(),
+                ApplicationUserId = person.ApplicationUserId.ToString(),
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 PESEL = person.PESEL,
@@ -119,7 +119,7 @@ namespace GrpcService.Services
 
         public override async Task<UpdatePersonResponse> UpdatePerson(UpdatePersonRequest request, ServerCallContext context)
         {
-            var personIdString = request.PersonId.Value;
+            var personIdString = request.PersonId;
             VerifyGuidsValidity(new List<String>() { personIdString });
 
             var person = await _dbContext.People.FindAsync(Guid.Parse(personIdString));
@@ -130,10 +130,7 @@ namespace GrpcService.Services
                 await _dbContext.SaveChangesAsync();
                 return await Task.FromResult(new UpdatePersonResponse()
                 {
-                    PersonId = new GrpcUUID
-                    {
-                        Value = personIdString
-                    }
+                    PersonId = personIdString
                 });
             }
             else
@@ -151,7 +148,7 @@ namespace GrpcService.Services
 
         public override async Task<DeletePersonResponse> DeletePerson(DeletePersonRequest request, ServerCallContext context)
         {
-            var personIdString = request.PersonId.Value;
+            var personIdString = request.PersonId;
             VerifyGuidsValidity(new List<String>() { personIdString });
 
             var person = await _dbContext.People.FindAsync(Guid.Parse(personIdString));
@@ -162,10 +159,7 @@ namespace GrpcService.Services
                 await _dbContext.SaveChangesAsync();
                 return await Task.FromResult(new DeletePersonResponse()
                 {
-                    PersonId = new GrpcUUID
-                    {
-                        Value = personIdString
-                    }
+                    PersonId = personIdString
                 });
             }
             else
