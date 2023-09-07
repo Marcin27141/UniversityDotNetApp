@@ -1,3 +1,4 @@
+using GrpcService.Configurations;
 using GrpcService.Database;
 using GrpcService.Services;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GrpcDbContext>(opt => opt.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=GrpcUniversityDb;Trusted_Connection=True;MultipleActiveResultSets=True"));
 
 builder.Services.AddGrpc().AddJsonTranscoding();
+builder.Services.AddAutoMapper(typeof(AutomapperConfiguration));
 
 var app = builder.Build();
 
