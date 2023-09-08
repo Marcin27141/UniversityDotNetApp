@@ -1,67 +1,61 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ApiDtoLibrary.Courses;
+using ApiDtoLibrary.GraphQL.Courses;
+using ApiDtoLibrary.GraphQL.Professors;
+using ApiDtoLibrary.GraphQL.Students;
+using ApiDtoLibrary.Professors;
+using ApiDtoLibrary.Students;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
-using UniversityApi.API.GraphQL.Courses;
-using UniversityApi.API.GraphQL.Professors;
-using UniversityApi.API.GraphQL.Students;
 
 namespace UniversityApi.API.GraphQL.Mutations
 {
     public partial class Mutation
     {
-        public async Task<AddProfessorPayload> AddProfessorAsync(AddProfessorInput input,
+        private readonly IMapper _mapper;
+
+        public Mutation(IMapper mapper)
+        {
+            this._mapper = mapper;
+        }
+
+        public async Task<GetProfessor> AddProfessorAsync(AddProfessorInput input,
             UniversityApiDbContext dbContext)
         {
-            var professor = new EntityProfessor
-            {
-                ApplicationUserId = input.ApplicationUserId,
-                FirstName = input.FirstName,
-                LastName = input.LastName,
-                PersonStatus = ApiDtoLibrary.Person.PersonStatus.Professor,
-                IdCode = input.IdCode,
-                Subject = input.Subject
-            };
+            var professor = _mapper.Map<EntityProfessor>(input);
 
-            dbContext.Add(professor);
+            await dbContext.AddAsync(professor);
             await dbContext.SaveChangesAsync();
 
-            return new AddProfessorPayload(professor);
+            var response = _mapper.Map<GetProfessor>(professor);
+            //return new AddProfessorPayload(response);
+            return response;
         }
 
         public async Task<AddCoursePayload> AddCourseAsync(AddCourseInput input,
             UniversityApiDbContext dbContext)
         {
-            var course = new EntityCourse
-            {
-                Name = input.Name,
-                CourseCode = input.CourseCode,
-                ECTS = input.ECTS,
-                IsFinishedWithExam = input.IsFinishedWithExam,
-                Professor = await dbContext.Set<EntityProfessor>().FindAsync(input.ProfessorId)
-            };
+            var course = _mapper.Map<EntityCourse>(input);
+            course.Professor = await dbContext.Set<EntityProfessor>().FindAsync(input.ProfessorId);
 
-            dbContext.Add(course);
+            await dbContext.AddAsync(course);
             await dbContext.SaveChangesAsync();
 
-            return new AddCoursePayload(course);
+            var response = _mapper.Map<GetCourse>(course);
+            return new AddCoursePayload(response);
         }
 
         public async Task<AddStudentPayload> AddStudentAsync(AddStudentInput input,
             UniversityApiDbContext dbContext)
         {
-            var student = new EntityStudent
-            {
-                ApplicationUserId = input.ApplicationUserId,
-                FirstName = input.FirstName,
-                LastName = input.LastName,
-                PersonStatus = ApiDtoLibrary.Person.PersonStatus.Student,
-                Index = input.Index
-            };
+            var student = _mapper.Map<EntityStudent>(input);
 
-            dbContext.Add(student);
+            await dbContext.AddAsync(student);
             await dbContext.SaveChangesAsync();
 
-            return new AddStudentPayload(student);
+            var response = _mapper.Map<GetStudent>(student);
+            return new AddStudentPayload(response);
         }
     }
 }

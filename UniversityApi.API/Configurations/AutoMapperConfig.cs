@@ -1,5 +1,7 @@
 ﻿using ApiDtoLibrary.Authentication;
 using ApiDtoLibrary.Courses;
+using ApiDtoLibrary.GraphQL.Courses;
+using ApiDtoLibrary.GraphQL.Professors;
 using ApiDtoLibrary.Person;
 using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
@@ -20,6 +22,7 @@ namespace UniversityApi.API.Configurations
             CreateMap<EntityCourse, GetCourse>().ReverseMap();
             CreateMap<PostCourse, EntityCourse>();
             CreateMap<PutCourse, EntityCourse>();
+            CreateMap<AddCourseInput, EntityCourse>();
 
             //Models/People
             CreateMap<PostPersonDto, EntityPerson>().ReverseMap();
@@ -30,12 +33,16 @@ namespace UniversityApi.API.Configurations
             CreateMap<EntityProfessor, GetProfessor>().ReverseMap();
             CreateMap<EntityProfessor, PostProfessor>().ReverseMap();
             CreateMap<EntityProfessor, PutProfessor>().ReverseMap();
+            CreateMap<AddProfessorInput, EntityProfessor>()
+                .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => PersonStatus.Professor));
 
             //Models/Students
             CreateMap<EntityStudent, BaseGetStudent>().ReverseMap();
             CreateMap<EntityStudent, GetStudent>().ReverseMap();
             CreateMap<EntityStudent, PostStudent>().ReverseMap();
             CreateMap<EntityStudent, PutStudent>().ReverseMap();
+            CreateMap<AddProfessorInput, EntityProfessor>()
+                .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => PersonStatus.Student));
 
             //Authentication
             CreateMap<SignInResultDto, SignInResult>().ReverseMap();

@@ -1,7 +1,6 @@
 ﻿using UniversityApi.API.DataBase.Entities;
 using UniversityApi.API.DataBase;
-using UniversityApi.API.GraphQL.Professors;
-using UniversityApi.API.GraphQL.People;
+using ApiDtoLibrary.GraphQL.People;
 
 namespace UniversityApi.API.GraphQL.Mutations
 {

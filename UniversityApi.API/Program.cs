@@ -8,11 +8,8 @@ using UniversityApi.API.Configurations;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.GraphQL;
-using UniversityApi.API.GraphQL.Courses;
 using UniversityApi.API.GraphQL.Mutations;
-using UniversityApi.API.GraphQL.People;
-using UniversityApi.API.GraphQL.Professors;
-using UniversityApi.API.GraphQL.Students;
+using UniversityApi.API.GraphQL.Types;
 using UniversityApi.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
