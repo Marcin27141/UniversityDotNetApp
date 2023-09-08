@@ -9,7 +9,12 @@ namespace UniversityApi.API.GraphQL.Types
         {
             descriptor.Description("Represents a person teaching at the university");
 
-            descriptor.Field(p => p.SoftDeleted).Ignore();
+            descriptor.BindFieldsExplicitly();
+            ObjectTypeDescriptorHelper<EntityProfessor>.ConfigurePersonalData(descriptor);
+            descriptor.Field(p => p.IdCode).Name("ProfessorId");
+            descriptor.Field(p => p.Subject).Name("Subject");
+            descriptor.Field(p => p.FirstDayAtJob).Name("FirstDayAtJob");
+            descriptor.Field(p => p.Salary).Name("Salary");
         }
     }
 }

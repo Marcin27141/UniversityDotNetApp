@@ -10,7 +10,10 @@ namespace UniversityApi.API.GraphQL.Types
         {
             descriptor.Description("Represents a person studying at the university");
 
-            descriptor.Field(s => s.SoftDeleted).Ignore();
+            descriptor.BindFieldsExplicitly();
+            ObjectTypeDescriptorHelper<EntityStudent>.ConfigurePersonalData(descriptor);
+            descriptor.Field(s => s.Index).Name("Index");
+            descriptor.Field(s => s.BeginningOfStudying).Name("BeginningOfStudying");
 
             descriptor.Field(s => s.Courses)
                 .ResolveWith<Resolvers>(s => s.GetCourses(default!, default!))

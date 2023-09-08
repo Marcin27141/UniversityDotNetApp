@@ -7,7 +7,7 @@ namespace UniversityApi.API.GraphQL.Types
     {
         protected override void Configure(IObjectTypeDescriptor<EntityPerson> descriptor)
         {
-            //descriptor.Field(p => p.SoftDeleted).Ignore();
+            ObjectTypeDescriptorHelper<EntityPerson>.ConfigurePersonalData(descriptor);
         }
     }
 }
