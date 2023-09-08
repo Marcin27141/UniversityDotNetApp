@@ -33,10 +33,13 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddGraphQLServer()
     .RegisterDbContext<UniversityApiDbContext>()
+    .AddMutationType<Mutation>()
     .AddType<StudentType>()
     .AddType<ProfessorType>()
     .AddType<CourseType>()
-    .AddQueryType<Query>();
+    .AddQueryType<Query>()
+    .AddFiltering()
+    .AddSorting();
 
 builder.Services.AddCors(options =>
 {
