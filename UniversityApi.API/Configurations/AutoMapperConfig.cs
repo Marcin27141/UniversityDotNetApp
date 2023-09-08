@@ -13,13 +13,6 @@ namespace UniversityApi.API.Configurations
 {
     public class AutoMapperConfig : Profile
     {
-        private readonly UniversityApiDbContext _context;
-
-        public AutoMapperConfig(UniversityApiDbContext dbContext)
-        {
-            _context = dbContext;
-        }
-
         public AutoMapperConfig()
         {
             //Models/Courses

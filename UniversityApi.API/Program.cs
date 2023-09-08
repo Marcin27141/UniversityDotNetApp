@@ -29,7 +29,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<Query>();
+    .RegisterDbContext<UniversityApiDbContext>()
+    .AddQueryType<Query>()
+    .AddProjections();
 
 builder.Services.AddCors(options =>
 {
