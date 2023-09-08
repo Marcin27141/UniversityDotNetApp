@@ -1,4 +1,4 @@
-﻿namespace UniversityApi.API.GraphQL.People
+﻿namespace ApiDtoLibrary.GraphQL.People
 {
     public record DeletePersonInput(
         Guid EntityPersonId

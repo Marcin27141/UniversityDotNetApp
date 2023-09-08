@@ -1,4 +1,4 @@
-﻿namespace UniversityApi.API.GraphQL.Professors
+﻿namespace ApiDtoLibrary.GraphQL.Professors
 {
     public record AddProfessorInput(
         Guid ApplicationUserId,

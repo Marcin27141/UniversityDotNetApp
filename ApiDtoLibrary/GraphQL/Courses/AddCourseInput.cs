@@ -1,4 +1,4 @@
-﻿namespace UniversityApi.API.GraphQL.Courses
+﻿namespace ApiDtoLibrary.GraphQL.Courses
 {
     public record AddCourseInput(
         string CourseCode,

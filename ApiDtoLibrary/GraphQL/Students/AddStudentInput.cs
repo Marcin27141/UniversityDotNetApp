@@ -1,4 +1,4 @@
-﻿namespace UniversityApi.API.GraphQL.Students
+﻿namespace ApiDtoLibrary.GraphQL.Students
 {
     public record AddStudentInput(
         Guid ApplicationUserId,
