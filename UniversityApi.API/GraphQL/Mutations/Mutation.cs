@@ -5,9 +5,9 @@ using UniversityApi.API.GraphQL.Courses;
 using UniversityApi.API.GraphQL.Professors;
 using UniversityApi.API.GraphQL.Students;
 
-namespace UniversityApi.API.GraphQL
+namespace UniversityApi.API.GraphQL.Mutations
 {
-    public class Mutation
+    public partial class Mutation
     {
         public async Task<AddProfessorPayload> AddProfessorAsync(AddProfessorInput input,
             UniversityApiDbContext dbContext)

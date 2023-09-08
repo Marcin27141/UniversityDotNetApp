@@ -7,6 +7,13 @@ namespace UniversityApi.API.GraphQL
     {
         [UseFiltering]
         [UseSorting]
+        public IQueryable<EntityPerson> GetPerson(UniversityApiDbContext context)
+        {
+            return context.Set<EntityPerson>();
+        }
+
+        [UseFiltering]
+        [UseSorting]
         public IQueryable<EntityCourse> GetCourse(UniversityApiDbContext context)
         {
             return context.Courses;

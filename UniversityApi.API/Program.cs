@@ -9,6 +9,8 @@ using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.GraphQL;
 using UniversityApi.API.GraphQL.Courses;
+using UniversityApi.API.GraphQL.Mutations;
+using UniversityApi.API.GraphQL.People;
 using UniversityApi.API.GraphQL.Professors;
 using UniversityApi.API.GraphQL.Students;
 using UniversityApi.API.Repositories;
@@ -34,6 +36,7 @@ builder.Services
     .AddGraphQLServer()
     .RegisterDbContext<UniversityApiDbContext>()
     .AddMutationType<Mutation>()
+    .AddType<PersonType>()
     .AddType<StudentType>()
     .AddType<ProfessorType>()
     .AddType<CourseType>()
