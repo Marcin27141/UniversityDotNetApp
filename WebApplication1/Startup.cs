@@ -76,7 +76,7 @@ namespace WebApplication1
                     .WithScopedLifetime();
             });
 
-            services.AddScoped<IPeopleRepository, GrpcServices.PeopleRepository>();
+            services.AddScoped<IPeopleRepository, GraphQLServices.PeopleRepository>();
 
             //services.AddScoped(typeof(IGenericGetRepository<>), typeof(GenericGetRepository<,>));
             //services.AddScoped(typeof(IGenericPostRepository<>), typeof(GenericPostRepository<,>));

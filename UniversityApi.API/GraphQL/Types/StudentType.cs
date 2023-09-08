@@ -17,7 +17,8 @@ namespace UniversityApi.API.GraphQL.Types
 
             descriptor.Field(s => s.Courses)
                 .ResolveWith<Resolvers>(s => s.GetCourses(default!, default!))
-                .Description("This is a list of courses, that a student is enrolled for");
+                .Description("This is a list of courses, that a student is enrolled for")
+                .Name("Courses");
         }
 
         private class Resolvers
