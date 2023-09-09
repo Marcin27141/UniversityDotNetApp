@@ -34,11 +34,11 @@ namespace WebApplication1.ApiServices
             return default;
         }
 
-        public async Task DeleteAsync(Person person)
+        public async Task DeleteAsync(Guid id)
         {
-            string deletePath = $"{_apiPath}/{person.EntityPersonID}";
+            string deletePath = $"{_apiPath}/{id}";
             await _httpClient.DeleteAsync(deletePath);
-            await _authenticationRepository.RemoveClaimAsync(person.ApplicationUserId, "EntityPersonId");
+            //await _authenticationRepository.RemoveClaimAsync(person.ApplicationUserId, "EntityPersonId");
         }
 
         public async Task<Person> GetPerson(Guid id)

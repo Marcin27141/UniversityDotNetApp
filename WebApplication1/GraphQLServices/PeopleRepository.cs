@@ -94,7 +94,7 @@ namespace WebApplication1.GraphQLServices
             public bool WasSuccessful { get; set; }
         }
 
-        public async Task DeleteAsync(Person person)
+        public async Task DeleteAsync(Guid personId)
         {
             var request = new GraphQLRequest
             {
@@ -110,7 +110,7 @@ namespace WebApplication1.GraphQLServices
                 OperationName = "DeletePersonById",
                 Variables = new
                 {
-                    id = person.EntityPersonID.ToString()
+                    id = personId.ToString()
                 }
             };
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 using UniversityApi.API.Contracts;
 using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
@@ -32,6 +33,13 @@ namespace UniversityApi.API.Repositories
                 .Include(c => c.Professor)
                 .Include(c => c.Students)
                 .ToListAsync();
+        }
+
+        public override async Task DeleteAsync(Guid id)
+        {
+            var course = await GetAsync(id);
+            course.SoftDeleted = true;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> CourseCodeIsOccupied(string courseCode)

@@ -10,14 +10,6 @@ namespace GrpcService.Database
                 
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Person>().HasQueryFilter(p => !p.SoftDeleted);
-
-        }
-
         public DbSet<Person> People => Set<Person>();
     }
 }

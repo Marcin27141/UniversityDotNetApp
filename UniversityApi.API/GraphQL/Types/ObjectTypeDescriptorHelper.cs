@@ -14,7 +14,6 @@ namespace UniversityApi.API.GraphQL.Types
             descriptor.Field(p => p.Birthday).Name("Birthday");
             descriptor.Field(p => p.Motherland).Name("Motherland");
             descriptor.Field(p => p.PersonStatus).Name("PersonStatus");
-            descriptor.Field(p => p.SoftDeleted).Ignore();
         }
     }
 }

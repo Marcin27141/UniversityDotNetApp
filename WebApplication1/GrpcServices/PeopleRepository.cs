@@ -44,14 +44,14 @@ namespace WebApplication1.GrpcServices
             return _mapper.Map<List<Person>>(response.People.ToList());
         }
 
-        public async Task DeleteAsync(Person person)
+        public async Task DeleteAsync(Guid id)
         {
             using var channel = GrpcChannel.ForAddress(SERVER_ADDRESS);
             var client = GetPeopleServerClient(channel);
 
             try
             {
-                var request = new DeletePersonRequest() { PersonId = person.EntityPersonID.ToString() };
+                var request = new DeletePersonRequest() { PersonId = id.ToString() };
                 await client.DeletePersonAsync(request);
             }
             catch (RpcException)

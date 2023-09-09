@@ -1,4 +1,5 @@
 ﻿using ApiDtoLibrary.Users;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,5 +13,7 @@ namespace WebApplication1.Contracts
         Task<List<ApplicationUser>> GetUnsetNonadminUsersAsync();
         Task<ApplicationUser> GetUserAsync(string id);
         bool IsSignedIn(ClaimsPrincipal user);
+        Task<IdentityResult> DeleteUserAsync(Person person);
+        Task DeletePersonAsync(Person person);
     }
 }

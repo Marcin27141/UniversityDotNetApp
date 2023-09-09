@@ -104,7 +104,7 @@ namespace GrpcService.Services
 
             if (person != null)
             {
-                person.SoftDeleted = true;
+                _dbContext.Remove(person);
                 await _dbContext.SaveChangesAsync();
                 return await Task.FromResult(new DeletePersonResponse()
                 {

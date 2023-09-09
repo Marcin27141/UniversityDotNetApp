@@ -21,17 +21,20 @@ namespace WebApplication1.LocalServices
         private readonly IMapper _mapper;
         private readonly SignInManager<WebAppUser> _signInManager;
         private readonly UserManager<WebAppUser> _userManager;
+        private readonly IPeopleRepository _peopleRepository;
 
         public LocalUserRepository(WebAppDbContext context,
             IMapper mapper,
             SignInManager<WebAppUser> signInManager,
-            UserManager<WebAppUser> userManager
+            UserManager<WebAppUser> userManager,
+            IPeopleRepository peopleRepository
             )
         {
             _context = context;
             _mapper = mapper;
             _signInManager = signInManager;
             _userManager = userManager;
+            this._peopleRepository = peopleRepository;
         }
         public async Task<List<ApplicationUser>> GetUnsetNonadminUsersAsync()
         {
@@ -66,9 +69,23 @@ namespace WebApplication1.LocalServices
             return _mapper.Map<ApplicationUser>(user);
         }
 
+        public async Task<IdentityResult> DeleteUserAsync(Person person)
+        {
+            var user = await _context.Users.FindAsync(person.ApplicationUserId);
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+                await DeletePersonAsync(person);
+            return result;
+        }
+
         public bool IsSignedIn(ClaimsPrincipal user)
         {
             return _signInManager.IsSignedIn(user);
+        }
+
+        public async Task DeletePersonAsync(Person person)
+        {
+            await _peopleRepository.DeleteAsync(person.EntityPersonID);
         }
     }
 }

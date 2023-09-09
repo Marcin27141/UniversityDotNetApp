@@ -2,7 +2,7 @@
 
 namespace UniversityApi.API.DataBase.Entities
 {
-    public abstract class EntityPerson : SoftRemovableEntity
+    public abstract class EntityPerson
     {
         public Guid EntityPersonID { get; set; }
         public Guid ApplicationUserId { get; set; }

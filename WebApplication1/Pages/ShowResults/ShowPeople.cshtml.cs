@@ -14,11 +14,14 @@ namespace WebApplication1.Pages.ShowResults
     public class ShowPeopleModel : PageModel
     {
         private readonly IPeopleRepository _peopleRepository;
+        private readonly IUserRepository _userRepository;
+
         public List<Person> PeopleToShow { get; set; }
 
-        public ShowPeopleModel(IPeopleRepository peopleRepository)
+        public ShowPeopleModel(IPeopleRepository peopleRepository, IUserRepository userRepository)
         {
             _peopleRepository = peopleRepository;
+            this._userRepository = userRepository;
         }
 
         //authorization?
@@ -38,7 +41,7 @@ namespace WebApplication1.Pages.ShowResults
         public async Task<IActionResult> OnGetDelete(Guid id)
         {
             var person = await _peopleRepository.GetPerson(id);
-            await _peopleRepository.DeleteAsync(person);
+            await _userRepository.DeleteUserAsync(person);
             return RedirectToPage();
         }
     }

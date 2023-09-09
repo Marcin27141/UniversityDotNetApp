@@ -5,7 +5,7 @@ using UniversityApi.API.DataBase.Entities;
 
 namespace UniversityApi.API.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : SoftRemovableEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly UniversityApiDbContext _context;
 
@@ -21,11 +21,10 @@ namespace UniversityApi.API.Repositories
             return entity;
         }
 
-        public async Task DeleteAsync(Guid id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             var entity = await GetAsync(id);
-            //_context.Set<T>().Remove(entity);
-            entity.SoftDeleted = true;
+            _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }
 

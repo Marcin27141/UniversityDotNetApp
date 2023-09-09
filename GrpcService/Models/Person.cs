@@ -14,7 +14,5 @@ namespace GrpcService.Models
         public string? Motherland { get; set; }
 
         public PersonStatus PersonStatus { get; set; } = PersonStatus.Unidentified;
-
-        public bool SoftDeleted { get; set; } = false;
     }
 }

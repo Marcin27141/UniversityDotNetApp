@@ -10,6 +10,6 @@ namespace WebApplication1.Contracts
     {
         Task<Person> GetPerson(Guid id);
         List<Person> GetAllPersonalData();
-        Task DeleteAsync(Person person);
+        Task DeleteAsync(Guid id);
     }
 }

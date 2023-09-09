@@ -15,7 +15,7 @@ namespace UniversityApi.API.GraphQL.Mutations
             var person = await dbContext.People.FindAsync(personId);
             if (person != null)
             {
-                person.SoftDeleted = true;
+                dbContext.Remove(person);
                 await dbContext.SaveChangesAsync();
                 return new DeletePersonPayload(true);
             }
