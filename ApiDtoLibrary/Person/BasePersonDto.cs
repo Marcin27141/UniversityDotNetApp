@@ -12,7 +12,6 @@ namespace ApiDtoLibrary.Person
         [Display(Name = "Last name")]
         public string LastName { get; set; }
 
-        [Required]
         [RegularExpression(@"\d{11}", ErrorMessage = "PESEL must be 11 digits")]
         public string PESEL { get; set; }
 

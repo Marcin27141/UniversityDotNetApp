@@ -9,13 +9,17 @@ namespace UniversityApi.API.GraphQL.Mutations
         public async Task<DeletePersonPayload> DeletePersonAsync(DeletePersonInput input,
             UniversityApiDbContext dbContext)
         {
-            var person = await dbContext.People.FindAsync(input.EntityPersonId);
+            if (!Guid.TryParse(input.Id, out Guid personId))
+                return new DeletePersonPayload(false);
+
+            var person = await dbContext.People.FindAsync(personId);
             if (person != null)
             {
                 person.SoftDeleted = true;
                 await dbContext.SaveChangesAsync();
                 return new DeletePersonPayload(true);
             }
+
             return new DeletePersonPayload(false);
         }
     }

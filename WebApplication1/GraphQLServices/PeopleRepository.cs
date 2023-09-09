@@ -31,7 +31,7 @@ namespace WebApplication1.GraphQLServices
 
         public class GraphQLPeopleList
         {
-            public List<GraphQLGetPersonDto> Person { get; set; }
+            public List<GraphQLGetPersonDto> People { get; set; }
         }
 
         public class GraphQLGetPersonDto {
@@ -51,8 +51,8 @@ namespace WebApplication1.GraphQLServices
             var request = new GraphQLRequest
             {
                 Query = @"
-                query People {
-                    person {
+                query GetAllPeople {
+                    people {
                         Id
                         UserId
                         FirstName
@@ -67,12 +67,12 @@ namespace WebApplication1.GraphQLServices
 
             var response = _httpClient.SendQueryAsync<GraphQLPeopleList>(request).Result;
 
-            if (response.Errors != null)
+            if (response.Errors != null || response.Data.People == null)
             {
                 return new List<Person>();
             }
 
-            var result = response.Data.Person.Select(dto => new Person
+            var result = response.Data.People.Select(dto => new Person
             {
                 EntityPersonID = dto.Id,
                 ApplicationUserId = dto.UserId.ToString(),
@@ -89,26 +89,89 @@ namespace WebApplication1.GraphQLServices
             return result;
         }
 
+        public class GraphQLDeletePerson
+        {
+            public bool WasSuccessful { get; set; }
+        }
+
         public async Task DeleteAsync(Person person)
         {
-            //string deletePath = $"{_apiPath}/{person.EntityPersonID}";
-            //await _httpClient.DeleteAsync(deletePath);
-            //await _authenticationRepository.RemoveClaimAsync(person.ApplicationUserId, "EntityPersonId");
-            
+            var request = new GraphQLRequest
+            {
+                Query = @"
+                mutation DeletePersonById ($id: String) {
+                  deletePerson(input: {
+                    id: $id
+                  })
+                  {
+                    wasSuccessful
+                  }
+                }",
+                OperationName = "DeletePersonById",
+                Variables = new
+                {
+                    id = person.EntityPersonID.ToString()
+                }
+            };
+
+            await _httpClient.SendQueryAsync<GraphQLDeletePerson>(request);
+            //if (response.Errors != null)
+            //    return false;
+            //else
+            //    return response.Data.WasSuccessful; 
+        }
+
+        public class GraphQLGetPersonById
+        {
+            public GraphQLGetPersonDto PersonById { get; set; }
         }
 
         public async Task<Person> GetPerson(Guid id)
         {
-            //string getPath = $"{_apiPath}/{id}";
-            //var response = await _httpClient.GetAsync(getPath);
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var getResult = await response.Content.ReadFromJsonAsync<GetPersonDto>();
-            //    var result = _mapper.Map<Person>(getResult);
-            //    return result;
-            //}
-            //return default;
-            return default;
+            var request = new GraphQLRequest
+            {
+                Query = @"
+                query GetPersonById($id: String) {
+                  personById(id: $id) {
+                    Id
+                    UserId
+                    FirstName
+                    LastName
+                    PESEL
+                    Birthday
+                    Motherland
+                    PersonStatus
+                  }
+                }",
+                OperationName = "GetPersonById",
+                Variables = new
+                {
+                    id = id.ToString()
+                }
+            };
+
+            var response = await _httpClient.SendQueryAsync<GraphQLGetPersonById>(request);
+
+            if (response.Errors != null)
+            {
+                return default;
+            }
+
+            var result = new Person
+            {
+                EntityPersonID = response.Data.PersonById.Id,
+                ApplicationUserId = response.Data.PersonById.UserId.ToString(),
+                PersonalData = new PersonalData
+                {
+                    FirstName = response.Data.PersonById.FirstName,
+                    LastName = response.Data.PersonById.LastName,
+                    PESEL = response.Data.PersonById.PESEL,
+                    Birthday = response.Data.PersonById.Birthday,
+                    Motherland = response.Data.PersonById.Motherland
+                },
+                PersonStatus = response.Data.PersonById.PersonStatus
+            };
+            return result;
         }
     }
 }
