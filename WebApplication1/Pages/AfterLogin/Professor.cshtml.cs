@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using UniversityApi.API.Contracts;
+using WebApplication1.Contracts;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages.AfterLogin

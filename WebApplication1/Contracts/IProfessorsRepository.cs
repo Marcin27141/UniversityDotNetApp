@@ -5,7 +5,7 @@ using WebApplication1.Contracts;
 using WebApplication1.Extensions;
 using WebApplication1.Services.People;
 
-namespace UniversityApi.API.Contracts
+namespace WebApplication1.Contracts
 {
     public interface IProfessorsRepository : IGenericRepository<Professor, GetProfessor>
     {

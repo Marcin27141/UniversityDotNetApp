@@ -9,10 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using UniversityApi.API.Contracts;
 using WebApplication1.Contracts;
-using WebApplication1.Services;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages

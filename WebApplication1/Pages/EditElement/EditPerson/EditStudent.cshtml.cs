@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using UniversityApi.API.Contracts;
+using WebApplication1.Contracts;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages.EditElement.EditPerson

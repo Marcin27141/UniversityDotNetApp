@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using UniversityApi.API.Contracts;
+using WebApplication1.Contracts;
 using WebApplication1.Services;
 
 namespace WebApplication1.Pages.ShowResults

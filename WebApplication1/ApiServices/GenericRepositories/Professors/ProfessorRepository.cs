@@ -3,9 +3,8 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UniversityApi.API.Contracts;
-using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
+using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Extensions;
 using WebApplication1.Services.People;
 

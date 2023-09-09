@@ -6,10 +6,8 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Transactions;
-using UniversityApi.API.Contracts;
-using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
+using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Extensions;
 using WebApplication1.Services.People;
 

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using UniversityApi.API.Contracts;
 using WebApplication1.Contracts;
 using WebApplication1.Services.People;
 
