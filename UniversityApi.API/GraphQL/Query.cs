@@ -34,6 +34,14 @@ namespace UniversityApi.API.GraphQL
             return context.Set<EntityProfessor>();
         }
 
+        public EntityProfessor GetProfessorById(UniversityApiDbContext context, string id)
+        {
+            if (Guid.TryParse(id, out Guid personId))
+                return context.Set<EntityProfessor>().Find(personId);
+            else
+                return default;
+        }
+
         [UseFiltering]
         [UseSorting]
         public IQueryable<EntityStudent> GetStudents(UniversityApiDbContext context)
