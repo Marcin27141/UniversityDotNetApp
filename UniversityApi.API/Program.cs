@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -32,6 +33,7 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddGraphQLServer()
     .RegisterDbContext<UniversityApiDbContext>()
+    .AddMutationConventions()
     .AddMutationType<Mutation>()
     .AddType<PersonType>()
     .AddType<StudentType>()
@@ -39,7 +41,9 @@ builder.Services
     .AddType<CourseType>()
     .AddQueryType<Query>()
     .AddFiltering()
-    .AddSorting();
+    .AddSorting()
+    .RegisterService<IMapper>();
+
 
 builder.Services.AddCors(options =>
 {

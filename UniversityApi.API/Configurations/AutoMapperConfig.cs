@@ -41,8 +41,6 @@ namespace UniversityApi.API.Configurations
             CreateMap<EntityStudent, GetStudent>().ReverseMap();
             CreateMap<EntityStudent, PostStudent>().ReverseMap();
             CreateMap<EntityStudent, PutStudent>().ReverseMap();
-            CreateMap<AddProfessorInput, EntityProfessor>()
-                .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => PersonStatus.Student));
 
             //Authentication
             CreateMap<SignInResultDto, SignInResult>().ReverseMap();
