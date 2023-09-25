@@ -12,39 +12,25 @@ using GraphQL;
 using GraphQL.Client.Serializer.Newtonsoft;
 using System.Linq;
 using static Google.Rpc.Context.AttributeContext.Types;
+using WebApplication1.GraphQLServices.GraphQLDtos;
 
 namespace WebApplication1.GraphQLServices
 {
     public class PeopleRepository : IPeopleRepository
     {
         private const string GRAPHQL_SERVER_ADDRESS = "https://localhost:7228/graphql/";
+        private readonly IMapper _mapper;
         private GraphQLHttpClient _httpClient;
 
-        public PeopleRepository(IMapper mapper, IAuthenticationRepository authenticationRepository)
+        public PeopleRepository(IMapper mapper)
         {
             this._httpClient = new GraphQLHttpClient(GRAPHQL_SERVER_ADDRESS, new NewtonsoftJsonSerializer());
-        }
-
-        public class GraphQLResponse<T>
-        {
-            public T Data { get; set; }
+            this._mapper = mapper;
         }
 
         public class GraphQLPeopleList
         {
-            public List<GraphQLGetPersonDto> People { get; set; }
-        }
-
-        public class GraphQLGetPersonDto {
-            public Guid Id { get; set; }
-            public Guid UserId { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public string PESEL { get; set; }
-            public DateTime Birthday { get; set; }
-            public string Motherland { get; set; }
-            public PersonStatus PersonStatus { get; set; }
-
+            public List<GraphQLPersonDto> People { get; set; }
         }
 
         public List<Person> GetAllPersonalData()
@@ -73,20 +59,7 @@ namespace WebApplication1.GraphQLServices
                 return new List<Person>();
             }
 
-            var result = response.Data.People.Select(dto => new Person
-            {
-                EntityPersonID = dto.Id,
-                ApplicationUserId = dto.UserId.ToString(),
-                PersonalData = new PersonalData
-                {
-                    FirstName = dto.FirstName,
-                    LastName = dto.LastName,
-                    PESEL = dto.PESEL,
-                    Birthday = dto.Birthday,
-                    Motherland = dto.Motherland
-                },
-                PersonStatus = dto.PersonStatus
-            }).ToList();
+            var result = response.Data.People.Select(dto => _mapper.Map<Person>(dto)).ToList();
             return result;
         }
 
@@ -120,7 +93,7 @@ namespace WebApplication1.GraphQLServices
 
         public class GraphQLGetPersonById
         {
-            public GraphQLGetPersonDto PersonById { get; set; }
+            public GraphQLPersonDto PersonById { get; set; }
         }
 
         public async Task<Person> GetPerson(Guid id)
@@ -154,21 +127,7 @@ namespace WebApplication1.GraphQLServices
                 return default;
             }
 
-            var result = new Person
-            {
-                EntityPersonID = response.Data.PersonById.Id,
-                ApplicationUserId = response.Data.PersonById.UserId.ToString(),
-                PersonalData = new PersonalData
-                {
-                    FirstName = response.Data.PersonById.FirstName,
-                    LastName = response.Data.PersonById.LastName,
-                    PESEL = response.Data.PersonById.PESEL,
-                    Birthday = response.Data.PersonById.Birthday,
-                    Motherland = response.Data.PersonById.Motherland
-                },
-                PersonStatus = response.Data.PersonById.PersonStatus
-            };
-            return result;
+            return _mapper.Map<Person>(response.Data.PersonById);
         }
     }
 }

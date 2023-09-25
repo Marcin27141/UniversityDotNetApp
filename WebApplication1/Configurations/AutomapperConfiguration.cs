@@ -7,6 +7,7 @@ using AutoMapper;
 using System;
 using System.Linq;
 using WebApplication1.Database;
+using WebApplication1.GraphQLServices.GraphQLDtos;
 using WebApplication1.Services;
 using WebApplication1.Services.People;
 
@@ -25,6 +26,18 @@ namespace WebApplication1.Configurations
             //Models/People
             CreateInOutMapping<PostPersonDto, Person>();
             CreateInOutMapping<GetPersonDto, Person>();
+            CreateMap<GraphQLPersonDto, Person>()
+                .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => (PersonStatus)(int)src.PersonStatus))
+                .ForMember(dest => dest.EntityPersonID, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.ApplicationUserId, opt => opt.MapFrom(src => src.UserId.ToString()))
+                .ForMember(dest => dest.PersonalData, opt => opt.MapFrom(src => new PersonalData
+                {
+                    FirstName = src.FirstName,
+                    LastName = src.LastName,
+                    PESEL = src.PESEL,
+                    Birthday = src.Birthday,
+                    Motherland = src.Motherland
+                }));
             CreateMap<ReadPersonResponse, Person>()
                 .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => (PersonStatus)(int)src.PersonStatus))
                 .ForMember(dest => dest.EntityPersonID, opt => opt.MapFrom(src => Guid.Parse(src.PersonId)))

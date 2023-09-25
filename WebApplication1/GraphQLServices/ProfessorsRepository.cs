@@ -35,11 +35,6 @@ namespace WebApplication1.GraphQLServices
             this._httpClient = new GraphQLHttpClient(GRAPHQL_SERVER_ADDRESS, new NewtonsoftJsonSerializer());
         }
 
-        public class GraphQLResponse<T>
-        {
-            public T Data { get; set; }
-        }
-
         public class GraphQLProfessorsList
         {
             public List<GraphQLGetProfessorDto> Professors { get; set; }
@@ -373,7 +368,6 @@ namespace WebApplication1.GraphQLServices
                 Subject = payload.Subject,
             };
             return result;
-            //throw new NotImplementedException();
         }
 
         public Task<Guid> UpdateAsync(Professor updatedEntity)
