@@ -17,16 +17,17 @@ namespace WebApplication1.GraphQLServices
 {
     public class PeopleRepository : IPeopleRepository
     {
-        private readonly IMapper _mapper;
-        private readonly IAuthenticationRepository _authenticationRepository;
         private const string GRAPHQL_SERVER_ADDRESS = "https://localhost:7228/graphql/";
         private GraphQLHttpClient _httpClient;
 
         public PeopleRepository(IMapper mapper, IAuthenticationRepository authenticationRepository)
         {
-            this._mapper = mapper;
-            _authenticationRepository = authenticationRepository;
             this._httpClient = new GraphQLHttpClient(GRAPHQL_SERVER_ADDRESS, new NewtonsoftJsonSerializer());
+        }
+
+        public class GraphQLResponse<T>
+        {
+            public T Data { get; set; }
         }
 
         public class GraphQLPeopleList
@@ -115,10 +116,6 @@ namespace WebApplication1.GraphQLServices
             };
 
             await _httpClient.SendQueryAsync<GraphQLDeletePerson>(request);
-            //if (response.Errors != null)
-            //    return false;
-            //else
-            //    return response.Data.WasSuccessful; 
         }
 
         public class GraphQLGetPersonById

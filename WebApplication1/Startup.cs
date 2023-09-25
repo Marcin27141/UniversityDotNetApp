@@ -77,7 +77,6 @@ namespace WebApplication1
             });
 
             services.AddScoped<IPeopleRepository, GraphQLServices.PeopleRepository>();
-            services.AddScoped<IProfessorsRepository, GraphQLServices.ProfessorsRepository>();
 
             //services.AddScoped(typeof(IGenericGetRepository<>), typeof(GenericGetRepository<,>));
             //services.AddScoped(typeof(IGenericPostRepository<>), typeof(GenericPostRepository<,>));

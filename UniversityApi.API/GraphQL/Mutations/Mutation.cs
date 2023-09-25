@@ -2,6 +2,7 @@
 using ApiDtoLibrary.GraphQL.Courses;
 using ApiDtoLibrary.GraphQL.Professors;
 using ApiDtoLibrary.GraphQL.Students;
+using ApiDtoLibrary.Person;
 using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.Students;
 using AutoMapper;
@@ -29,8 +30,9 @@ namespace UniversityApi.API.GraphQL.Mutations
             await dbContext.SaveChangesAsync();
 
             var response = _mapper.Map<GetProfessor>(professor);
-            //return new AddProfessorPayload(response);
             return response;
+            
+            //return new AddProfessorPayload(professor.EntityPersonID.ToString(), professor.ApplicationUserId.ToString(), professor.FirstName, professor.LastName, professor.IdCode, professor.Subject);
         }
 
         public async Task<AddCoursePayload> AddCourseAsync(AddCourseInput input,

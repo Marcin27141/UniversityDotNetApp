@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <GraphQL Remove="PeopleQuery.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="PeopleQuery.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <GraphQLConfig Include="PeopleQuery.graphql" />
+    <GraphQLConfig Include="Program.cs" />
+    <GraphQLConfig Include="schema.extensions.graphql">
+      <Generator></Generator>
+    </GraphQLConfig>
+    <GraphQLConfig Include="schema.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="StrawberryShake.CodeGeneration.CSharp.Analyzers" Version="12.21.0" />
+    <PackageReference Include="StrawberryShake.Transport.Http" Version="13.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="schema.extensions.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="schema.graphql" />
+  </ItemGroup>
+
+</Project>

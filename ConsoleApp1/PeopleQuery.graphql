@@ -1,0 +1,12 @@
+﻿query GetAllPeople {
+	people {
+		Id
+		UserId
+		FirstName
+		LastName
+		PESEL
+		Birthday
+		Motherland
+		PersonStatus
+	}
+}

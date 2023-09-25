@@ -1,0 +1,391 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+}
+
+type EntityPerson {
+  Id: UUID!
+  UserId: UUID!
+  FirstName: String
+  LastName: String
+  PESEL: String
+  Birthday: DateTime!
+  Motherland: String
+  PersonStatus: PersonStatus!
+}
+
+"Represents a person studying at the university"
+type EntityStudent {
+  Id: UUID!
+  UserId: UUID!
+  FirstName: String
+  LastName: String
+  PESEL: String
+  Birthday: DateTime!
+  Motherland: String
+  PersonStatus: PersonStatus!
+  Index: String
+  BeginningOfStudying: DateTime!
+  "This is a list of courses, that a student is enrolled for"
+  Courses: [EntityCourse]
+}
+
+"Represents a person teaching at the university"
+type EntityProfessor {
+  Id: UUID!
+  UserId: UUID!
+  FirstName: String
+  LastName: String
+  PESEL: String
+  Birthday: DateTime!
+  Motherland: String
+  PersonStatus: PersonStatus!
+  ProfessorId: String
+  Subject: String
+  FirstDayAtJob: DateTime!
+  Salary: Int!
+}
+
+"Represents a syllabus item offered by the university"
+type EntityCourse {
+  Id: UUID!
+  CourseCode: String
+  Name: String
+  ECTS: Int!
+  IsFinishedWithExam: Boolean!
+  "This is a list of students enrolled for this course"
+  EnrolledStudents: [EntityStudent]
+  "This is a professor teaching this course"
+  Professor: EntityProfessor
+}
+
+type Mutation {
+  addProfessor(input: AddProfessorInput): GetProfessor
+  addCourse(input: AddCourseInput): AddCoursePayload
+  addStudent(input: AddStudentInput): AddStudentPayload
+  deletePerson(input: DeletePersonInput): DeletePersonPayload
+}
+
+type Query {
+  people(where: EntityPersonFilterInput order: [EntityPersonSortInput!]): [EntityPerson]
+  personById(id: String): EntityPerson
+  courses(where: EntityCourseFilterInput order: [EntityCourseSortInput!]): [EntityCourse]
+  professors(where: EntityProfessorFilterInput order: [EntityProfessorSortInput!]): [EntityProfessor]
+  professorById(id: String): EntityProfessor
+  students(where: EntityStudentFilterInput order: [EntityStudentSortInput!]): [EntityStudent]
+}
+
+scalar UUID
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime
+
+enum PersonStatus {
+  UNIDENTIFIED
+  STUDENT
+  PROFESSOR
+  ADMIN
+}
+
+input EntityPersonFilterInput {
+  and: [EntityPersonFilterInput!]
+  or: [EntityPersonFilterInput!]
+  entityPersonID: UuidOperationFilterInput
+  applicationUserId: UuidOperationFilterInput
+  firstName: StringOperationFilterInput
+  lastName: StringOperationFilterInput
+  pesel: StringOperationFilterInput
+  birthday: DateTimeOperationFilterInput
+  motherland: StringOperationFilterInput
+  personStatus: PersonStatusOperationFilterInput
+}
+
+input EntityPersonSortInput {
+  entityPersonID: SortEnumType
+  applicationUserId: SortEnumType
+  firstName: SortEnumType
+  lastName: SortEnumType
+  pesel: SortEnumType
+  birthday: SortEnumType
+  motherland: SortEnumType
+  personStatus: SortEnumType
+}
+
+input EntityCourseFilterInput {
+  and: [EntityCourseFilterInput!]
+  or: [EntityCourseFilterInput!]
+  entityCourseID: UuidOperationFilterInput
+  courseCode: StringOperationFilterInput
+  name: StringOperationFilterInput
+  ects: IntOperationFilterInput
+  isFinishedWithExam: BooleanOperationFilterInput
+  professor: EntityProfessorFilterInput
+  students: ListFilterInputTypeOfEntityStudentFilterInput
+  softDeleted: BooleanOperationFilterInput
+}
+
+input EntityCourseSortInput {
+  entityCourseID: SortEnumType
+  courseCode: SortEnumType
+  name: SortEnumType
+  ects: SortEnumType
+  isFinishedWithExam: SortEnumType
+  professor: EntityProfessorSortInput
+  softDeleted: SortEnumType
+}
+
+input EntityProfessorFilterInput {
+  and: [EntityProfessorFilterInput!]
+  or: [EntityProfessorFilterInput!]
+  entityPersonID: UuidOperationFilterInput
+  applicationUserId: UuidOperationFilterInput
+  firstName: StringOperationFilterInput
+  lastName: StringOperationFilterInput
+  pesel: StringOperationFilterInput
+  birthday: DateTimeOperationFilterInput
+  motherland: StringOperationFilterInput
+  personStatus: PersonStatusOperationFilterInput
+  idCode: StringOperationFilterInput
+  subject: StringOperationFilterInput
+  firstDayAtJob: DateTimeOperationFilterInput
+  salary: IntOperationFilterInput
+}
+
+input EntityProfessorSortInput {
+  entityPersonID: SortEnumType
+  applicationUserId: SortEnumType
+  firstName: SortEnumType
+  lastName: SortEnumType
+  pesel: SortEnumType
+  birthday: SortEnumType
+  motherland: SortEnumType
+  personStatus: SortEnumType
+  idCode: SortEnumType
+  subject: SortEnumType
+  firstDayAtJob: SortEnumType
+  salary: SortEnumType
+}
+
+input EntityStudentFilterInput {
+  and: [EntityStudentFilterInput!]
+  or: [EntityStudentFilterInput!]
+  entityPersonID: UuidOperationFilterInput
+  applicationUserId: UuidOperationFilterInput
+  firstName: StringOperationFilterInput
+  lastName: StringOperationFilterInput
+  pesel: StringOperationFilterInput
+  birthday: DateTimeOperationFilterInput
+  motherland: StringOperationFilterInput
+  personStatus: PersonStatusOperationFilterInput
+  index: StringOperationFilterInput
+  beginningOfStudying: DateTimeOperationFilterInput
+  courses: ListFilterInputTypeOfEntityCourseFilterInput
+}
+
+input EntityStudentSortInput {
+  entityPersonID: SortEnumType
+  applicationUserId: SortEnumType
+  firstName: SortEnumType
+  lastName: SortEnumType
+  pesel: SortEnumType
+  birthday: SortEnumType
+  motherland: SortEnumType
+  personStatus: SortEnumType
+  index: SortEnumType
+  beginningOfStudying: SortEnumType
+}
+
+input UuidOperationFilterInput {
+  eq: UUID
+  neq: UUID
+  in: [UUID]
+  nin: [UUID]
+  gt: UUID
+  ngt: UUID
+  gte: UUID
+  ngte: UUID
+  lt: UUID
+  nlt: UUID
+  lte: UUID
+  nlte: UUID
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String
+  neq: String
+  contains: String
+  ncontains: String
+  in: [String]
+  nin: [String]
+  startsWith: String
+  nstartsWith: String
+  endsWith: String
+  nendsWith: String
+}
+
+input DateTimeOperationFilterInput {
+  eq: DateTime
+  neq: DateTime
+  in: [DateTime]
+  nin: [DateTime]
+  gt: DateTime
+  ngt: DateTime
+  gte: DateTime
+  ngte: DateTime
+  lt: DateTime
+  nlt: DateTime
+  lte: DateTime
+  nlte: DateTime
+}
+
+input PersonStatusOperationFilterInput {
+  eq: PersonStatus
+  neq: PersonStatus
+  in: [PersonStatus!]
+  nin: [PersonStatus!]
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+input IntOperationFilterInput {
+  eq: Int
+  neq: Int
+  in: [Int]
+  nin: [Int]
+  gt: Int
+  ngt: Int
+  gte: Int
+  ngte: Int
+  lt: Int
+  nlt: Int
+  lte: Int
+  nlte: Int
+}
+
+input BooleanOperationFilterInput {
+  eq: Boolean
+  neq: Boolean
+}
+
+input ListFilterInputTypeOfEntityStudentFilterInput {
+  all: EntityStudentFilterInput
+  none: EntityStudentFilterInput
+  some: EntityStudentFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfEntityCourseFilterInput {
+  all: EntityCourseFilterInput
+  none: EntityCourseFilterInput
+  some: EntityCourseFilterInput
+  any: Boolean
+}
+
+input AddStudentInput {
+  applicationUserId: UUID!
+  firstName: String
+  lastName: String
+  index: String
+}
+
+type AddStudentPayload {
+  student: GetStudent
+}
+
+input AddCourseInput {
+  courseCode: String
+  name: String
+  ects: Int!
+  isFinishedWithExam: Boolean!
+  professorId: UUID!
+}
+
+type AddCoursePayload {
+  course: GetCourse
+}
+
+input AddProfessorInput {
+  applicationUserId: String
+  firstName: String
+  lastName: String
+  idCode: String
+  subject: String
+}
+
+type GetProfessor {
+  applicationUserId: String
+  personStatus: PersonStatus!
+  subject: String
+  firstDayAtJob: DateTime!
+  salary: Int!
+  entityPersonId: UUID!
+  idCode: String!
+  firstName: String!
+  lastName: String!
+  pesel: String
+  birthday: DateTime!
+  motherland: String
+}
+
+type DeletePersonPayload {
+  wasSuccessful: Boolean!
+}
+
+input DeletePersonInput {
+  id: String
+}
+
+type GetCourse {
+  ects: Int!
+  isFinishedWithExam: Boolean!
+  students: [BaseGetStudent]
+  professor: BaseGetProfessor
+  entityCourseId: UUID!
+  courseCode: String!
+  name: String!
+}
+
+type GetStudent {
+  applicationUserId: String
+  personStatus: PersonStatus!
+  beginningOfStudying: DateTime!
+  courses: [BaseGetCourse]
+  entityPersonId: UUID!
+  index: String!
+  firstName: String!
+  lastName: String!
+  pesel: String
+  birthday: DateTime!
+  motherland: String
+}
+
+type BaseGetCourse {
+  entityCourseId: UUID!
+  courseCode: String!
+  name: String!
+}
+
+type BaseGetProfessor {
+  entityPersonId: UUID!
+  idCode: String!
+  firstName: String!
+  lastName: String!
+  pesel: String
+  birthday: DateTime!
+  motherland: String
+}
+
+type BaseGetStudent {
+  entityPersonId: UUID!
+  index: String!
+  firstName: String!
+  lastName: String!
+  pesel: String
+  birthday: DateTime!
+  motherland: String
+}
