@@ -322,30 +322,36 @@ namespace WebApplication1.GraphQLServices
             var request = new GraphQLRequest
             {
                 Query = @"
-                mutation AddProfessorMutation($userId: String!, $fstName: String!, $lstName: String!, $code: String!, $subject: String) {
-                  addProfessor (input: {
-                    applicationUserId: $userId
-                    firstName: $fstName
-                    lastName: $lstName
-                    idCode: $code
-                    subject: $subject
-                  })
+                mutation AddProfessorMutation($input: AddProfessorInput) {
+                  addProfessor (input: $input)
                   {
                     id
                     userId
                     firstName
                     lastName
+                    pesel
+                    motherland
+                    birthday
                     professorId
                     subject
+                    firstDayAtJob
+                    salary
                   }
                 }",
                 Variables = new
                 {
-                    userId = entity.ApplicationUserId.ToString(),
-                    fstName = entity.PersonalData.FirstName,
-                    lstName = entity.PersonalData.LastName,
-                    code = entity.IdCode,
-                    subject = entity.Subject
+                    input = new AddProfessorInput(
+                        entity.ApplicationUserId.ToString(),
+                        entity.PersonalData.FirstName,
+                        entity.PersonalData.LastName,
+                        entity.PersonalData.PESEL,
+                        entity.PersonalData.Motherland,
+                        entity.PersonalData.Birthday,
+                        entity.IdCode,
+                        entity.Subject,
+                        entity.FirstDayAtJob,
+                        entity.Salary
+                    )
                 }
             };
 

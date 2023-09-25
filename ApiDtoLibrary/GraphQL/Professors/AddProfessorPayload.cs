@@ -8,7 +8,12 @@ namespace ApiDtoLibrary.GraphQL.Professors
         string UserId,
         string FirstName,
         string LastName,
+        string PESEL,
+        string Motherland,
+        DateTime Birthday,
         string ProfessorId,
-        string Subject
+        string Subject,
+        DateTime? FirstDayAtJob,
+        int Salary
         );
 }
