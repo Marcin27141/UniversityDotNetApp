@@ -6,6 +6,7 @@ using ApiDtoLibrary.Users;
 using AutoMapper;
 using System;
 using System.Linq;
+using System.Reactive.Subjects;
 using WebApplication1.Database;
 using WebApplication1.GraphQLServices.GraphQLDtos;
 using WebApplication1.Services;
@@ -26,18 +27,8 @@ namespace WebApplication1.Configurations
             //Models/People
             CreateInOutMapping<PostPersonDto, Person>();
             CreateInOutMapping<GetPersonDto, Person>();
-            CreateMap<GraphQLPersonDto, Person>()
-                .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => (PersonStatus)(int)src.PersonStatus))
-                .ForMember(dest => dest.EntityPersonID, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.ApplicationUserId, opt => opt.MapFrom(src => src.UserId.ToString()))
-                .ForMember(dest => dest.PersonalData, opt => opt.MapFrom(src => new PersonalData
-                {
-                    FirstName = src.FirstName,
-                    LastName = src.LastName,
-                    PESEL = src.PESEL,
-                    Birthday = src.Birthday,
-                    Motherland = src.Motherland
-                }));
+            MapGraphQLPerson(CreateMap<GraphQLPersonDto, Person>());
+
             CreateMap<ReadPersonResponse, Person>()
                 .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => (PersonStatus)(int)src.PersonStatus))
                 .ForMember(dest => dest.EntityPersonID, opt => opt.MapFrom(src => Guid.Parse(src.PersonId)))
@@ -57,6 +48,11 @@ namespace WebApplication1.Configurations
             CreateInOutMapping<GetProfessor, Professor>();
             CreateInOutMapping<PostProfessor, Professor>();
             CreateInOutMapping<PutProfessor, Professor>();
+            MapGraphQLPerson(
+                CreateMap<GraphQLProfessorDto, Professor>()
+                    .ForMember(dest => dest.IdCode, opt => opt.MapFrom(src => src.ProfessorId))
+                );
+                
 
             //Models/Students
             CreateInOutMapping<BaseGetStudent, Student>();
@@ -70,6 +66,23 @@ namespace WebApplication1.Configurations
 
             //WebAppUser
             CreateMap<WebAppUser, ApplicationUser>().ReverseMap();
+        }
+
+        private void MapGraphQLPerson<S, T>(IMappingExpression<S, T> mapping)
+            where S : GraphQLPersonDto
+            where T : Person
+        {
+            mapping.ForMember(dest => dest.PersonalData, opt => opt.MapFrom(src => new PersonalData
+            {
+                FirstName = src.FirstName,
+                LastName = src.LastName,
+                PESEL = src.PESEL,
+                Birthday = src.Birthday,
+                Motherland = src.Motherland
+            }))
+            .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => (PersonStatus)(int)src.PersonStatus))
+            .ForMember(dest => dest.EntityPersonID, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.ApplicationUserId, opt => opt.MapFrom(src => src.UserId.ToString()));
         }
 
         private void CreateInOutMapping<S, T>()

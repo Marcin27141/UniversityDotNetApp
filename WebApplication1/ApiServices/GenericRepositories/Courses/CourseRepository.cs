@@ -42,5 +42,10 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
                 .FilterCoursesBy(filterByOption, filter)
                 .ToList();
         }
+
+        Task<bool> ICoursesRepository.DeleteAsync(Course course)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

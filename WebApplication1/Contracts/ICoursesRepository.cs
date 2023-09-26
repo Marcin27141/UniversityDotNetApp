@@ -11,5 +11,6 @@ namespace WebApplication1.Contracts
     {
         List<Course> SortFilterCourses(CourseOrderByOptions orderByOption, CourseFilterByOptions filterByOption, string filter);
         Task<bool> CourseCodeIsOccupied(string courseCode);
+        Task<bool> DeleteAsync(Course course);
     }
 }
