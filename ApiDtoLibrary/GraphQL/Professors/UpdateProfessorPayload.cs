@@ -1,6 +1,8 @@
-﻿namespace ApiDtoLibrary.GraphQL.Professors
+﻿using ApiDtoLibrary.Professors;
+
+namespace ApiDtoLibrary.GraphQL.Professors
 {
     public record UpdateProfessorPayload(
-        string Id
+        GetProfessor getProfessor
         );
 }

@@ -20,6 +20,7 @@ using Azure;
 using ApiDtoLibrary.GraphQL.Professors;
 using WebApplication1.GraphQLServices.GraphQLDtos;
 using static Grpc.Core.Metadata;
+using GraphQL.Client.Abstractions;
 
 
 namespace WebApplication1.GraphQLServices
@@ -235,11 +236,6 @@ namespace WebApplication1.GraphQLServices
             public AddProfessorPayload AddProfessor { get; set; }
         }
 
-        public class UpdateProfessorResponse
-        {
-            public UpdateProfessorPayload UpdateProfessor { get; set; }
-        }
-
         public async Task<GetProfessor> AddAsync(Professor entity)
         {
             var request = new GraphQLRequest
@@ -279,6 +275,7 @@ namespace WebApplication1.GraphQLServices
             };
 
             var response = await _httpClient.SendQueryAsync<AddProfessorResponse>(request);
+            //var response = await _httpClient.SendQueryAsync(request, () => new { AddProfessor = new { GetProfessor = new GetProfessor() } });
 
             if (response.Errors != null)
             {
@@ -296,6 +293,7 @@ namespace WebApplication1.GraphQLServices
                 Subject = payload.Subject,
             };
             return result;
+            //return response.Data.AddProfessor.GetProfessor;
         }
 
         public async Task<Guid> UpdateAsync(Professor entity)
@@ -306,33 +304,25 @@ namespace WebApplication1.GraphQLServices
                 mutation UpdateProfessorMutation($input: UpdateProfessorInput) {
                   updateProfessor (input: $input)
                   {
-                    id
+                    getProfessor {
+                      entityPersonId
+                    }
                   }
                 }",
                 Variables = new
                 {
-                    input = new UpdateProfessorInput(
-                        entity.EntityPersonID.ToString(),
-                        entity.PersonalData.FirstName,
-                        entity.PersonalData.LastName,
-                        entity.PersonalData.PESEL,
-                        entity.PersonalData.Motherland,
-                        entity.PersonalData.Birthday,
-                        entity.Subject,
-                        entity.FirstDayAtJob,
-                        entity.Salary
-                    )
+                    input = new UpdateProfessorInput(_mapper.Map<PutProfessor>(entity))
                 }
             };
 
-            var response = await _httpClient.SendQueryAsync<UpdateProfessorResponse>(request);
+            var response = await _httpClient.SendQueryAsync(request, () => new { UpdateProfessor = new { GetProfessor = new GetProfessor() } });
 
             if (response.Errors != null)
             {
                 return default;
             }
 
-            return Guid.Parse(response.Data.UpdateProfessor.Id);
+            return response.Data.UpdateProfessor.GetProfessor.EntityPersonId;
         }
     }
 }

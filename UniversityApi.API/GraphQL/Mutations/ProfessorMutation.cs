@@ -1,6 +1,7 @@
 ﻿using ApiDtoLibrary.GraphQL.Professors;
 using UniversityApi.API.DataBase.Entities;
 using UniversityApi.API.DataBase;
+using ApiDtoLibrary.Professors;
 
 namespace UniversityApi.API.GraphQL.Mutations
 {
@@ -31,11 +32,12 @@ namespace UniversityApi.API.GraphQL.Mutations
         public async Task<UpdateProfessorPayload> UpdateProfessorAsync(UpdateProfessorInput input,
             UniversityApiDbContext dbContext)
         {
-            var toUpdate = dbContext.Set<EntityProfessor>().Find(Guid.Parse(input.Id)) ?? throw new KeyNotFoundException($"Professor with id {input.Id} was not found");
-            _mapper.Map(input, toUpdate);
+            var toUpdate = dbContext.Set<EntityProfessor>().Find(input.putProfessor.EntityPersonId) ?? throw new KeyNotFoundException($"Professor with id {input.putProfessor.EntityPersonId} was not found");
+            _mapper.Map(input.putProfessor, toUpdate);
             await dbContext.SaveChangesAsync();
 
-            return new UpdateProfessorPayload(toUpdate.EntityPersonID.ToString());
+            var getProfessor = _mapper.Map<GetProfessor>(toUpdate);
+            return new UpdateProfessorPayload(getProfessor);
         }
     }
 }
