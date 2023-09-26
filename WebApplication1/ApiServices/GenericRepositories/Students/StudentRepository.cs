@@ -83,11 +83,5 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
                 return putEntity.EntityPersonId;
             return default;
         }
-
-        public override async Task DeleteAsync(Student entity)
-        {
-            await base.DeleteAsync(entity);
-            await RemoveClaimAfterDeleteAsync(entity.ApplicationUserId, "EntityPersonId");     
-        }
     }
 }

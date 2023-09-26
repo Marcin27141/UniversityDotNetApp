@@ -43,9 +43,11 @@ namespace WebApplication1.ApiServices.GenericRepositories.Courses
                 .ToList();
         }
 
-        Task<bool> ICoursesRepository.DeleteAsync(Course course)
-        {
-            throw new System.NotImplementedException();
+        public async Task<bool> DeleteAsync(Course course)
+        {        
+            string deletePath = $"{_apiPath}/{course.EntityCourseID}";
+            await _httpClient.DeleteAsync(deletePath);
+            return true;
         }
     }
 }

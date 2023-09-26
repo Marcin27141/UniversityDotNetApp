@@ -42,11 +42,5 @@ namespace WebApplication1.ApiServices.GenericRepositories.Professors
                 .FilterProfessorsBy(filterByOption, filter)
                 .ToList();
         }
-
-        public override async Task DeleteAsync(Professor entity)
-        {
-            await base.DeleteAsync(entity);
-            await RemoveClaimAfterDeleteAsync(entity.ApplicationUserId, "EntityPersonId");
-        }
     }
 }
