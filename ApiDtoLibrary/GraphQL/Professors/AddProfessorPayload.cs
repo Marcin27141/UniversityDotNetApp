@@ -13,7 +13,7 @@ namespace ApiDtoLibrary.GraphQL.Professors
         DateTime Birthday,
         string ProfessorId,
         string Subject,
-        DateTime? FirstDayAtJob,
+        DateTime FirstDayAtJob,
         int Salary
         );
 }

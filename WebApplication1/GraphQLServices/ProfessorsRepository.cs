@@ -19,6 +19,7 @@ using static WebApplication1.GraphQLServices.PeopleRepository;
 using Azure;
 using ApiDtoLibrary.GraphQL.Professors;
 using WebApplication1.GraphQLServices.GraphQLDtos;
+using static Grpc.Core.Metadata;
 
 
 namespace WebApplication1.GraphQLServices
@@ -188,7 +189,7 @@ namespace WebApplication1.GraphQLServices
             var request = new GraphQLRequest
             {
                 Query = @"
-                query GetProfessorById($userIdVar: UUID) {
+                query GetProfessorByUser($userIdVar: UUID) {
                     professors(where: {applicationUserId: {eq: $userIdVar}}) {
                     Id
                     UserId
@@ -232,6 +233,11 @@ namespace WebApplication1.GraphQLServices
         public class AddProfessorResponse
         {
             public AddProfessorPayload AddProfessor { get; set; }
+        }
+
+        public class UpdateProfessorResponse
+        {
+            public UpdateProfessorPayload UpdateProfessor { get; set; }
         }
 
         public async Task<GetProfessor> AddAsync(Professor entity)
@@ -292,9 +298,41 @@ namespace WebApplication1.GraphQLServices
             return result;
         }
 
-        public Task<Guid> UpdateAsync(Professor updatedEntity)
+        public async Task<Guid> UpdateAsync(Professor entity)
         {
-            throw new NotImplementedException();
+            var request = new GraphQLRequest
+            {
+                Query = @"
+                mutation UpdateProfessorMutation($input: UpdateProfessorInput) {
+                  updateProfessor (input: $input)
+                  {
+                    id
+                  }
+                }",
+                Variables = new
+                {
+                    input = new UpdateProfessorInput(
+                        entity.EntityPersonID.ToString(),
+                        entity.PersonalData.FirstName,
+                        entity.PersonalData.LastName,
+                        entity.PersonalData.PESEL,
+                        entity.PersonalData.Motherland,
+                        entity.PersonalData.Birthday,
+                        entity.Subject,
+                        entity.FirstDayAtJob,
+                        entity.Salary
+                    )
+                }
+            };
+
+            var response = await _httpClient.SendQueryAsync<UpdateProfessorResponse>(request);
+
+            if (response.Errors != null)
+            {
+                return default;
+            }
+
+            return Guid.Parse(response.Data.UpdateProfessor.Id);
         }
     }
 }

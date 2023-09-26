@@ -35,6 +35,12 @@ namespace UniversityApi.API.Configurations
             CreateMap<EntityProfessor, PutProfessor>().ReverseMap();
             CreateMap<AddProfessorInput, EntityProfessor>()
                 .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => PersonStatus.Professor));
+            //CreateMap<EntityProfessor, AddProfessorPayload>()
+            //    .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => PersonStatus.Professor));
+            CreateMap<UpdateProfessorInput, EntityProfessor>()
+                .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => PersonStatus.Professor));
+            //CreateMap<EntityProfessor, UpdateProfessorPayload>()
+            //    .ForMember(dest => dest.PersonStatus, opt => opt.MapFrom(src => PersonStatus.Professor));
 
             //Models/Students
             CreateMap<EntityStudent, BaseGetStudent>().ReverseMap();
