@@ -231,11 +231,6 @@ namespace WebApplication1.GraphQLServices
             await _authenticationRepository.AddClaimAsync(userId, claim);
         }
 
-        public class AddProfessorResponse
-        {
-            public AddProfessorPayload AddProfessor { get; set; }
-        }
-
         public async Task<GetProfessor> AddAsync(Professor entity)
         {
             var request = new GraphQLRequest
@@ -259,41 +254,18 @@ namespace WebApplication1.GraphQLServices
                 }",
                 Variables = new
                 {
-                    input = new AddProfessorInput(
-                        entity.ApplicationUserId.ToString(),
-                        entity.PersonalData.FirstName,
-                        entity.PersonalData.LastName,
-                        entity.PersonalData.PESEL,
-                        entity.PersonalData.Motherland,
-                        entity.PersonalData.Birthday,
-                        entity.IdCode,
-                        entity.Subject,
-                        entity.FirstDayAtJob,
-                        entity.Salary
-                    )
+                    input = new AddProfessorInput(_mapper.Map<PostProfessor>(entity))
                 }
             };
 
-            var response = await _httpClient.SendQueryAsync<AddProfessorResponse>(request);
-            //var response = await _httpClient.SendQueryAsync(request, () => new { AddProfessor = new { GetProfessor = new GetProfessor() } });
+            var response = await _httpClient.SendQueryAsync(request, () => new { AddProfessor = new { GetProfessor = new GetProfessor() } });
 
             if (response.Errors != null)
             {
                 return default;
             }
 
-            var payload = response.Data.AddProfessor;
-            var result = new GetProfessor
-            {
-                EntityPersonId = Guid.Parse(payload.Id),
-                ApplicationUserId = payload.UserId,
-                FirstName = payload.FirstName,
-                LastName = payload.LastName,
-                IdCode = payload.ProfessorId,
-                Subject = payload.Subject,
-            };
-            return result;
-            //return response.Data.AddProfessor.GetProfessor;
+            return response.Data.AddProfessor.GetProfessor;
         }
 
         public async Task<Guid> UpdateAsync(Professor entity)

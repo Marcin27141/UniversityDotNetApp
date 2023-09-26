@@ -10,30 +10,20 @@ namespace UniversityApi.API.GraphQL.Mutations
         public async Task<AddProfessorPayload> AddProfessorAsync(AddProfessorInput input,
             UniversityApiDbContext dbContext)
         {
-            var professor = _mapper.Map<EntityProfessor>(input);
+            var professor = _mapper.Map<EntityProfessor>(input.postProfessor);
 
             await dbContext.AddAsync(professor);
             await dbContext.SaveChangesAsync();
 
-            return new AddProfessorPayload(
-                professor.EntityPersonID.ToString(),
-                professor.ApplicationUserId.ToString(),
-                professor.FirstName,
-                professor.LastName,
-                professor.PESEL,
-                professor.Motherland,
-                professor.Birthday,
-                professor.IdCode,
-                professor.Subject,
-                professor.FirstDayAtJob,
-                professor.Salary);
+            return new AddProfessorPayload(_mapper.Map<GetProfessor>(professor));
         }
 
         public async Task<UpdateProfessorPayload> UpdateProfessorAsync(UpdateProfessorInput input,
             UniversityApiDbContext dbContext)
         {
-            var toUpdate = dbContext.Set<EntityProfessor>().Find(input.putProfessor.EntityPersonId) ?? throw new KeyNotFoundException($"Professor with id {input.putProfessor.EntityPersonId} was not found");
-            _mapper.Map(input.putProfessor, toUpdate);
+            var putProfessor = input.putProfessor;
+            var toUpdate = dbContext.Set<EntityProfessor>().Find(putProfessor.EntityPersonId) ?? throw new KeyNotFoundException($"Professor with id {putProfessor.EntityPersonId} was not found");
+            _mapper.Map(putProfessor, toUpdate);
             await dbContext.SaveChangesAsync();
 
             var getProfessor = _mapper.Map<GetProfessor>(toUpdate);
