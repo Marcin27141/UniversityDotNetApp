@@ -16,7 +16,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
         where T : IDistinguishableEntity
         where U : class
     {
-        private readonly IAuthenticationRepository _authenticationRepository;
+        protected readonly IAuthenticationRepository _authenticationRepository;
 
         protected GenericPostRepository(IMapper mapper, IAuthenticationRepository authenticationRepository) : base(mapper)
         {

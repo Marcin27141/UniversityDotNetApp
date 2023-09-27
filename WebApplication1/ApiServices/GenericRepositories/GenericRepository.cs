@@ -12,7 +12,7 @@ namespace WebApplication1.ApiServices.GenericRepositories
     public abstract class GenericRepository<T, U> : ApiRepository, IGenericRepository<T,U>
         where T : IDistinguishableEntity
     {
-        private readonly IAuthenticationRepository _authenticationRepository;
+        protected readonly IAuthenticationRepository _authenticationRepository;
         private readonly IGenericGetRepository<T> _getRepository;
         private readonly IGenericPostRepository<T, U> _postRepository;
         private readonly IGenericPutRepository<T> _putRepository;

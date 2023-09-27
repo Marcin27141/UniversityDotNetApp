@@ -50,7 +50,7 @@ namespace WebApplication1.LocalServices
 
                 var isAdmin = userClaims.Any(c => c.Type == "IsAdmin");
                 var isSet = userClaims.Any(c => c.Type == "EntityPersonId");
-                var status = userClaims.FirstOrDefault(c => c.Type == "Status").Value;
+                var status = userClaims.FirstOrDefault(c => c.Type == "Status")?.Value;
 
                 if (!isAdmin && !isSet)
                 {

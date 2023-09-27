@@ -21,10 +21,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
         public override async Task<GetStudent> AddAsync(Student entity)
         {
             var response = await base.AddAsync(entity);
-
-            var entityPersonIdClaim = new Claim("EntityPersonId", response.EntityPersonId.ToString());
-            await base.AddClaimAfterPostAsync(response.EntityPersonId.ToString(), entityPersonIdClaim);
-
+            await _authenticationRepository.AddEntityPersonIdClaimAsync(response.ApplicationUserId.ToString(), response.EntityPersonId.ToString());
             return response;
         }
     }

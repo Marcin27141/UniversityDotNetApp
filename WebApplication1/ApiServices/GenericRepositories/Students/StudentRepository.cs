@@ -38,8 +38,7 @@ namespace WebApplication1.ApiServices.GenericRepositories.Students
                 var postResult = await response.Content.ReadFromJsonAsync<GetStudent>();
                 var mappedResult =  _mapper.Map<Student>(postResult);
 
-                var entityPersonIdClaim = new Claim("EntityPersonId", mappedResult.EntityPersonID.ToString());
-                await base.AddClaimAfterPostAsync(mappedResult.ApplicationUserId, entityPersonIdClaim);
+                await _authenticationRepository.AddEntityPersonIdClaimAsync(mappedResult.ApplicationUserId, mappedResult.EntityPersonID.ToString());
 
                 return mappedResult;
             }

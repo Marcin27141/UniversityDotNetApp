@@ -12,6 +12,11 @@ namespace WebApplication1.Contracts
         Task<IEnumerable<AuthenticationScheme>> GetExternalAuthenticationSchemesAsync();
         Task<IdentityResult> CreateUserAsync(ApplicationUser user);
         Task<IdentityResult> AddClaimAsync(string userId, Claim claim);
+        Task<IdentityResult> AddEntityPersonIdClaimAsync(string userId, string personId)
+        {
+            var entityPersonIdClaim = new Claim("EntityPersonId", personId);
+            return AddClaimAsync(userId, entityPersonIdClaim);
+        }
 
         Task<IdentityResult> RemoveClaimAsync(string userId, string claimType);
         Task<string> GetIdByUsernameAsync(string username);
