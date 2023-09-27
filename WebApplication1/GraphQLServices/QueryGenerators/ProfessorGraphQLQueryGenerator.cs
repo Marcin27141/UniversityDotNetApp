@@ -51,7 +51,7 @@ namespace WebApplication1.GraphQLServices.QueryGenerators
             return new GraphQLRequest
             {
                 Query = @"
-                query GetAlProfessors {
+                query GetAllProfessors {
                     professors {
                         Id
                         UserId

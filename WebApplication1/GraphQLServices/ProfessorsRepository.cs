@@ -1,26 +1,15 @@
-﻿using ApiDtoLibrary.Person;
-using AutoMapper;
+﻿using AutoMapper;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System;
-using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
 using WebApplication1.Services.People;
-using GraphQL.Client.Http;
 using GraphQL;
-using GraphQL.Client.Serializer.Newtonsoft;
 using System.Linq;
-using static Google.Rpc.Context.AttributeContext.Types;
 using WebApplication1.Extensions;
 using System.Security.Claims;
 using ApiDtoLibrary.Professors;
-using static WebApplication1.GraphQLServices.PeopleRepository;
-using Azure;
-using ApiDtoLibrary.GraphQL.Professors;
 using WebApplication1.GraphQLServices.GraphQLDtos;
-using static Grpc.Core.Metadata;
-using GraphQL.Client.Abstractions;
 using WebApplication1.GraphQLServices.QueryGenerators;
 
 namespace WebApplication1.GraphQLServices
