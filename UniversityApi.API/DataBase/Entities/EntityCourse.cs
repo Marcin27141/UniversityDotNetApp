@@ -12,6 +12,7 @@
         //relationships
 #nullable enable
         public EntityProfessor? Professor { get; set; }
+        public Guid? ProfessorId { get; set; }
 #nullable disable
 
         public IList<EntityStudent> Students { get; set; }

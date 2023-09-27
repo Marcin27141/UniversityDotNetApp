@@ -1,10 +1,8 @@
-﻿namespace ApiDtoLibrary.GraphQL.Courses
+﻿using ApiDtoLibrary.Courses;
+
+namespace ApiDtoLibrary.GraphQL.Courses
 {
     public record AddCourseInput(
-        string CourseCode,
-        string Name,
-        int ECTS,
-        bool IsFinishedWithExam,
-        Guid ProfessorId
+        PostCourse postCourse
         );
 }

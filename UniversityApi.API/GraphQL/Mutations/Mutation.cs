@@ -27,19 +27,6 @@ namespace UniversityApi.API.GraphQL.Mutations
             return await Task.FromResult(new AddTestPayload(true));
         }
 
-        public async Task<AddCoursePayload> AddCourseAsync(AddCourseInput input,
-            UniversityApiDbContext dbContext)
-        {
-            var course = _mapper.Map<EntityCourse>(input);
-            course.Professor = await dbContext.Set<EntityProfessor>().FindAsync(input.ProfessorId);
-
-            await dbContext.AddAsync(course);
-            await dbContext.SaveChangesAsync();
-
-            var response = _mapper.Map<GetCourse>(course);
-            return new AddCoursePayload(response);
-        }
-
         public async Task<AddStudentPayload> AddStudentAsync(AddStudentInput input,
             UniversityApiDbContext dbContext)
         {

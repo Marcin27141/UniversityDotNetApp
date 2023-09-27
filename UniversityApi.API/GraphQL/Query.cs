@@ -29,6 +29,14 @@ namespace UniversityApi.API.GraphQL
             return context.Courses;
         }
 
+        public EntityCourse GetCourseById(UniversityApiDbContext context, string id)
+        {
+            if (Guid.TryParse(id, out Guid courseId))
+                return context.Courses.Find(courseId);
+            else
+                return default;
+        }
+
         [UseFiltering]
         [UseSorting]
         public IQueryable<EntityProfessor> GetProfessors(UniversityApiDbContext context)
