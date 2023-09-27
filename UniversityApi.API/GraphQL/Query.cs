@@ -58,5 +58,13 @@ namespace UniversityApi.API.GraphQL
         {
             return context.Set<EntityStudent>();
         }
+
+        public EntityStudent GetStudentById(UniversityApiDbContext context, string id)
+        {
+            if (Guid.TryParse(id, out Guid personId))
+                return context.Set<EntityStudent>().Find(personId);
+            else
+                return default;
+        }
     }
 }

@@ -2,5 +2,5 @@
 
 namespace ApiDtoLibrary.GraphQL.Students
 {
-    public record AddStudentPayload(GetStudent student);
+    public record AddStudentPayload(GetStudent getStudent);
 }

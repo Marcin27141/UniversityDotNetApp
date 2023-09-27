@@ -86,6 +86,8 @@ namespace WebApplication1
             services.AddScoped<IProfessorGraphQLQueryGenerator, ProfessorGraphQLQueryGenerator>();
             services.AddScoped<ICoursesRepository, GraphQLServices.CoursesRepository>();
             services.AddScoped<ICourseGraphQLQueryGenerator, CourseGraphQLQueryGenerator>();
+            services.AddScoped<IStudentsRepository, GraphQLServices.StudentsRepository>();
+            services.AddScoped<IStudentGraphQLQueryGenerator, StudentGraphQLQueryGenerator>();
 
             //services.AddScoped(typeof(IGenericGetRepository<>), typeof(GenericGetRepository<,>));
             //services.AddScoped(typeof(IGenericPostRepository<>), typeof(GenericPostRepository<,>));
