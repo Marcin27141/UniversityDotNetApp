@@ -21,32 +21,17 @@ using ApiDtoLibrary.GraphQL.Professors;
 using WebApplication1.GraphQLServices.GraphQLDtos;
 using static Grpc.Core.Metadata;
 using GraphQL.Client.Abstractions;
-
+using WebApplication1.GraphQLServices.QueryGenerators;
 
 namespace WebApplication1.GraphQLServices
 {
-    public class ProfessorsRepository : IProfessorsRepository
+    public class ProfessorsRepository : GraphQLRepository, IProfessorsRepository
     {
-        private readonly IMapper _mapper;
-        private IAuthenticationRepository _authenticationRepository;
-        private const string GRAPHQL_SERVER_ADDRESS = "https://localhost:7228/graphql/";
-        private GraphQLHttpClient _httpClient;
+        private readonly IProfessorGraphQLQueryGenerator _professorQueryGenerator;
 
-        public ProfessorsRepository(IMapper mapper, IAuthenticationRepository authenticationRepository)
+        public ProfessorsRepository(IMapper mapper, IAuthenticationRepository authenticationRepository, IProfessorGraphQLQueryGenerator professorQueryGenerator) : base(mapper, authenticationRepository)
         {
-            this._mapper = mapper;
-            _authenticationRepository = authenticationRepository;
-            this._httpClient = new GraphQLHttpClient(GRAPHQL_SERVER_ADDRESS, new NewtonsoftJsonSerializer());
-        }
-
-        public class GraphQLProfessorsList
-        {
-            public List<GraphQLProfessorDto> Professors { get; set; }
-        }
-
-        public class GraphQLGetProfessorById
-        {
-            public GraphQLProfessorDto ProfessorById { get; set; }
+            this._professorQueryGenerator = professorQueryGenerator;
         }
 
         public List<Professor> SortFilterProfessors(ProfessorOrderByOptions orderByOption, ProfessorFilterByOptions filterByOption, string filter)
@@ -60,168 +45,33 @@ namespace WebApplication1.GraphQLServices
 
         public async Task<bool> IdCodeIsOccupied(string idCode)
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"
-                query GetProfessorById($idCodeVar: String) {
-                  professors(where: {idCode: {eq: $idCodeVar}}) {
-                    Id
-                    UserId
-                    FirstName
-                    LastName
-                    PESEL
-                    Birthday
-                    Motherland
-                    PersonStatus
-                    ProfessorId
-                    Subject
-                    FirstDayAtJob
-                    Salary
-                  }
-                }",
-                Variables = new
-                {
-                    idCodeVar = idCode
-                }
-            };
-
-            var response = await _httpClient.SendQueryAsync<GraphQLProfessorsList>(request);
-
-            if (response.Errors != null)
-            {
-                return false;
-            }
-
-            return response.Data.Professors.Count > 0;
+            GraphQLRequest request = _professorQueryGenerator.GetQueryForIdIsOccupied(idCode);
+            var response = await SendGraphQLRequest(request, () => new { Professors = new List<GraphQLProfessorDto>() });
+            return response.Professors.Count > 0;
         }
 
         public async Task<Professor> GetAsync(Guid id)
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"
-                query GetProfessorById($id: String) {
-                  professorById(id: $id) {
-                    Id
-                    UserId
-                    FirstName
-                    LastName
-                    PESEL
-                    Birthday
-                    Motherland
-                    PersonStatus
-                    ProfessorId
-                    Subject
-                    FirstDayAtJob
-                    Salary
-                  }
-                }",
-                OperationName = "GetProfessorById",
-                Variables = new
-                {
-                    id = id.ToString()
-                }
-            };
-
-            var response = await _httpClient.SendQueryAsync<GraphQLGetProfessorById>(request);
-
-            if (response.Errors != null)
-            {
-                return default;
-            }
-
-            var result = new Professor
-            {
-                EntityPersonID = response.Data.ProfessorById.Id,
-                ApplicationUserId = response.Data.ProfessorById.UserId.ToString(),
-                PersonalData = new PersonalData
-                {
-                    FirstName = response.Data.ProfessorById.FirstName,
-                    LastName = response.Data.ProfessorById.LastName,
-                    PESEL = response.Data.ProfessorById.PESEL,
-                    Birthday = response.Data.ProfessorById.Birthday,
-                    Motherland = response.Data.ProfessorById.Motherland
-                },
-                PersonStatus = response.Data.ProfessorById.PersonStatus,
-                IdCode = response.Data.ProfessorById.ProfessorId,
-                Subject = response.Data.ProfessorById.Subject,
-                FirstDayAtJob = response.Data.ProfessorById.FirstDayAtJob,
-                Salary = response.Data.ProfessorById.Salary
-            };
-            return result;
+            GraphQLRequest request = _professorQueryGenerator.GetQueryForGetById(id);
+            var response = await SendGraphQLRequest(request, () => new { ProfessorById = new GraphQLProfessorDto() });
+            return _mapper.Map<Professor>(response.ProfessorById);
         }
 
         public async Task<List<Professor>> GetAllAsync()
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"
-                query GetAlProfessors {
-                    professors {
-                        Id
-                        UserId
-                        FirstName
-                        LastName
-                        PESEL
-                        Birthday
-                        Motherland
-                        PersonStatus
-                        ProfessorId
-                        Subject
-                        FirstDayAtJob
-                        Salary
-                    }
-                }",
-            };
-
-            var response = await _httpClient.SendQueryAsync<GraphQLProfessorsList>(request);
-
-            if (response.Errors != null || response.Data.Professors == null)
-            {
-                return new List<Professor>();
-            }
-
-            var result = response.Data.Professors.Select(dto => _mapper.Map<Professor>(dto)).ToList();
-            return result;
+            GraphQLRequest request = _professorQueryGenerator.GetQueryForGetAll();
+            var response = await SendGraphQLRequest(request, () => new { Professors = new List<GraphQLProfessorDto>() });
+            return response.Professors.Select(_mapper.Map<Professor>).ToList();
         }
 
         public async Task<Professor> GetByUserAsync(string userId)
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"
-                query GetProfessorByUser($userIdVar: UUID) {
-                    professors(where: {applicationUserId: {eq: $userIdVar}}) {
-                    Id
-                    UserId
-                    FirstName
-                    LastName
-                    PESEL
-                    Birthday
-                    Motherland
-                    PersonStatus
-                    ProfessorId
-                    Subject
-                    FirstDayAtJob
-                    Salary
-                  }
-                }",
-                Variables = new
-                {
-                    userIdVar = userId
-                }
-            };
+            GraphQLRequest request = _professorQueryGenerator.GetQueryForGetByUser(userId);
+            var response = await SendGraphQLRequest(request, () => new { Professors = new List<GraphQLProfessorDto>() });
 
-            var response = await _httpClient.SendQueryAsync<GraphQLProfessorsList>(request);
-
-            if (response.Errors != null)
-            {
+            if (response.Professors.Count == 0)
                 return default;
-            }
-
-            if (response.Data.Professors.Count == 0)
-                return default;
-            var professor = response.Data.Professors.SingleOrDefault();
+            var professor = response.Professors.SingleOrDefault();
 
             return _mapper.Map<Professor>(professor);
         }
@@ -233,68 +83,20 @@ namespace WebApplication1.GraphQLServices
 
         public async Task<GetProfessor> AddAsync(Professor entity)
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"
-                mutation AddProfessorMutation($input: AddProfessorInput) {
-                  addProfessor (input: $input)
-                  {
-                    id
-                    userId
-                    firstName
-                    lastName
-                    pesel
-                    motherland
-                    birthday
-                    professorId
-                    subject
-                    firstDayAtJob
-                    salary
-                  }
-                }",
-                Variables = new
-                {
-                    input = new AddProfessorInput(_mapper.Map<PostProfessor>(entity))
-                }
-            };
+            GraphQLRequest request = _professorQueryGenerator.GetQueryForAdd(entity);
+            var response = await SendGraphQLRequest(request, () => new { AddProfessor = new { GetProfessor = new GetProfessor() } });
 
-            var response = await _httpClient.SendQueryAsync(request, () => new { AddProfessor = new { GetProfessor = new GetProfessor() } });
+            var getProfessor = response.AddProfessor.GetProfessor;
+            await _authenticationRepository.AddEntityPersonIdClaimAsync(getProfessor.ApplicationUserId, getProfessor.EntityPersonId.ToString());
 
-            if (response.Errors != null)
-            {
-                return default;
-            }
-
-            return response.Data.AddProfessor.GetProfessor;
+            return getProfessor;
         }
 
         public async Task<Guid> UpdateAsync(Professor entity)
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"
-                mutation UpdateProfessorMutation($input: UpdateProfessorInput) {
-                  updateProfessor (input: $input)
-                  {
-                    getProfessor {
-                      entityPersonId
-                    }
-                  }
-                }",
-                Variables = new
-                {
-                    input = new UpdateProfessorInput(_mapper.Map<PutProfessor>(entity))
-                }
-            };
-
-            var response = await _httpClient.SendQueryAsync(request, () => new { UpdateProfessor = new { GetProfessor = new GetProfessor() } });
-
-            if (response.Errors != null)
-            {
-                return default;
-            }
-
-            return response.Data.UpdateProfessor.GetProfessor.EntityPersonId;
+            GraphQLRequest request = _professorQueryGenerator.GetQueryForUpdate(entity);
+            var response = await SendGraphQLRequest(request, () => new { UpdateProfessor = new { GetProfessor = new GetProfessor() } });
+            return response.UpdateProfessor.GetProfessor.EntityPersonId;
         }
     }
 }

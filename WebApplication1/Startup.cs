@@ -17,6 +17,7 @@ using WebApplication1.ApiServices.GenericRepositories.Students;
 using WebApplication1.Contracts;
 using WebApplication1.LocalServices;
 using Microsoft.AspNetCore.Identity;
+using WebApplication1.GraphQLServices.QueryGenerators;
 
 namespace WebApplication1
 {
@@ -81,6 +82,7 @@ namespace WebApplication1
 
             services.AddScoped<IPeopleRepository, GraphQLServices.PeopleRepository>();
             services.AddScoped<IProfessorsRepository, GraphQLServices.ProfessorsRepository>();
+            services.AddScoped<IProfessorGraphQLQueryGenerator, ProfessorGraphQLQueryGenerator>();
 
             //services.AddScoped(typeof(IGenericGetRepository<>), typeof(GenericGetRepository<,>));
             //services.AddScoped(typeof(IGenericPostRepository<>), typeof(GenericPostRepository<,>));
