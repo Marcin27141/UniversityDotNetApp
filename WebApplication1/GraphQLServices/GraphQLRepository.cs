@@ -36,14 +36,4 @@ namespace WebApplication1.GraphQLServices
         }
 
     }
-
-    internal class GraphQLException : Exception
-    {
-        public readonly GraphQLError[] errors;
-
-        public GraphQLException(GraphQLError[] errors)
-        {
-            this.errors = errors;
-        }
-    }
 }

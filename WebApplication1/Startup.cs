@@ -18,6 +18,7 @@ using WebApplication1.Contracts;
 using WebApplication1.LocalServices;
 using Microsoft.AspNetCore.Identity;
 using WebApplication1.GraphQLServices.QueryGenerators;
+using WebApplication1.Extensions;
 
 namespace WebApplication1
 {
@@ -33,8 +34,6 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddTransient<UserManager<WebAppUser>>();
-
             var connectionString = Configuration.GetConnectionString("DefaultWebDbConnection");
             services.AddDbContext<WebAppDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -43,71 +42,13 @@ namespace WebApplication1
 
             services.AddRazorPages();
 
-            //policies
-            services.AddScoped<IAuthorizationHandler, HasAdminRightsHandler>();
-            services.AddScoped<IAuthorizationHandler, StudentEditorIsOwnerHandler>();
-            services.AddScoped<IAuthorizationHandler, ProfessorEditorIsOwnerHandler>();
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("HasAdminRights", policyBuilder =>
-                    policyBuilder.RequireClaim("IsAdmin"));
-                options.AddPolicy("CanEditStudent", policyBuilder =>
-                    policyBuilder.AddRequirements(new CanEditStudentRequrement()));
-                options.AddPolicy("CanEditProfessor", policyBuilder =>
-                    policyBuilder.AddRequirements(new CanEditProfessorRequirement()));
-
-            }
-            );
-
-            //custom services
-
-            //services.Scan(scan => scan
-            //    .FromAssemblyOf<Startup>()
-            //    .AddClasses(classes => classes.Where(c => c.Namespace.Contains("Services") && !c.Namespace.EndsWith("People")))
-            //    .AsMatchingInterface()
-            //    .WithScopedLifetime());
-
-            services.AddScoped<IAuthenticationRepository, LocalAuthenticationRepository>();
-            services.AddScoped<IUserRepository, LocalUserRepository>();
-
-            services.Scan(scan =>
-            {
-                scan.FromAssemblyOf<Startup>()
-                    .AddClasses(classes => classes.Where(c => c.Namespace.Contains("ApiServices")))
-                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-                    .AsImplementedInterfaces()
-                    .WithScopedLifetime();
-            });
-
-            services.AddScoped<IPeopleRepository, GraphQLServices.PeopleRepository>();
-            services.AddScoped<IPersonGraphQLQueryGenerator, PersonGraphQLQueryGenerator>();
-            services.AddScoped<IProfessorsRepository, GraphQLServices.ProfessorsRepository>();
-            services.AddScoped<IProfessorGraphQLQueryGenerator, ProfessorGraphQLQueryGenerator>();
-            services.AddScoped<ICoursesRepository, GraphQLServices.CoursesRepository>();
-            services.AddScoped<ICourseGraphQLQueryGenerator, CourseGraphQLQueryGenerator>();
-            services.AddScoped<IStudentsRepository, GraphQLServices.StudentsRepository>();
-            services.AddScoped<IStudentGraphQLQueryGenerator, StudentGraphQLQueryGenerator>();
-
-            //services.AddScoped(typeof(IGenericGetRepository<>), typeof(GenericGetRepository<,>));
-            //services.AddScoped(typeof(IGenericPostRepository<>), typeof(GenericPostRepository<,>));
-            //services.AddScoped(typeof(IGenericPutRepository<>), typeof(GenericPutRepository<,>));
-            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-            //services.AddScoped(IGenericGetRepository<Student>, GenericGetRepository<Student,GetStudent>));
-            //services.AddScoped(typeof(IGenericPostRepository<,>), typeof(GenericPostRepository<,>));
-            //services.AddScoped(typeof(IGenericPutRepository<,>), typeof(GenericPutRepository<,>));
-            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-
-
-            //services.AddScoped<IProfessorsRepository, ProfessorRepository>();
-            //services.AddScoped<ICoursesRepository, CourseRepository>();
-            //services.AddScoped<IStudentsRepository, StudentRepository>();
-            //services.AddScoped<IPeopleRepository, PeopleRepository>();
-            //services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
-            //services.AddScoped<IUserRepository, UserRepository>();
             services.AddAutoMapper(typeof(AutomapperConfiguration));
+            services.AddAuthorizationServices();
+            services.AddUsersServices();
+
+            //either or
+            //services.AddRestApiServices();
+            services.AddGraphQLServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
