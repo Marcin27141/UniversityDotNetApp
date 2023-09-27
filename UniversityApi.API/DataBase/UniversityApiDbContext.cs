@@ -23,6 +23,12 @@ namespace UniversityApi.API.DataBase
             modelBuilder.Entity<EntityProfessor>()
                 .ToTable("Professors");
 
+            modelBuilder.Entity<EntityCourse>()
+                .HasOne(c => c.Professor)
+                .WithMany()
+                .OnDelete(DeleteBehavior.SetNull);
+
+
             //modelBuilder.ApplyConfiguration(new StudentConfiguration());
             //modelBuilder.ApplyConfiguration(new ProfessorConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());

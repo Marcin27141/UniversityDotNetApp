@@ -70,7 +70,7 @@ namespace UniversityApi.API.Migrations
                     b.HasData(
                         new
                         {
-                            EntityCourseID = new Guid("1b9be93a-e979-49a8-b360-63480bceef60"),
+                            EntityCourseID = new Guid("355b226b-5b9e-4d2b-bb1e-2cb71574f6cd"),
                             CourseCode = "C01",
                             ECTS = 2,
                             IsFinishedWithExam = false,
@@ -79,7 +79,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityCourseID = new Guid("854d8120-023f-434b-8c07-7fce68d52ca0"),
+                            EntityCourseID = new Guid("55f998ed-b6e0-4b6d-ba39-b2d91c701dde"),
                             CourseCode = "C02",
                             ECTS = 3,
                             IsFinishedWithExam = true,
@@ -88,7 +88,7 @@ namespace UniversityApi.API.Migrations
                         },
                         new
                         {
-                            EntityCourseID = new Guid("1ef5b7de-62fb-4b77-8b65-cf6126265d51"),
+                            EntityCourseID = new Guid("2101c6a2-639e-4812-90d9-e11cb845762a"),
                             CourseCode = "C03",
                             ECTS = 4,
                             IsFinishedWithExam = true,
@@ -123,9 +123,6 @@ namespace UniversityApi.API.Migrations
 
                     b.Property<int>("PersonStatus")
                         .HasColumnType("int");
-
-                    b.Property<bool>("SoftDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("EntityPersonID");
 
@@ -185,7 +182,8 @@ namespace UniversityApi.API.Migrations
                 {
                     b.HasOne("UniversityApi.API.DataBase.Entities.EntityProfessor", "Professor")
                         .WithMany()
-                        .HasForeignKey("ProfessorEntityPersonID");
+                        .HasForeignKey("ProfessorEntityPersonID")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Professor");
                 });

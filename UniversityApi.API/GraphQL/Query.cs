@@ -1,4 +1,6 @@
-﻿using UniversityApi.API.DataBase;
+﻿using Microsoft.CodeAnalysis.Text;
+using Microsoft.EntityFrameworkCore;
+using UniversityApi.API.DataBase;
 using UniversityApi.API.DataBase.Entities;
 
 namespace UniversityApi.API.GraphQL
@@ -9,7 +11,7 @@ namespace UniversityApi.API.GraphQL
         [UseSorting]
         public IQueryable<EntityPerson> GetPeople(UniversityApiDbContext context)
         {
-            return context.Set<EntityPerson>();
+            return context.People;            
         }
 
         public EntityPerson GetPersonById(UniversityApiDbContext context, string id)

@@ -32,8 +32,4 @@
     <ProjectReference Include="..\ApiDtoLibrary\ApiDtoLibrary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

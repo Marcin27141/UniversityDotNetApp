@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniversityApi.API.Migrations
 {
     /// <inheritdoc />
-    public partial class ProfessorIdGuidProperty : Migration
+    public partial class SetProfessorCourseDeleteBehavior : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,8 +24,7 @@ namespace UniversityApi.API.Migrations
                     PESEL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Motherland = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PersonStatus = table.Column<int>(type: "int", nullable: false),
-                    SoftDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    PersonStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,7 +90,8 @@ namespace UniversityApi.API.Migrations
                         name: "FK_Courses_Professors_ProfessorEntityPersonID",
                         column: x => x.ProfessorEntityPersonID,
                         principalTable: "Professors",
-                        principalColumn: "EntityPersonID");
+                        principalColumn: "EntityPersonID",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -123,9 +123,9 @@ namespace UniversityApi.API.Migrations
                 columns: new[] { "EntityCourseID", "CourseCode", "ECTS", "IsFinishedWithExam", "Name", "ProfessorEntityPersonID", "SoftDeleted" },
                 values: new object[,]
                 {
-                    { new Guid("1b9be93a-e979-49a8-b360-63480bceef60"), "C01", 2, false, "Databases", null, false },
-                    { new Guid("1ef5b7de-62fb-4b77-8b65-cf6126265d51"), "C03", 4, true, "Computer science", null, false },
-                    { new Guid("854d8120-023f-434b-8c07-7fce68d52ca0"), "C02", 3, true, "Algorithms", null, false }
+                    { new Guid("2101c6a2-639e-4812-90d9-e11cb845762a"), "C03", 4, true, "Computer science", null, false },
+                    { new Guid("355b226b-5b9e-4d2b-bb1e-2cb71574f6cd"), "C01", 2, false, "Databases", null, false },
+                    { new Guid("55f998ed-b6e0-4b6d-ba39-b2d91c701dde"), "C02", 3, true, "Algorithms", null, false }
                 });
 
             migrationBuilder.CreateIndex(
