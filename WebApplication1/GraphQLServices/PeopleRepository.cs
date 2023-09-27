@@ -1,133 +1,50 @@
-﻿using ApiDtoLibrary.Person;
-using AutoMapper;
+﻿using AutoMapper;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System;
-using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
 using WebApplication1.Services.People;
-using GraphQL.Client.Http;
 using GraphQL;
-using GraphQL.Client.Serializer.Newtonsoft;
 using System.Linq;
-using static Google.Rpc.Context.AttributeContext.Types;
 using WebApplication1.GraphQLServices.GraphQLDtos;
+using WebApplication1.GraphQLServices.QueryGenerators;
 
 namespace WebApplication1.GraphQLServices
 {
-    public class PeopleRepository : IPeopleRepository
+    public class PeopleRepository : GraphQLRepository, IPeopleRepository
     {
-        private const string GRAPHQL_SERVER_ADDRESS = "https://localhost:7228/graphql/";
-        private readonly IMapper _mapper;
-        private GraphQLHttpClient _httpClient;
+        private readonly IPersonGraphQLQueryGenerator _personQueryGenerator;
 
-        public PeopleRepository(IMapper mapper)
+        public PeopleRepository(IMapper mapper,
+            IAuthenticationRepository authenticationRepository,
+            IPersonGraphQLQueryGenerator personQueryGenerator) : base(mapper, authenticationRepository)
         {
-            this._httpClient = new GraphQLHttpClient(GRAPHQL_SERVER_ADDRESS, new NewtonsoftJsonSerializer());
-            this._mapper = mapper;
-        }
-
-        public class GraphQLPeopleList
-        {
-            public List<GraphQLPersonDto> People { get; set; }
+            this._personQueryGenerator = personQueryGenerator;
         }
 
         public List<Person> GetAllPersonalData()
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"
-                query GetAllPeople {
-                    people {
-                        Id
-                        UserId
-                        FirstName
-                        LastName
-                        PESEL
-                        Birthday
-                        Motherland
-                        PersonStatus
-                    }
-                }",
-            };
-
-            var response = _httpClient.SendQueryAsync<GraphQLPeopleList>(request).Result;
-
-            if (response.Errors != null || response.Data.People == null)
-            {
-                return new List<Person>();
-            }
-
-            var result = response.Data.People.Select(dto => _mapper.Map<Person>(dto)).ToList();
-            return result;
+            GraphQLRequest request = _personQueryGenerator.GetQueryForGetAll();
+            var response = SendGraphQLRequest(request, () => new { People = new List<GraphQLPersonDto>() }).Result;
+            return response.People.Select(_mapper.Map<Person>).ToList();
         }
 
-        public class GraphQLDeletePerson
+        public class GraphQLDeletePersonResponse
         {
             public bool WasSuccessful { get; set; }
         }
 
         public async Task DeleteAsync(Guid personId)
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"
-                mutation DeletePersonById ($id: String) {
-                  deletePerson(input: {
-                    id: $id
-                  })
-                  {
-                    wasSuccessful
-                  }
-                }",
-                OperationName = "DeletePersonById",
-                Variables = new
-                {
-                    id = personId.ToString()
-                }
-            };
-
-            await _httpClient.SendQueryAsync<GraphQLDeletePerson>(request);
-        }
-
-        public class GraphQLGetPersonById
-        {
-            public GraphQLPersonDto PersonById { get; set; }
+            GraphQLRequest request = _personQueryGenerator.GetQueryForDeleteById(personId);
+            await SendGraphQLRequest(request, () => new GraphQLDeletePersonResponse());
         }
 
         public async Task<Person> GetPerson(Guid id)
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"
-                query GetPersonById($id: String) {
-                  personById(id: $id) {
-                    Id
-                    UserId
-                    FirstName
-                    LastName
-                    PESEL
-                    Birthday
-                    Motherland
-                    PersonStatus
-                  }
-                }",
-                OperationName = "GetPersonById",
-                Variables = new
-                {
-                    id = id.ToString()
-                }
-            };
-
-            var response = await _httpClient.SendQueryAsync<GraphQLGetPersonById>(request);
-
-            if (response.Errors != null)
-            {
-                return default;
-            }
-
-            return _mapper.Map<Person>(response.Data.PersonById);
+            GraphQLRequest request = _personQueryGenerator.GetQueryForGetById(id);
+            var response = await SendGraphQLRequest(request, () => new { PersonById = new GraphQLPersonDto() });
+            return _mapper.Map<Person>(response.PersonById);
         }
     }
 }
