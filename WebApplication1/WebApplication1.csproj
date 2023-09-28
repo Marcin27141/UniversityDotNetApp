@@ -10,7 +10,9 @@
 	  <PackageReference Include="Google.Protobuf" Version="3.24.2" />
 	  <PackageReference Include="GraphQL.Client" Version="6.0.0" />
 	  <PackageReference Include="GraphQL.Client.Abstractions" Version="6.0.0" />
+	  <PackageReference Include="GraphQL.Client.Abstractions.Websocket" Version="6.0.0" />
 	  <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="6.0.0" />
+	  <PackageReference Include="GraphQL.Server.Transports.Subscriptions.Abstractions" Version="6.1.1" />
 	  <PackageReference Include="Grpc.Net.Client" Version="2.57.0" />
 	  <PackageReference Include="Grpc.Tools" Version="2.57.0">
 	    <PrivateAssets>all</PrivateAssets>

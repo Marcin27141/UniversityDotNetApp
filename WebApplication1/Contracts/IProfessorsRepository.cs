@@ -12,5 +12,6 @@ namespace WebApplication1.Contracts
         List<Professor> SortFilterProfessors(ProfessorOrderByOptions orderByOption, ProfessorFilterByOptions filterByOption, string filter);
 
         Task<bool> IdCodeIsOccupied(string idCode);
+        Task SubscribeForCourseAssignments();
     }
 }

@@ -11,6 +11,9 @@ using System.Security.Claims;
 using ApiDtoLibrary.Professors;
 using WebApplication1.GraphQLServices.GraphQLDtos;
 using WebApplication1.GraphQLServices.QueryGenerators;
+using static Grpc.Core.Metadata;
+using ApiDtoLibrary.GraphQL.Professors;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication1.GraphQLServices
 {
@@ -86,6 +89,31 @@ namespace WebApplication1.GraphQLServices
             GraphQLRequest request = _professorQueryGenerator.GetQueryForUpdate(entity);
             var response = await SendGraphQLRequest(request, () => new { UpdateProfessor = new { GetProfessor = new GetProfessor() } });
             return response.UpdateProfessor.GetProfessor.EntityPersonId;
+        }
+
+        public class SubscriptionResponse
+        {
+            public GraphQLCourseDto OnCourseProfessorAssigment { get; set; }
+    }
+
+    public async Task SubscribeForCourseAssignments()
+        {
+            GraphQLRequest request = new GraphQLRequest
+            {
+                Query = @"
+                subscription {
+                  onCourseProfessorAssignment
+                  {
+                    Id
+                    CourseCode
+                    Name
+                    Professor {
+                        Id
+                    }
+                  }
+                }",
+            };
+            await SendGraphQLSubscription<SubscriptionResponse>(request, response => Console.WriteLine(response.OnCourseProfessorAssigment));
         }
     }
 }

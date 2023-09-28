@@ -42,5 +42,10 @@ namespace WebApplication1.ApiServices.GenericRepositories.Professors
                 .FilterProfessorsBy(filterByOption, filter)
                 .ToList();
         }
+
+        public Task SubscribeForCourseAssignments()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

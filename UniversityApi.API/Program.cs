@@ -34,6 +34,8 @@ builder.Services
     .AddGraphQLServer()
     .RegisterDbContext<UniversityApiDbContext>()
     .AddMutationType<Mutation>()
+    .AddSubscriptionType<Subscription>()
+    .AddInMemorySubscriptions()
     .AddType<PersonType>()
     .AddType<StudentType>()
     .AddType<ProfessorType>()
@@ -69,6 +71,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseWebSockets();
 
 //app.UseMiddleware<ExceptionMiddleware>();
 app.UseRouting();

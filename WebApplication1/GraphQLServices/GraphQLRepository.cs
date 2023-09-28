@@ -6,7 +6,9 @@ using System;
 using WebApplication1.Contracts;
 using GraphQL.Client.Abstractions;
 using System.Threading.Tasks;
-using System.Runtime.Serialization;
+using WebApplication1.GraphQLServices.GraphQLDtos;
+using System.Reactive.Linq;
+using MyExtensions = GraphQL.Client.Abstractions.GraphQLClientExtensions;
 
 namespace WebApplication1.GraphQLServices
 {
@@ -22,7 +24,11 @@ namespace WebApplication1.GraphQLServices
         {
             this._mapper = mapper;
             _authenticationRepository = authenticationRepository;
-            this._httpClient = new GraphQLHttpClient(GRAPHQL_SERVER_ADDRESS, new NewtonsoftJsonSerializer());
+            var clientOptions = new GraphQLHttpClientOptions { 
+                EndPoint = new Uri(GRAPHQL_SERVER_ADDRESS),
+                UseWebSocketForQueriesAndMutations = true,
+            };
+            this._httpClient = new GraphQLHttpClient(clientOptions, new NewtonsoftJsonSerializer());
         }
 
         protected async Task<T> SendGraphQLRequest<T>(GraphQLRequest request, Func<T> responseType)
@@ -35,5 +41,21 @@ namespace WebApplication1.GraphQLServices
             return response.Data;
         }
 
+        public class MySubscriptionResponse
+        {
+            public GraphQLCourseDto OnCourseProfessorAssigment { get; set; }
+        }
+
+        protected Task SendGraphQLSubscription<T>(GraphQLRequest request, Action<T> onEventReceived)
+        {
+            
+            var stream = MyExtensions.CreateSubscriptionStream(_httpClient, request, () => new { OnCourseProfessorAssignment = new GraphQLCourseDto() });
+            stream.Subscribe(
+                response => {
+                    Console.WriteLine(response.Data.OnCourseProfessorAssignment.Name);
+                    //onEventReceived(response.Data.On);
+                });
+            return Task.CompletedTask;
+        }
     }
 }

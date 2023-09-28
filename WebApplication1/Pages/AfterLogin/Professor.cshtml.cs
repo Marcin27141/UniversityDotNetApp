@@ -23,7 +23,7 @@ namespace WebApplication1.Pages.AfterLogin
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             this.Professor = await _professorsRepository.GetByUserAsync(userId);
-            _professorsRepository.SubscribeForCourseAssignments();
+            await _professorsRepository.SubscribeForCourseAssignments();
         }
     }
 }
