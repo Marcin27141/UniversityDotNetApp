@@ -8,6 +8,7 @@ using WebApplication1.Services;
 
 namespace WebApplication1.Pages.ShowResults
 {
+    [Authorize]
     public class ShowCourseModel : PageModel
     {
         private readonly ICoursesRepository _courseRespository;

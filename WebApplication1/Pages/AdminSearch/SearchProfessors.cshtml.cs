@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages.AdminSearch
 {
+    [Authorize("HasAdminRights")]
     public class SearchProfessorsModel : PageModel
     {
         private readonly IProfessorsRepository _professorsRepository;

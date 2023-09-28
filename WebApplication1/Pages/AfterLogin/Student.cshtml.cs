@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages.AfterLogin
 {
+    [Authorize]
     public class StudentModel : PageModel
     {
         private readonly IStudentsRepository _studentsRepository;
