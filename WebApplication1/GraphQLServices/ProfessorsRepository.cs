@@ -91,12 +91,7 @@ namespace WebApplication1.GraphQLServices
             return response.UpdateProfessor.GetProfessor.EntityPersonId;
         }
 
-        public class SubscriptionResponse
-        {
-            public GraphQLCourseDto OnCourseProfessorAssigment { get; set; }
-    }
-
-    public async Task SubscribeForCourseAssignments()
+        public async Task SubscribeForCourseAssignments()
         {
             GraphQLRequest request = new GraphQLRequest
             {
@@ -113,7 +108,10 @@ namespace WebApplication1.GraphQLServices
                   }
                 }",
             };
-            await SendGraphQLSubscription<SubscriptionResponse>(request, response => Console.WriteLine(response.OnCourseProfessorAssigment));
+            await SendGraphQLSubscription(
+                request,
+                () => new { OnCourseProfessorAssignment = new GraphQLCourseDto() },
+                response => Console.WriteLine(response.OnCourseProfessorAssignment.Name));
         }
     }
 }

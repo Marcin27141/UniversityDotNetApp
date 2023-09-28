@@ -7,6 +7,7 @@ using ApiDtoLibrary.Professors;
 using ApiDtoLibrary.GraphQL.People;
 using HotChocolate.Subscriptions;
 using System.Threading;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace UniversityApi.API.GraphQL.Mutations
 {
@@ -18,6 +19,8 @@ namespace UniversityApi.API.GraphQL.Mutations
             CancellationToken cancellationToken)
         {
             var course = _mapper.Map<EntityCourse>(input.postCourse);
+            if (course.ProfessorId != null)
+                course.Professor = await dbContext.Set<EntityProfessor>().FindAsync(course.ProfessorId);
 
             await dbContext.AddAsync(course);
             await dbContext.SaveChangesAsync(cancellationToken);
