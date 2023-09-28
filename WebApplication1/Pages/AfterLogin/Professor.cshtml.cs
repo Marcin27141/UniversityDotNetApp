@@ -8,7 +8,7 @@ using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages.AfterLogin
 {
-    [Authorize]
+    [Authorize("IsProfessor")]
     public class ProfessorModel : PageModel
     {
         private readonly IProfessorsRepository _professorsRepository;

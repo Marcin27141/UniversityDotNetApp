@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ApiDtoLibrary.Person;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Scrutor;
+using System;
 using WebApplication1.Contracts;
 using WebApplication1.GraphQLServices;
 using WebApplication1.GraphQLServices.QueryGenerators;
@@ -42,7 +44,6 @@ namespace WebApplication1.Extensions
 
         public static IServiceCollection AddAuthorizationServices(this IServiceCollection services)
         {
-            services.AddScoped<IAuthorizationHandler, HasAdminRightsHandler>();
             services.AddScoped<IAuthorizationHandler, StudentEditorIsOwnerHandler>();
             services.AddScoped<IAuthorizationHandler, ProfessorEditorIsOwnerHandler>();
 
@@ -50,11 +51,14 @@ namespace WebApplication1.Extensions
             {
                 options.AddPolicy("HasAdminRights", policyBuilder =>
                     policyBuilder.RequireClaim("IsAdmin"));
+                options.AddPolicy("IsProfessor", policyBuilder =>
+                    policyBuilder.RequireClaim("Status", Enum.GetName(PersonStatus.Professor)));
+                options.AddPolicy("IsStudent", policyBuilder =>
+                    policyBuilder.RequireClaim("Status", Enum.GetName(PersonStatus.Student)));
                 options.AddPolicy("CanEditStudent", policyBuilder =>
                     policyBuilder.AddRequirements(new CanEditStudentRequrement()));
                 options.AddPolicy("CanEditProfessor", policyBuilder =>
                     policyBuilder.AddRequirements(new CanEditProfessorRequirement()));
-
             }
             );
 
