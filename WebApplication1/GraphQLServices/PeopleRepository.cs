@@ -8,6 +8,8 @@ using GraphQL;
 using System.Linq;
 using WebApplication1.GraphQLServices.GraphQLDtos;
 using WebApplication1.GraphQLServices.QueryGenerators;
+using ApiDtoLibrary.Notifications;
+using WebApplication1.Services;
 
 namespace WebApplication1.GraphQLServices
 {
@@ -45,6 +47,13 @@ namespace WebApplication1.GraphQLServices
             GraphQLRequest request = _personQueryGenerator.GetQueryForGetById(id);
             var response = await SendGraphQLRequest(request, () => new { PersonById = new GraphQLPersonDto() });
             return _mapper.Map<Person>(response.PersonById);
+        }
+
+        public async Task<IList<Notification>> GetNotifications(string recipientId)
+        {
+            GraphQLRequest request = _personQueryGenerator.GetQueryForGetNotifications(recipientId);
+            var response = await SendGraphQLRequest(request, () => new { PersonById = new GraphQLPersonDto() });
+            return _mapper.Map<List<Notification>>(response.PersonById.Notifications);
         }
     }
 }

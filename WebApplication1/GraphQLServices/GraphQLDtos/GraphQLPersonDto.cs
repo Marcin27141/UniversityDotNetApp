@@ -1,5 +1,6 @@
 ﻿using ApiDtoLibrary.Person;
 using System;
+using System.Collections.Generic;
 
 namespace WebApplication1.GraphQLServices.GraphQLDtos
 {
@@ -13,5 +14,6 @@ namespace WebApplication1.GraphQLServices.GraphQLDtos
         public DateTime Birthday { get; set; }
         public string Motherland { get; set; }
         public PersonStatus PersonStatus { get; set; }
+        public List<GraphQLNotificationDto> Notifications { get; set; }
     }
 }

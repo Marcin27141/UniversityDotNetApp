@@ -14,6 +14,8 @@ using Grpc.Net.Client;
 using Grpc.Core;
 using GrpcService.Services;
 using GrpcService.Protos;
+using ApiDtoLibrary.Notifications;
+using WebApplication1.Services;
 
 namespace WebApplication1.GrpcServices
 {
@@ -79,6 +81,12 @@ namespace WebApplication1.GrpcServices
             {
                 return null;
             }
+        }
+
+        public Task<IList<Notification>> GetNotifications(string recipientId)
+        {
+            throw new NotImplementedException();
+            //TODO
         }
     }
 }

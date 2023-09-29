@@ -82,12 +82,38 @@ namespace WebApplication1.GraphQLServices.QueryGenerators
                 }
             };
         }
+
+        public GraphQLRequest GetQueryForGetNotifications(string recipientId)
+        {
+            return new GraphQLRequest
+            {
+                Query = @"
+                query GetPersonById($id: String) {
+                  personById(id: $id) {
+                    Notifications {
+                        Id
+                        RecipientId
+                        Title
+                        Body
+                        IsNew
+                    }
+                  }
+                }",
+                Variables = new
+                {
+                    id = recipientId
+                }
+            };
+        }
     }
+
+
 
     public interface IPersonGraphQLQueryGenerator
     {
         GraphQLRequest GetQueryForGetAll();
         GraphQLRequest GetQueryForDeleteById(Guid personId);
         GraphQLRequest GetQueryForGetById(Guid id);
+        GraphQLRequest GetQueryForGetNotifications(string recipientId);
     }
 }

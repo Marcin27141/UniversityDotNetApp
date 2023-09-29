@@ -1,4 +1,5 @@
-﻿using ApiDtoLibrary.Person;
+﻿using ApiDtoLibrary.Notifications;
+using ApiDtoLibrary.Person;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApplication1.ApiServices.BaseRepositories;
 using WebApplication1.Contracts;
+using WebApplication1.Services;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.ApiServices
@@ -52,6 +54,12 @@ namespace WebApplication1.ApiServices
                 return result;
             }
             return default;
+        }
+
+        public Task<IList<Notification>> GetNotifications(string recipientId)
+        {
+            throw new NotImplementedException();
+            //TODO
         }
     }
 }

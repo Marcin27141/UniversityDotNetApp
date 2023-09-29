@@ -56,6 +56,9 @@ namespace WebApplication1.Configurations
 
             //WebAppUser
             CreateMap<WebAppUser, ApplicationUser>().ReverseMap();
+
+            //Notifications
+            CreateMap<GraphQLNotificationDto, Notification>();
         }
 
         private void MapGraphQLPerson<S, T>(IMappingExpression<S, T> mapping)
