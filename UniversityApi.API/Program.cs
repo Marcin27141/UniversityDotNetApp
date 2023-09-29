@@ -37,6 +37,7 @@ builder.Services
     .AddSubscriptionType<Subscription>()
     .AddInMemorySubscriptions()
     .AddType<PersonType>()
+    .AddType<NotificationType>()
     .AddType<StudentType>()
     .AddType<ProfessorType>()
     .AddType<CourseType>()

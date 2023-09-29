@@ -1,4 +1,6 @@
-﻿using UniversityApi.API.DataBase.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using UniversityApi.API.DataBase;
+using UniversityApi.API.DataBase.Entities;
 
 namespace UniversityApi.API.GraphQL.Types
 {
@@ -14,6 +16,23 @@ namespace UniversityApi.API.GraphQL.Types
             descriptor.Field(p => p.Birthday).Name("Birthday");
             descriptor.Field(p => p.Motherland).Name("Motherland");
             descriptor.Field(p => p.PersonStatus).Name("PersonStatus");
+
+            descriptor.Field(p => p.Notifications)
+                .ResolveWith<Resolvers>(c => c.GetNotifications(default!, default!))
+                .Description("Notifications sent to given person")
+                .Name("Notifications");
+        }
+
+        private class Resolvers
+        {
+            public IList<EntityNotification> GetNotifications([Parent] EntityPerson person, UniversityApiDbContext context)
+            {
+                var personWithNotifications = context
+                    .People
+                    .Include(p => p.Notifications)
+                    .SingleOrDefault(p => p.EntityPersonID == person.EntityPersonID);
+                return personWithNotifications.Notifications;
+            }
         }
     }
 }
