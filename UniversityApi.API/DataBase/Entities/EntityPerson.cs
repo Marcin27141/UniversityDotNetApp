@@ -12,5 +12,7 @@ namespace UniversityApi.API.DataBase.Entities
         public DateTime Birthday { get; set; }
         public string Motherland { get; set; }
         public PersonStatus PersonStatus { get; set; }
+
+        public IList<EntityNotification> Notifications { get; set; }
     }
 }

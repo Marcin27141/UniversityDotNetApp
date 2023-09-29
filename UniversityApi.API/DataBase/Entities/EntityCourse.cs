@@ -1,6 +1,6 @@
 ﻿namespace UniversityApi.API.DataBase.Entities
 {
-    public class EntityCourse : SoftRemovableEntity
+    public class EntityCourse
     {
         public Guid EntityCourseID { get; set; }
         public string CourseCode { get; set; }

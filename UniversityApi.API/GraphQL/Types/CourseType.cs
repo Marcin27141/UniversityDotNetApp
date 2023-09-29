@@ -16,7 +16,6 @@ namespace UniversityApi.API.GraphQL.Types
             descriptor.Field(c => c.Name).Name("Name");
             descriptor.Field(c => c.ECTS).Name("ECTS");
             descriptor.Field(c => c.IsFinishedWithExam).Name("IsFinishedWithExam");
-            descriptor.Field(c => c.SoftDeleted).Ignore();
 
             descriptor.Field(c => c.Students)
                 .ResolveWith<Resolvers>(c => c.GetStudents(default!, default!))

@@ -28,12 +28,16 @@ namespace UniversityApi.API.DataBase
                 .WithMany()
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<EntityPerson>()
+                .HasMany(p => p.Notifications)
+                .WithOne(n => n.Recipient)
+                .HasForeignKey(p => p.RecipientId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             //modelBuilder.ApplyConfiguration(new StudentConfiguration());
             //modelBuilder.ApplyConfiguration(new ProfessorConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
-
-            modelBuilder.Entity<EntityCourse>().HasQueryFilter(c => !c.SoftDeleted);
         }
     }
 }

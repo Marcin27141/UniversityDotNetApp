@@ -38,7 +38,7 @@ namespace UniversityApi.API.Repositories
         public override async Task DeleteAsync(Guid id)
         {
             var course = await GetAsync(id);
-            course.SoftDeleted = true;
+            _context.Remove(course);
             await _context.SaveChangesAsync();
         }
 
