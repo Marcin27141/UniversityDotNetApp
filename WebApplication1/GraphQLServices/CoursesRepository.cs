@@ -1,5 +1,4 @@
 ﻿using ApiDtoLibrary.Courses;
-using ApiDtoLibrary.Professors;
 using AutoMapper;
 using GraphQL;
 using System;
@@ -12,9 +11,6 @@ using WebApplication1.Extensions;
 using WebApplication1.GraphQLServices.GraphQLDtos;
 using WebApplication1.GraphQLServices.QueryGenerators;
 using WebApplication1.Services;
-using WebApplication1.Services.People;
-using static Grpc.Core.Metadata;
-using static WebApplication1.GraphQLServices.PeopleRepository;
 
 namespace WebApplication1.GraphQLServices
 {

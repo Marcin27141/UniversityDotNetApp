@@ -11,9 +11,6 @@ using System.Security.Claims;
 using ApiDtoLibrary.Professors;
 using WebApplication1.GraphQLServices.GraphQLDtos;
 using WebApplication1.GraphQLServices.QueryGenerators;
-using static Grpc.Core.Metadata;
-using ApiDtoLibrary.GraphQL.Professors;
-using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication1.GraphQLServices
 {

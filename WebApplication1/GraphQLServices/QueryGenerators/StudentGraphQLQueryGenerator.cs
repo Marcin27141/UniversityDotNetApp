@@ -1,15 +1,11 @@
-﻿using ApiDtoLibrary.GraphQL.Professors;
-using ApiDtoLibrary.GraphQL.Students;
-using ApiDtoLibrary.Professors;
+﻿using ApiDtoLibrary.GraphQL.Students;
 using ApiDtoLibrary.Students;
 using AutoMapper;
 using GraphQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApplication1.Services;
 using WebApplication1.Services.People;
-using static Grpc.Core.Metadata;
 
 namespace WebApplication1.GraphQLServices.QueryGenerators
 {

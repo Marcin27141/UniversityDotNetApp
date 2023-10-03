@@ -8,12 +8,9 @@ using GraphQL;
 using System.Linq;
 using WebApplication1.Extensions;
 using System.Security.Claims;
-using ApiDtoLibrary.Professors;
 using WebApplication1.GraphQLServices.GraphQLDtos;
 using WebApplication1.GraphQLServices.QueryGenerators;
 using ApiDtoLibrary.Students;
-using static Grpc.Core.Metadata;
-using GrpcService.Models;
 
 namespace WebApplication1.GraphQLServices
 {

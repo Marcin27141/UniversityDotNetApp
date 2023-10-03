@@ -1,6 +1,5 @@
-﻿using ApiDtoLibrary.Person;
-using GrpcService.Models;
-using System;
+﻿using System;
+using WebApplication1.Services.People;
 
 namespace WebApplication1.Services
 {
