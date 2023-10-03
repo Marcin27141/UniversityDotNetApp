@@ -30,5 +30,19 @@ namespace GrpcService.Services
         {
             return strings.All(s => Guid.TryParse(s, out Guid _));
         }
+
+        public static void VerifyGradeValidity(float grade)
+        {
+            if (!CheckIfGradeIsValid(grade))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, $"{grade} is not a valid grade"));
+            }
+        }
+
+        public static bool CheckIfGradeIsValid(float grade)
+        {
+            var validGrades = new float[] { 2f, 3f, 3.5f, 4f, 4.5f, 5f, 5.5f };
+            return validGrades.Contains(grade);
+        }
     }
 }

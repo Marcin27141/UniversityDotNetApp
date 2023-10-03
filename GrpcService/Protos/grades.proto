@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcService.Protos";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+package grades;
+
+service GradesServer {
+
+    rpc AddGrade(AddGradeRequest) returns (AddGradeResponse) {
+        option (google.api.http) = {
+            post: "/grades",
+            body: "*"
+        };
+    }
+
+    rpc ReadGrade(ReadGradeRequest) returns (ReadGradeResponse) {
+        option (google.api.http) = {
+            get: "/grades/{grade_id}"
+        };
+    }
+
+    rpc ReadAllGradesCourse(ReadAllGradesCourseRequest) returns (ReadAllGradesCourseResponse) {
+        option (google.api.http) = {
+            get: "/course/{course_id}"
+        };
+    }
+
+    rpc ReadAllGradesStudent(ReadAllGradesStudentRequest) returns (ReadAllGradesStudentResponse) {
+        option (google.api.http) = {
+            get: "/student/{student_id}"
+        };
+    }
+
+    rpc UpdateGrade(UpdateGradeRequest) returns (UpdateGradeResponse) {
+        option (google.api.http) = {
+            put: "/grades"
+            body: "*"
+        };
+    }
+
+    rpc DeleteGrade(DeleteGradeRequest) returns (DeleteGradeResponse) {
+        option (google.api.http) = {
+            delete: "/grades/{grade_id}"
+        };
+    }
+
+}
+
+message AddGradeRequest {
+    string student_id = 1;
+    string course_id = 2;
+    float grade_value = 3;
+}
+
+message AddGradeResponse {
+    string grade_id = 1;
+}
+
+message ReadGradeRequest {
+    string grade_id = 1;
+}
+
+message ReadGradeResponse {
+    string student_id = 1;
+    string course_id = 2;
+    string grade_value = 3;
+    google.protobuf.Timestamp submission_date = 4;
+}
+
+message ReadAllGradesCourseRequest {
+    string course_id = 1;
+}
+
+message ReadAllGradesCourseResponse {
+    repeated ReadGradeResponse grades = 1;
+}
+
+message ReadAllGradesStudentRequest {
+    string student_id = 1;
+}
+
+message ReadAllGradesStudentResponse {
+    repeated ReadGradeResponse grades = 1;
+}
+
+message UpdateGradeRequest {
+    string grade_id = 1;
+    float grade_value = 2;
+}
+
+message UpdateGradeResponse {
+    string grade_id = 1;
+}
+
+message DeleteGradeRequest {
+    string grade_id = 1;
+}
+
+message DeleteGradeResponse {
+    bool was_successful = 1;
+}
+
+
