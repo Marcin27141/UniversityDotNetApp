@@ -36,8 +36,7 @@
             </td>
             <td>
                 <a asp-page="/Grades/EditGrade" asp-page-handler="edit" asp-route-gradeId="@grade.GradeId">Edit</a> |
-                @*<a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-id="@grade.GradeValue">Delete</a>*@
-                Delete
+                <a asp-page="/Grades/CourseGrades" asp-page-handler="delete" asp-route-gradeId="@grade.GradeId">Delete</a>
             </td>
         </tr>
     }

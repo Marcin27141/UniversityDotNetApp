@@ -1,28 +1,27 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using System;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
 using WebApplication1.Services.People;
 
 namespace WebApplication1.Pages.Grades
 {
-    [Authorize("HasProfessorRights")]
-    public class CourseGradesModel : PageModel
+    //[Authorize("IsStudent")]
+    public class StudentGradesModel : PageModel
     {
         private readonly IGradesRepository _gradesRepository;
         private readonly IStudentsRepository _studentsRepository;
         private readonly ICoursesRepository _coursesRepository;
 
-        public Course Course { get; set; }
+        public Student Student { get; set; }
         public IList<CourseGrade> Grades { get; set; }
-        public IList<Student> Students { get; set; }
+        public IList<Course> Courses { get; set; }
 
-        public CourseGradesModel(IGradesRepository gradesRepository,
+        public StudentGradesModel(IGradesRepository gradesRepository,
             IStudentsRepository studentsRepository,
             ICoursesRepository coursesRepository)
         {
@@ -31,17 +30,12 @@ namespace WebApplication1.Pages.Grades
             this._coursesRepository = coursesRepository;
         }
 
-        public async Task OnGetAsync(Guid courseId)
+        public async Task OnGetAsync()
         {
-            Course = await _coursesRepository.GetAsync(courseId);
-            Grades = await _gradesRepository.getCourseGrades(courseId);
-            Students = await _studentsRepository.GetAllAsync();
-        }
-
-        public async Task<IActionResult> OnGetDelete(Guid gradeId)
-        {
-            await _gradesRepository.deleteGrade(gradeId);
-            return RedirectToPage();
+            var entityPersonId = User.FindFirst(c => c.Type == "EntityPersonId")?.Value;
+            Courses = await _coursesRepository.GetAllAsync();
+            Grades = await _gradesRepository.getStudentGrades(Guid.Parse(entityPersonId));
+            Student = await _studentsRepository.GetAsync(Guid.Parse(entityPersonId));
         }
     }
 }

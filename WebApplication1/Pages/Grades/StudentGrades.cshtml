@@ -1,0 +1,38 @@
+﻿@page
+@model WebApplication1.Pages.Grades.StudentGradesModel
+@{
+    ViewData["Title"] = "Student Grades";
+}
+
+<h1>@Model.Student.PersonalData.FirstName @Model.Student.PersonalData.LastName</h1>
+
+<table class="table">
+    <tr>
+        <th>
+            Course
+        </th>
+        <th>
+            Grade
+        </th>
+        <th>
+            Date
+        </th>
+    </tr>
+
+
+
+    @foreach (var grade in Model.Grades)
+    {
+        <tr>
+            <td>
+                @Model.Courses.FirstOrDefault(c => c.EntityCourseID == grade.CourseId)?.Name
+            </td>
+            <td>
+                @grade.GradeValue
+            </td>
+            <td>
+                @grade.TimeOfAdding
+            </td>
+        </tr>
+    }
+</table>
