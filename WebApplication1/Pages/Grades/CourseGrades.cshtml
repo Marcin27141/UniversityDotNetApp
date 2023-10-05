@@ -35,9 +35,9 @@
                 @grade.TimeOfAdding
             </td>
             <td>
-                @*<a asp-page="/ShowResults/ShowPeople" asp-page-handler="edit" asp-route-id="@grade.GradeId">Delete</a>
-                <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-id="@grade.GradeValue">Delete</a>*@
-                Edit | Delete
+                <a asp-page="/Grades/EditGrade" asp-page-handler="edit" asp-route-gradeId="@grade.GradeId">Edit</a> |
+                @*<a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-id="@grade.GradeValue">Delete</a>*@
+                Delete
             </td>
         </tr>
     }

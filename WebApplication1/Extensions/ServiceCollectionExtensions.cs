@@ -53,7 +53,7 @@ namespace WebApplication1.Extensions
                     policyBuilder.RequireClaim("IsAdmin"));
                 options.AddPolicy("HasProfessorRights", policyBuilder =>
                     policyBuilder.RequireAssertion(
-                        ctx => ctx.User.HasClaim("IsAdmin", "true") || ctx.User.HasClaim("Status", Enum.GetName(PersonStatus.Professor))
+                        ctx => ctx.User.HasClaim(c => c.Type == "IsAdmin") || ctx.User.HasClaim("Status", Enum.GetName(PersonStatus.Professor))
                         ));
                 options.AddPolicy("IsProfessor", policyBuilder =>
                     policyBuilder.RequireClaim("Status", Enum.GetName(PersonStatus.Professor)));
