@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Google.Api;
 using Grpc.Core;
 using GrpcService.Database;
 using GrpcService.Models;
@@ -43,7 +44,10 @@ namespace GrpcService.Services
             var gradeIdString = request.GradeId;
             VerifyGuidsValidity(new List<string>() { gradeIdString });
 
-            var grade = await _dbContext.Grades.FindAsync(Guid.Parse(gradeIdString));
+            var grade = await _dbContext
+                .Grades
+                .IncludeGrade()
+                .FirstOrDefaultAsync(g => g.GradeId == Guid.Parse(gradeIdString));
 
             if (grade != null)
                 return await Task.FromResult(_mapper.Map<ReadGradeResponse>(grade));
@@ -58,13 +62,16 @@ namespace GrpcService.Services
 
             var response = new ReadAllGradesCourseResponse();
 
-            var courseWithGrades = await _dbContext
-                .Courses
-                .Include(c => c.Grades)
-                .FirstOrDefaultAsync(c => c.CourseID == Guid.Parse(courseIdString))
+            var query = _dbContext.Grades.IncludeGrade();
+
+            var courseGrades = await _dbContext
+                .Grades
+                .IncludeGrade()
+                .Where(g => g.GradedCourseId == Guid.Parse(courseIdString))
+                .ToListAsync()
                 ?? throw new RpcException(new Status(StatusCode.NotFound, $"No course with id {courseIdString} was found"));
-            
-            courseWithGrades.Grades.ToList().ForEach(grade => response.Grades.Add(_mapper.Map<ReadGradeResponse>(grade)));
+
+            courseGrades.ForEach(grade => response.Grades.Add(_mapper.Map<ReadGradeResponse>(grade)));
             return await Task.FromResult(response);
         }
 
@@ -75,13 +82,14 @@ namespace GrpcService.Services
 
             var response = new ReadAllGradesStudentResponse();
 
-            var studentWithGrades = await _dbContext
-                .Set<Student>()
-                .Include(s => s.Grades)
-                .FirstOrDefaultAsync(s => s.PersonId == Guid.Parse(studentIdString))
+            var studentGrades = await _dbContext
+                .Grades
+                .IncludeGrade()
+                .Where(g => g.GradedStudentId == Guid.Parse(studentIdString))
+                .ToListAsync()
                 ?? throw new RpcException(new Status(StatusCode.NotFound, $"No student with id {studentIdString} was found"));
 
-            studentWithGrades.Grades.ToList().ForEach(grade => response.Grades.Add(_mapper.Map<ReadGradeResponse>(grade)));
+            studentGrades.ForEach(grade => response.Grades.Add(_mapper.Map<ReadGradeResponse>(grade)));
             return await Task.FromResult(response);
         }
 

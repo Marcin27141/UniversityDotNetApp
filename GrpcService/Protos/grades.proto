@@ -64,10 +64,11 @@ message ReadGradeRequest {
 }
 
 message ReadGradeResponse {
-    string student_id = 1;
-    string course_id = 2;
-    string grade_value = 3;
-    google.protobuf.Timestamp submission_date = 4;
+    string grade_id = 1;
+    string student_id = 2;
+    string course_id = 3;
+    string grade_value = 4;
+    google.protobuf.Timestamp submission_date = 5;
 }
 
 message ReadAllGradesCourseRequest {
