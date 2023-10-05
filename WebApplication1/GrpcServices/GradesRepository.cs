@@ -64,7 +64,7 @@ namespace WebApplication1.GrpcServices
             try
             {
                 var response = await client.ReadAllGradesCourseAsync(request);
-                return _mapper.Map<IList<CourseGrade>>(response);
+                return _mapper.Map<IList<CourseGrade>>(response.Grades);
             }
             catch (RpcException)
             {
@@ -85,7 +85,7 @@ namespace WebApplication1.GrpcServices
             try
             {
                 var response = await client.ReadAllGradesStudentAsync(request);
-                return _mapper.Map<IList<CourseGrade>>(response);
+                return _mapper.Map<IList<CourseGrade>>(response.Grades);
             }
             catch (RpcException)
             {

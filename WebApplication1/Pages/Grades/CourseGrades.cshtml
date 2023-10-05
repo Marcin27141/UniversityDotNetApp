@@ -1,0 +1,44 @@
+﻿@page "{courseId}"
+@model WebApplication1.Pages.Grades.CourseGradesModel
+@{
+    ViewData["Title"] = "Course Grades";
+}
+
+<h1>@Model.Course.Name</h1>
+
+<table class="table">
+    <tr>
+        <th>
+            Student
+        </th>
+        <th>
+            Grade
+        </th>
+        <th>
+            Date
+        </th>
+        <th></th>
+    </tr>
+
+
+
+    @foreach (var grade in Model.Grades)
+    {
+        <tr>
+            <td>
+                @Model.Students.FirstOrDefault(s => s.EntityPersonID == grade.StudentId)
+            </td>
+            <td>
+                @grade.GradeValue
+            </td>
+            <td>
+                @grade.TimeOfAdding
+            </td>
+            <td>
+                @*<a asp-page="/ShowResults/ShowPeople" asp-page-handler="edit" asp-route-id="@grade.GradeId">Delete</a>
+                <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-id="@grade.GradeValue">Delete</a>*@
+                Edit | Delete
+            </td>
+        </tr>
+    }
+</table>

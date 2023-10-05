@@ -19,6 +19,7 @@ using WebApplication1.LocalServices;
 using Microsoft.AspNetCore.Identity;
 using WebApplication1.GraphQLServices.QueryGenerators;
 using WebApplication1.Extensions;
+using WebApplication1.GrpcServices;
 
 namespace WebApplication1
 {
@@ -46,6 +47,8 @@ namespace WebApplication1
             services.AddAuthorizationServices();
             services.AddUsersServices();
 
+            services.AddScoped<IGradesRepository, GradesRepository>();
+            
             //either or
             //services.AddRestApiServices();
             services.AddGraphQLServices();
