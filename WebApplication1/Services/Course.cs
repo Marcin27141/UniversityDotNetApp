@@ -22,6 +22,7 @@ namespace WebApplication1.Services
         public string CourseCode { get; set; }
  
         public Professor Professor { get; set; }
+        public Guid? ProfessorId { get; set; }
 
         public int ECTS { get; set; }
 

@@ -13,5 +13,6 @@ namespace WebApplication1.GraphQLServices.GraphQLDtos
         public bool IsFinishedWithExam { get; set; }
         public List<GraphQLStudentDto> EnrolledStudents { get; set; }
         public GraphQLProfessorDto Professor { get; set; }
+        public Guid? ProfessorId { get; set; }
     }
 }

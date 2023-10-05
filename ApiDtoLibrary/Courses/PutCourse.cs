@@ -4,7 +4,7 @@ using ApiDtoLibrary.Students;
 
 namespace ApiDtoLibrary.Courses
 {
-    public class PutCourse : ToApiCourse
+    public class PutCourse : BaseCourse
     {
         [Required]
         [Display(Name = "Id")]

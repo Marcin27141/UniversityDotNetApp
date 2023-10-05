@@ -11,5 +11,6 @@ namespace ApiDtoLibrary.Courses
 
         [Required]
         public string Name { get; set; }
+        public Guid? ProfessorId { get; set; }
     }
 }

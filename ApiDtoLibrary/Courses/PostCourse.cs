@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace ApiDtoLibrary.Courses
 {
-    public class PostCourse : ToApiCourse
+    public class PostCourse : BaseCourse
     {
         public int ECTS { get; set; }
 

@@ -57,6 +57,7 @@ namespace WebApplication1.GraphQLServices.QueryGenerators
                         Id
                         CourseCode
                         Name
+                        ProfessorId
                         ECTS
                         IsFinishedWithExam
                     }
@@ -76,6 +77,7 @@ namespace WebApplication1.GraphQLServices.QueryGenerators
                     Name
                     ECTS
                     IsFinishedWithExam
+                    ProfessorId
                     Professor {
                         Id 
                         FirstName

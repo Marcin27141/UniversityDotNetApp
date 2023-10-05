@@ -144,7 +144,7 @@ namespace WebApplication1.Configurations
 
         private void MapProfessorToId<S, T>(IMappingExpression<S, T> mapping)
             where S : Course
-            where T : ToApiCourse
+            where T : BaseCourse
         {
             mapping
                 .ForMember(dest => dest.ProfessorId, opt => opt.MapFrom(src => src.Professor.EntityPersonID));
