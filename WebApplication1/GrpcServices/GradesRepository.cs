@@ -25,9 +25,26 @@ namespace WebApplication1.GrpcServices
             return new GradesServer.GradesServerClient(channel);
         }
 
-        public Task<Guid> addGrade(CourseGrade grade)
+        public async Task<Guid> addGrade(CourseGrade grade)
         {
-            throw new NotImplementedException();
+            using var channel = GrpcChannel.ForAddress(SERVER_ADDRESS);
+            var client = GetGradesServerClient(channel);
+
+            try
+            {
+                var request = new AddGradeRequest()
+                {
+                    StudentId = grade.StudentId.ToString(),
+                    CourseId = grade.CourseId.ToString(),
+                    GradeValue = grade.GradeValue
+                };
+                var response = await client.AddGradeAsync(request);
+                return Guid.Parse(response.GradeId);
+            }
+            catch (RpcException)
+            {
+                return Guid.Empty;
+            }
         }
 
         public async Task<CourseGrade> getGrade(Guid gradeId)

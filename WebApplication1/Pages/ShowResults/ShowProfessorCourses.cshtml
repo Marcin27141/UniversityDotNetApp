@@ -1,0 +1,36 @@
+﻿@page
+@model WebApplication1.Pages.ShowResults.ShowProfessorCoursesModel
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Code
+        </th>
+        <th></th>
+    </tr>
+
+
+
+    @foreach (var course in Model.ProfessorCourses)
+    {
+        <tr>
+            <td>
+                @course.Name
+            </td>
+            <td>
+                @course.CourseCode
+            </td>
+            <td>
+                <a asp-page="/ShowResults/ShowCourse" asp-route-id="@course.EntityCourseID">Details</a> |
+                <a asp-page="/Grades/CourseGrades" asp-route-courseId="@course.EntityCourseID">Show grades</a> |
+                <a asp-page="/Grades/AddGrade" asp-route-courseId="@course.EntityCourseID">Add grade</a>
+            </td>
+        </tr>
+    }
+</table>
