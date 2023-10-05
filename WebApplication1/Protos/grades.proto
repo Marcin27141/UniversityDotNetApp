@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+option csharp_namespace = "WebApplication1";
+
+import "google/protobuf/timestamp.proto";
+
+package grades;
+
+service GradesServer {
+
+    rpc AddGrade(AddGradeRequest) returns (AddGradeResponse) {
+    }
+
+    rpc ReadGrade(ReadGradeRequest) returns (ReadGradeResponse) {
+    }
+
+    rpc ReadAllGradesCourse(ReadAllGradesCourseRequest) returns (ReadAllGradesCourseResponse) {
+    }
+
+    rpc ReadAllGradesStudent(ReadAllGradesStudentRequest) returns (ReadAllGradesStudentResponse) {
+    }
+
+    rpc UpdateGrade(UpdateGradeRequest) returns (UpdateGradeResponse) {
+    }
+
+    rpc DeleteGrade(DeleteGradeRequest) returns (DeleteGradeResponse) {
+    }
+
+}
+
+message AddGradeRequest {
+    string student_id = 1;
+    string course_id = 2;
+    float grade_value = 3;
+}
+
+message AddGradeResponse {
+    string grade_id = 1;
+}
+
+message ReadGradeRequest {
+    string grade_id = 1;
+}
+
+message ReadGradeResponse {
+    string grade_id = 1;
+    string student_id = 2;
+    string course_id = 3;
+    string grade_value = 4;
+    google.protobuf.Timestamp submission_date = 5;
+}
+
+message ReadAllGradesCourseRequest {
+    string course_id = 1;
+}
+
+message ReadAllGradesCourseResponse {
+    repeated ReadGradeResponse grades = 1;
+}
+
+message ReadAllGradesStudentRequest {
+    string student_id = 1;
+}
+
+message ReadAllGradesStudentResponse {
+    repeated ReadGradeResponse grades = 1;
+}
+
+message UpdateGradeRequest {
+    string grade_id = 1;
+    float grade_value = 2;
+}
+
+message UpdateGradeResponse {
+    string grade_id = 1;
+}
+
+message DeleteGradeRequest {
+    string grade_id = 1;
+}
+
+message DeleteGradeResponse {
+    bool was_successful = 1;
+}
+
+

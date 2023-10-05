@@ -59,6 +59,19 @@ namespace WebApplication1.Configurations
 
             //Notifications
             CreateMap<GraphQLNotificationDto, Notification>();
+
+            //Grades
+            CreateMap<ReadGradeResponse, CourseGrade>()
+                .ForMember(dest => dest.GradeId, opt => opt.MapFrom(src => Guid.Parse(src.GradeId)))
+                .ForMember(dest => dest.StudentId, opt => opt.MapFrom(src => src.StudentId))
+                .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId))
+                .ForMember(dest => dest.GradeValue, opt => opt.MapFrom(src => src.GradeValue))
+                .ForMember(dest => dest.TimeOfAdding, opt => opt.MapFrom(src => src.SubmissionDate.ToDateTime()));
+
+            CreateMap<CourseGrade, AddGradeRequest>()
+                .ForMember(dest => dest.StudentId, opt => opt.MapFrom(src => src.StudentId))
+                .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId))
+                .ForMember(dest => dest.GradeValue, opt => opt.MapFrom(src => src.GradeValue));
         }
 
         private void MapGraphQLPerson<S, T>(IMappingExpression<S, T> mapping)

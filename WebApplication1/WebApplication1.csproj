@@ -4,6 +4,10 @@
     <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
+	<ItemGroup>
+		<Protobuf Include="Protos\grades.proto" GrpcServices="Client" />
+	</ItemGroup>
+
   <ItemGroup>
 	  <PackageReference Include="AutoMapper" Version="12.0.1" />
 	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
@@ -32,17 +36,9 @@
 	  <PackageReference Include="Scrutor" Version="4.2.1" />
   </ItemGroup>
 
-	<ItemGroup>
-		<Protobuf Include="Protos\people.proto" GrpcServices="Client" />
-	</ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\ApiDtoLibrary\ApiDtoLibrary.csproj" />
     <ProjectReference Include="..\GrpcService\GrpcService.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="GrpcServices\" />
   </ItemGroup>
 
 </Project>
