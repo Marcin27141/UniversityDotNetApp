@@ -1,19 +1,4 @@
-﻿@{
-    //Layout = "_Layout";
-
-    switch (Context.User.FindFirst("Status")?.Value)
-    {
-        case "Admin":
-            Layout = "/Pages/Shared/_AdminLayout.cshtml";
-            break;
-        case "Student":
-            Layout = "/Pages/Shared/_StudentLayout.cshtml";
-            break;
-        case "Professor":
-            Layout = "/Pages/Shared/_ProfessorLayout.cshtml";
-            break;
-        default:
-            Layout = "/Pages/Shared/_Layout.cshtml";
-            break;
-    }
+﻿@using WebApplication1.HtmlHelpers;
+@{
+    Layout = Html.GetLayoutForUser(Context.User);
 }

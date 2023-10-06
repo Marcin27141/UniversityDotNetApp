@@ -5,7 +5,9 @@
     ViewData["Title"] = "Edit Professor";
 }
 
+
 <input type="hidden" asp-for="Professor.EntityPersonID" />
+<input type="hidden" asp-for="Professor.ApplicationUserId" />
 
 @await Html.PartialAsync("_PersonalDataPartial", Model.PersonalData)
 
@@ -30,3 +32,5 @@
     <input class="form-control" asp-for="Professor.Salary" />
     <span asp-validation-for="Professor.Salary"></span>
 </div>
+
+

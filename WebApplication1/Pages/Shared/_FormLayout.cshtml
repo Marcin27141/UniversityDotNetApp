@@ -1,5 +1,6 @@
-﻿@{ 
-    Layout = "_Layout";
+﻿@using WebApplication1.HtmlHelpers;
+@{
+    Layout = Html.GetLayoutForUser(Context.User);
 }
 <form method="post">
     @RenderBody()

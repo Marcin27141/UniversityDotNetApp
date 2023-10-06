@@ -44,6 +44,7 @@ namespace WebApplication1.Extensions
 
         public static IServiceCollection AddAuthorizationServices(this IServiceCollection services)
         {
+            services.AddScoped<IAuthorizationHandler, HasAdminRightsHandler>();
             services.AddScoped<IAuthorizationHandler, StudentEditorIsOwnerHandler>();
             services.AddScoped<IAuthorizationHandler, ProfessorEditorIsOwnerHandler>();
 

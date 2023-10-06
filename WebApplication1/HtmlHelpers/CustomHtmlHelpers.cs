@@ -1,7 +1,9 @@
 ﻿using ApiDtoLibrary.Person;
+using Google.Api;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Security.Claims;
 
 namespace WebApplication1.HtmlHelpers
 {
@@ -39,6 +41,21 @@ namespace WebApplication1.HtmlHelpers
                 _ => null
             };
             return new HtmlString(output);
+        }
+
+        public static string GetLayoutForUser(this IHtmlHelper helper, ClaimsPrincipal user)
+        {
+            switch (user.FindFirst("Status")?.Value)
+            {
+                case "Admin":
+                    return "/Pages/Shared/_AdminLayout.cshtml";
+                case "Student":
+                    return "/Pages/Shared/_StudentLayout.cshtml";
+                case "Professor":
+                    return "/Pages/Shared/_ProfessorLayout.cshtml";
+                default:
+                    return "/Pages/Shared/_Layout.cshtml";
+            }
         }
     }
 }
