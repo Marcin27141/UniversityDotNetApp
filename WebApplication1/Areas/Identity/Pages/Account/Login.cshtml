@@ -5,6 +5,10 @@
     ViewData["Title"] = "Log in";
 }
 
+@section styles{
+    <link rel="Stylesheet" href="~/css/loginPage.css" />
+}
+
 <div class="top-login-container" id="top-login-container">
     <div class="slide-container">
         <div class="form-container sign-in-container">
@@ -16,23 +20,27 @@
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                 <input asp-for="Input.Password" placeholder="Password" autocomplete="current-password" aria-required="true">
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
-                <button id="login-submit" type="submit">Sign in</button>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">Remember me?</label>
-                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                <div class="remember-forgot">
+                    <label asp-for="Input.RememberMe">
+                        <input asp-for="Input.RememberMe" />
+                        Remember me?
+                    </label>
+                    <span id="forgot-password-text">Forgot Your password?</span>
                 </div>
-                <span id="forgot-password-span">Forgot Your password?</span>
+                <button id="login-submit" type="submit">Sign in</button>
             </form>
         </div>
         <div class="form-container password-forgot-container">
-            <form>
-                <h1>Enter Your email</h1>
-                <p>We will send You a reset link</p>
-                <input type="email" placeholder="Email">
-                <button id="send-button">Send</button>
-            </form>
-            <div class="horizontal-buttons">
-                <button id="back-button">Back</button>
+            <div class="form-and-return">
+                <form>
+                    <h1>Enter Your email</h1>
+                    <p>We will send You a reset link</p>
+                    <input type="email" placeholder="Email">
+                    <button id="send-button">Send</button>
+                </form>
+                <div class="horizontal-buttons">
+                    <button id="back-button">Back</button>
+                </div>
             </div>
         </div>
     </div>
@@ -40,5 +48,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script type="text/javascript" src="~/js/login.js"></script>
+    <script type="text/javascript" src="~/js/loginPage.js"></script>
 }

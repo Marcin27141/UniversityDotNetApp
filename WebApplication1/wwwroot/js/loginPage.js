@@ -1,5 +1,5 @@
 ﻿const containerElement = document.getElementById('top-login-container');
-const forgotPasswordElement = document.getElementById('forgot-password-span');
+const forgotPasswordElement = document.getElementById('forgot-password-text');
 const backButton = document.getElementById('back-button');
 
 forgotPasswordElement.addEventListener('click', () => {
