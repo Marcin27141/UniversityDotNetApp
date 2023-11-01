@@ -5,7 +5,25 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
+@section styles{
+    <link rel="Stylesheet" href="~/css/adminHome.css" />
+}
+
+<div class="group-container">
+    <h1>Students</h1>
+    <img src="~/lib/images/graduated.png"/>
+</div>
+<div class="group-container">
+    <h1>Professors</h1>
+    <img src="~/lib/images/dean.png"/>
+</div class="group-container">
+<div class="group-container">
+    <h1>Courses</h1>
+    <img src="~/lib/images/online-learning.png"/>
+</div>
+
+@*
+    <div class="text-center">
     <p><a asp-page="/NewElement/NewPerson/NewStudent">Create a new student</a>.</p>
 </div>
 
@@ -36,3 +54,6 @@
 <div class="text-center">
     <p><a asp-page="/AdminSearch/SearchCourses">Search courses</a>.</p>
 </div>
+
+*@
+
