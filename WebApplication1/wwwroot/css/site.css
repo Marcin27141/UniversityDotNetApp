@@ -1,10 +1,18 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;1,500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
@@ -59,13 +67,132 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    background: linear-gradient(to right, #b2fefa, #0ed2f7);
 }
+
+header {
+    width: 100%;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80vh;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+  line-height: 60px;
 }
+
+
+/*login page*/
+.top-login-container {
+    position: relative;
+    background-color: rgb(126, 166, 241);
+    border-radius: 30px;
+    max-width: 100%;
+    overflow: hidden;
+    width: 500px;
+    min-height: 500px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35)
+}
+
+    .top-login-container p {
+        font-size: 20px;
+        line-height: 30px;
+        letter-spacing: 0.3px;
+        margin: 5px 0 20px 0;
+    }
+
+    .top-login-container a {
+        text-decoration: none;
+        color: darkblue;
+        font-size: 18px
+    }
+
+    .top-login-container button {
+        background-color: navy;
+        color: white;
+        font-size: 20px;
+        padding: 5px 20px;
+        border-radius: 15px;
+        margin: 20px auto;
+        cursor: pointer;
+    }
+
+    .top-login-container form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+        padding: 0 40px;
+    }
+
+    .top-login-container input {
+        background-color: whitesmoke;
+        border: none;
+        width: 100%;
+        font-size: 18px;
+        outline: none;
+        margin: 5px 0px;
+        padding: 5px 20px;
+        border-radius: 10px;
+    }
+
+    .top-login-container .checkbox {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+    }
+
+    .top-login-container label {
+        margin: 0;
+    }
+
+    .top-login-container input[type="checkbox"] {
+        width: 50px;
+        margin-left: 150px;
+    }
+        
+    .top-login-container .slide-container {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 200%;
+    }
+
+    .top-login-container .form-container {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 50%;
+        transition: all 0.7s ease-in-out;
+    }
+
+    .top-login-container .sign-in-container {
+        left: 0;
+    }
+
+    .top-login-container .password-forgot-container {
+        right: 0;
+    }
+
+    .top-login-container.active .sign-in-container {
+        transform: translateX(-100%);
+    }
+
+    .top-login-container.active .password-forgot-container {
+        transform: translateX(-100%);
+    }
