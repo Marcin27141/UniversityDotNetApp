@@ -9,18 +9,39 @@
     <link rel="Stylesheet" href="~/css/adminHome.css" />
 }
 
-<div class="group-container">
-    <h1>Students</h1>
-    <img src="~/lib/images/graduated.png"/>
+<div class="group-with-slider" id="slider-container">
+    <div class="group-container">
+        <h1>Students</h1>
+        <img src="~/lib/images/graduated.png"/>
+    </div>
+    <div class="options-panel">
+        <a asp-page="/NewElement/NewPerson/NewStudent">Create</a>
+        <a asp-page="/AdminSearch/SearchStudents">Search</a>
+    </div>
 </div>
-<div class="group-container">
-    <h1>Professors</h1>
-    <img src="~/lib/images/dean.png"/>
-</div class="group-container">
-<div class="group-container">
-    <h1>Courses</h1>
-    <img src="~/lib/images/online-learning.png"/>
+<div class="group-with-slider">
+    <div class="group-container">
+        <h1>Professors</h1>
+        <img src="~/lib/images/dean.png" />
+    </div>
+    <div class="options-panel">
+        <a asp-page="/NewElement/NewPerson/NewProfessor">Create</a>
+        <a asp-page="/AdminSearch/SearchProfessors">Search</a>
+    </div>
 </div>
+<div class="group-with-slider">
+    <div class="group-container">
+        <h1>Courses</h1>
+        <img src="~/lib/images/online-learning.png" />
+    </div>
+    <div class="options-panel">
+        <a asp-page="/ShowResults/ShowCourses">List</a>
+        <a asp-page="/NewElement/NewCourse">Create</a>
+        <a asp-page="/AdminSearch/SearchCourses">Search</a>
+    </div>
+</div>
+
+
 
 @*
     <div class="text-center">
