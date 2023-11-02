@@ -3,13 +3,19 @@
     align-items: center;
     flex-direction: row;
     position: relative;
+    height: auto;
+    margin: 0;
+    padding: 0;
 }
 
 main .group-with-slider {
     position: relative;
-    margin: 40px;
+    margin: 0 40px;
+    padding-top: 0;
+    padding-bottom: 0;
     min-width: 250px;
     overflow: hidden;
+    height: auto;
 }
 
 main .group-container {

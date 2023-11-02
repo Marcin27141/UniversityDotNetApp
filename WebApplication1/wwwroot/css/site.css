@@ -74,6 +74,7 @@ body {
 
 header {
     width: 100%;
+    margin-bottom: 5%;
 }
 
 nav {
@@ -89,12 +90,15 @@ main {
     height: 80vh;
 }
 
+footer {
+    width: 100%;
+    margin-top: 5%;
+}
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+  padding: 5px 0;
   white-space: nowrap;
-  line-height: 60px;
+  line-height: 30px;
 }
 
 .footer .container {

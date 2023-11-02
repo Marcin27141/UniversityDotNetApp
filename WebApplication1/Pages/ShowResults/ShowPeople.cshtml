@@ -5,33 +5,43 @@
     ViewData["Title"] = "People";
 }
 
-<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Role
-        </th>
-        <th></th>
-    </tr>
+@section styles{
+    <link rel="Stylesheet" href="~/css/listWithSearch.css" />
+}
 
-
-
-    @foreach (var person in Model.PeopleToShow)
-    {
+<div class="table-container">
+    <h1>All results</h1>
+    <input type="search" id="searchbar" placeholder="Search.." name="query">
+    <table class="table" id="searchTable">
         <tr>
-            <td>
-                @person.ToString()
-            </td>
-            <td>
-                @person.PersonStatus
-            </td>
-            <td>
-                @Html.CreateEditLinkForPerson(person.PersonStatus, person.EntityPersonID) |
-                @Html.CreateDetailsLinkForPerson(person.PersonStatus, person.EntityPersonID) |
-                <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-id="@person.EntityPersonID">Delete</a>
-            </td>
+            <th>
+                Name
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+
+        @foreach (var person in Model.PeopleToShow)
+        {
+            <tr>
+                <td>
+                    @person.ToString()
+                </td>
+                <td>
+                    @person.PersonStatus
+                </td>
+                <td>
+                    @Html.CreateEditLinkForPerson(person.PersonStatus, person.EntityPersonID) |
+                    @Html.CreateDetailsLinkForPerson(person.PersonStatus, person.EntityPersonID) |
+                    <a asp-page="/ShowResults/ShowPeople" asp-page-handler="delete" asp-route-id="@person.EntityPersonID">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/listWithSearch.js"></script>
+}

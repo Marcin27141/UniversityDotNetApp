@@ -1,0 +1,25 @@
+﻿main {
+    justify-items: flex-start;
+    align-content:flex-start;
+}
+
+.table-container {
+    min-width: 500px;
+    width: 600px;
+    height: 100%;
+}
+
+.table-container h1 {
+    text-align: center;
+    font-size: 50px;
+    margin-bottom: 40px;
+}
+
+.table-container #searchbar {
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 5px 10px;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+}

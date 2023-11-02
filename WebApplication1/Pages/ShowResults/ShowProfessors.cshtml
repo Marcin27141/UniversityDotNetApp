@@ -6,33 +6,43 @@
     ViewData["Title"] = "Professors";
 }
 
-<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            ID
-        </th>
-        <th></th>
-    </tr>
+@section styles{
+    <link rel="Stylesheet" href="~/css/listWithSearch.css" />
+}
 
-
-
-    @foreach (var professor in Model.ProfessorsToShow)
-    {
+<div class="table-container">
+    <h1>Professors</h1>
+    <input type="search" id="searchbar" placeholder="Search.." name="query">
+    <table class="table" id="searchTable">
         <tr>
-            <td>
-                @professor.ToString()
-            </td>
-            <td>
-                @professor.IdCode
-            </td>
-            <td>
-                @Html.CreateEditLinkForPerson(PersonStatus.Professor, professor.EntityPersonID) |
-                @Html.CreateDetailsLinkForPerson(PersonStatus.Professor, professor.EntityPersonID) |
-                <a asp-page="/ShowResults/ShowProfessors" asp-page-handler="delete" asp-route-id="@professor.EntityPersonID">Delete</a>
-            </td>
+            <th>
+                Name
+            </th>
+            <th>
+                ID
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+
+        @foreach (var professor in Model.ProfessorsToShow)
+        {
+            <tr>
+                <td>
+                    @professor.ToString()
+                </td>
+                <td>
+                    @professor.IdCode
+                </td>
+                <td>
+                    @Html.CreateEditLinkForPerson(PersonStatus.Professor, professor.EntityPersonID) |
+                    @Html.CreateDetailsLinkForPerson(PersonStatus.Professor, professor.EntityPersonID) |
+                    <a asp-page="/ShowResults/ShowProfessors" asp-page-handler="delete" asp-route-id="@professor.EntityPersonID">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/listWithSearch.js"></script>
+}

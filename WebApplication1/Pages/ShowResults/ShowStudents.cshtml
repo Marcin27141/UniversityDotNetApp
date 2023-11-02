@@ -5,34 +5,43 @@
 @{
     ViewData["Title"] = "Students";
 }
+@section styles{
+    <link rel="Stylesheet" href="~/css/listWithSearch.css" />
+}
 
-<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Index
-        </th>
-        <th></th>
-    </tr>
-
-
-
-    @foreach (var student in Model.StudentsToShow)
-    {
+<div class="table-container">
+    <h1>Students</h1>
+    <input type="search" id="searchbar" placeholder="Search.." name="query">
+    <table class="table" id="searchTable">
         <tr>
-            <td>
-                @student.ToString()
-            </td>
-            <td>
-                @student.Index
-            </td>
-            <td>
-                @Html.CreateEditLinkForPerson(PersonStatus.Student, student.EntityPersonID) |
-                @Html.CreateDetailsLinkForPerson(PersonStatus.Student, student.EntityPersonID) |
-                <a asp-page="/ShowResults/ShowStudents" asp-page-handler="delete" asp-route-id="@student.EntityPersonID">Delete</a>
-            </td>
+            <th>
+                Name
+            </th>
+            <th>
+                Index
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+
+        @foreach (var student in Model.StudentsToShow)
+        {
+            <tr>
+                <td>
+                    @student.ToString()
+                </td>
+                <td>
+                    @student.Index
+                </td>
+                <td>
+                    @Html.CreateEditLinkForPerson(PersonStatus.Student, student.EntityPersonID) |
+                    @Html.CreateDetailsLinkForPerson(PersonStatus.Student, student.EntityPersonID) |
+                    <a asp-page="/ShowResults/ShowStudents" asp-page-handler="delete" asp-route-id="@student.EntityPersonID">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/listWithSearch.js"></script>
+}

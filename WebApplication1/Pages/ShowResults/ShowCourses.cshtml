@@ -4,34 +4,44 @@
     ViewData["Title"] = "Courses";
 }
 
-<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Code
-        </th>
-        <th></th>
-    </tr>
+@section styles{
+    <link rel="Stylesheet" href="~/css/listWithSearch.css" />
+}
 
-
-
-    @foreach (var course in Model.CreatedCourses)
-    {
+<div class="table-container">
+    <h1>Courses</h1>
+    <input type="search" id="searchbar" placeholder="Search.." name="query">
+    <table class="table" id="searchTable">
         <tr>
-            <td>
-                @course.Name
-            </td>
-            <td>
-                @course.CourseCode
-            </td>
-            <td>
-                <a asp-page="/EditElement/EditCourse" asp-route-id="@course.EntityCourseID">Edit</a> |
-                <a asp-page="/ShowResults/ShowCourse" asp-route-id="@course.EntityCourseID">Details</a> |
-                <a asp-page="/Grades/CourseGrades" asp-route-courseId="@course.EntityCourseID">Grades</a> |
-                <a asp-page="/ShowResults/ShowCourses" asp-page-handler="delete" asp-route-id="@course.EntityCourseID">Delete</a>
-            </td>
+            <th>
+                Name
+            </th>
+            <th>
+                Code
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+
+        @foreach (var course in Model.CreatedCourses)
+        {
+            <tr>
+                <td>
+                    @course.Name
+                </td>
+                <td>
+                    @course.CourseCode
+                </td>
+                <td>
+                    <a asp-page="/EditElement/EditCourse" asp-route-id="@course.EntityCourseID">Edit</a> |
+                    <a asp-page="/ShowResults/ShowCourse" asp-route-id="@course.EntityCourseID">Details</a> |
+                    <a asp-page="/Grades/CourseGrades" asp-route-courseId="@course.EntityCourseID">Grades</a> |
+                    <a asp-page="/ShowResults/ShowCourses" asp-page-handler="delete" asp-route-id="@course.EntityCourseID">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/listWithSearch.js"></script>
+}
