@@ -24,18 +24,9 @@ namespace WebApplication1.Pages.ShowResults
             this._userRepository = userRepository;
         }
 
-        //authorization?
-        //results=0 => all people; results=1 => selected people from TempData["PeopleList"]
-        public void OnGet(int results=0)
+        public void OnGet()
         {
-            if (results == 1)
-            {
-                var entry = TempData["PeopleList"];
-                if (entry == null)
-                    PeopleToShow = new List<Person>();
-                else PeopleToShow = JsonConvert.DeserializeObject<List<Person>>(entry.ToString());
-            }
-            else PeopleToShow = _peopleRepository.GetAllPersonalData();
+            PeopleToShow = _peopleRepository.GetAllPersonalData();
         }
 
         public async Task<IActionResult> OnGetDelete(Guid id)

@@ -1,0 +1,38 @@
+﻿@page
+@using WebApplication1.HtmlHelpers;
+@using ApiDtoLibrary.Person
+@model WebApplication1.Pages.ShowResults.ShowStudentsModel
+@{
+    ViewData["Title"] = "Students";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Index
+        </th>
+        <th></th>
+    </tr>
+
+
+
+    @foreach (var student in Model.StudentsToShow)
+    {
+        <tr>
+            <td>
+                @student.ToString()
+            </td>
+            <td>
+                @student.Index
+            </td>
+            <td>
+                @Html.CreateEditLinkForPerson(PersonStatus.Student, student.EntityPersonID) |
+                @Html.CreateDetailsLinkForPerson(PersonStatus.Student, student.EntityPersonID) |
+                <a asp-page="/ShowResults/ShowStudents" asp-page-handler="delete" asp-route-id="@student.EntityPersonID">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
