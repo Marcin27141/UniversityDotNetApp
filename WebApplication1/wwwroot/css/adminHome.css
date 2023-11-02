@@ -2,13 +2,9 @@
     justify-content: space-evenly;
     align-items: center;
     flex-direction: row;
-    position: relative;
-    height: auto;
-    margin: 0;
-    padding: 0;
 }
 
-main .group-with-slider {
+.group-with-slider {
     position: relative;
     margin: 0 40px;
     padding-top: 0;
@@ -18,7 +14,7 @@ main .group-with-slider {
     height: auto;
 }
 
-main .group-container {
+.group-container {
     background-color: white;
     border: solid 2px gray;
     border-radius: 20px;
