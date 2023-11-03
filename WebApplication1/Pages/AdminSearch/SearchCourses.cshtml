@@ -1,107 +1,74 @@
 ﻿@page
 @model WebApplication1.Pages.AdminSearch.SearchCoursesModel
 @{
+    Layout = "_AdminLayout";
     ViewData["Title"] = "Search Courses";
 }
 
-<form method="post">
-
-    <div class="form-group">
-        <label asp-for="OrderOption" class="control-label"></label>
-        <select asp-for="OrderOption"
-                class="form-control"
-                asp-items="Html.GetEnumSelectList<Extensions.CourseOrderByOptions>()">
-        </select>
-        <span asp-validation-for="OrderOption" class="text-danger"></span>
-    </div>
-
-    <br />
-
-    <div class="form-group">
-        <label asp-for="FilterOption" class="control-label"></label>
-        <select asp-for="FilterOption"
-                class="form-control"
-                asp-items="Html.GetEnumSelectList<Extensions.CourseFilterByOptions>()">
-        </select>
-        <span asp-validation-for="FilterOption" class="text-danger"></span>
-    </div>
-
-    <br />
-
-    <div class="form-group">
-        <label asp-for="Filter"></label>
-        <input class="form-control" asp-for="Filter" />
-        <span asp-validation-for="Filter"></span>
-    </div>
-
-    <br />
-
-    <div class="form-group">
-        <button type="submit"
-                class="btn btn-success">
-            Search
-        </button>
-    </div>
-
-</form>
-
-<br />
-<br />
-
-@foreach (var course in Model.CoursesToShow)
-{
-    <br />
-    <h1>@course.Name</h1>
-    <br />
-
-    <table class="table">
-        <tr>
-            <td>
-                Name
-            </td>
-            <td>
-                @course.Name
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Code
-            </td>
-            <td>
-                @course.CourseCode
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Professor
-            </td>
-            <td>
-                @course.Professor?.ToString()
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Students enrolled
-            </td>
-            <td>
-                @course.Students.Count()
-            </td>
-        </tr>
-        <tr>
-            <td>
-                ECTS
-            </td>
-            <td>
-                @course.ECTS
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Is finished with exam?
-            </td>
-            <td>
-                @course.IsFinishedWithExam
-            </td>
-        </tr>
-    </table>
+@section styles{
+    <link rel="Stylesheet" href="~/css/searchPage.css" />
 }
+
+<div class="outer-form-container">
+    <form method="post">
+        <div class="form-inputs">
+            <div class="form-group">
+                <label asp-for="OrderOption"></label>
+                <select asp-for="OrderOption"
+                        asp-items="Html.GetEnumSelectList<Extensions.CourseOrderByOptions>()">
+                </select>
+                <span asp-validation-for="OrderOption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FilterOption"></label>
+                <select asp-for="FilterOption"
+                        asp-items="Html.GetEnumSelectList<Extensions.CourseFilterByOptions>()">
+                </select>
+                <span asp-validation-for="FilterOption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Filter"></label>
+                <input asp-for="Filter" />
+                <span asp-validation-for="Filter"></span>
+            </div>
+        </div>
+        <div class="form-group button-group">
+            <button type="submit">
+                Search
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="search-results">
+    @foreach (var course in Model.CoursesToShow)
+    {
+        <div class="single-search-result">
+            <h1>@course.Name</h1>
+            <div class="key-value-result">
+                <h2>Name</h2>
+                <h4>@course.Name</h4>
+            </div>
+            <div class="key-value-result">
+                <h2>Code</h2>
+                <h4> @course.CourseCode</h4>
+            </div>
+            <div class="key-value-result">
+                <h2>Professor</h2>
+                <h4>@course.Professor?.ToString()</h4>
+            </div>
+            <div class="key-value-result">
+                <h2>Students enrolled</h2>
+                <h4> @course.Students.Count()</h4>
+            </div>
+            <div class="key-value-result">
+                <h2>ECTS</h2>
+                <h4>@course.ECTS</h4>
+            </div>
+            <div class="key-value-result">
+                <h2>Is finished with exam?</h2>
+                <h4>@course.IsFinishedWithExam</h4>
+            </div>
+        </div>
+    }
+</div>
