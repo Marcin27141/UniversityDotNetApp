@@ -5,8 +5,14 @@
     ViewData["Title"] = "New Professor";
 }
 
+@section styles{
+    <link rel="Stylesheet" href="~/css/formPage.css" />
+}
+
 <div class="form-group">
-    <div>
+    <label>Account</label>
+
+    <div class="select-container">
         @Html.DropDownListFor(model => model.ApplicationUserId, Model.ApplicationUsers, "choose account")
     </div>
     <span asp-validation-for="ApplicationUserId"></span>

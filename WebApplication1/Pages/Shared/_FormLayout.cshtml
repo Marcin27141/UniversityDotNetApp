@@ -2,12 +2,13 @@
 @{
     Layout = Html.GetLayoutForUser(Context.User);
 }
+@RenderSection("styles", false)
+
 <div class="outer-form-container">
     <form method="post">
         @RenderBody()
         <div class="form-group">
-            <button type="submit"
-                    class="btn btn-success">
+            <button type="submit">
                 Submit
             </button>
         </div>
