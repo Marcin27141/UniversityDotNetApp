@@ -1,13 +1,13 @@
-﻿main {
+﻿.main-div {
+    flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    flex-direction: row;
+    overflow-x: auto;
 }
 
 .group-with-slider {
     position: relative;
     margin: 0 40px;
-    padding-top: 0;
     padding-bottom: 0;
     min-width: 250px;
     overflow: hidden;
@@ -38,7 +38,7 @@
     object-fit: cover;
 }
 
-main .options-panel {
+.main-div .options-panel {
     position: absolute;
     top: 0;
     height: 100%;
@@ -57,7 +57,18 @@ main .options-panel {
     z-index: 2;
 }
 
-main .options-panel a {
-    color: black;
-    font-weight: bold;
+    .main-div .options-panel a {
+        color: black;
+        font-weight: bold;
+    }
+
+@media (max-width: 900px) {
+    .main-div {
+        flex-direction: column;
+    }
+
+    .group-with-slider {
+        margin: 0;
+        margin-top: 40px;
+    }
 }

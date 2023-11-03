@@ -4,29 +4,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Admin</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("styles", false)
 </head>
 <body>
     <header class="top-header">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/AfterLogin/Admin">WebApplication1</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-elements">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/AfterLogin/Admin">Home</a>
+                            <a class="nav-link" asp-area="" asp-page="/AfterLogin/Admin">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/ShowResults/ShowPeople">Show people</a>
+                            <a class="nav-link" asp-area="" asp-page="/ShowResults/ShowPeople">Show people</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/ShowResults/ShowCourses">Show courses</a>
+                            <a class="nav-link" asp-area="" asp-page="/ShowResults/ShowCourses">Show courses</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -34,9 +29,16 @@
             </div>
         </nav>
     </header>
-    <main>
-        @RenderBody()
+    <main class="main-flex">
+        <div class="main-div">
+            @RenderBody()
+        </div>
     </main>
+    <footer>
+        <div class="footer-container">
+            &copy; @DateTime.Now.Year - WebApplication1 - Privacy
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

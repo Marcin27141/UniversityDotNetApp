@@ -5,7 +5,7 @@
     @if (_userRepository.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity"
+            <a class="nav-link say-hello" asp-area="Identity"
                asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
         </li>
         <li class="nav-item">
@@ -22,7 +22,7 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity"
+            <a class="nav-link" asp-area="Identity"
                asp-page="/Account/Login">Login</a>
         </li>
     }

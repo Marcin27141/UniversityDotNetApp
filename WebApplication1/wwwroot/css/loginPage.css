@@ -5,97 +5,96 @@
     max-width: 100%;
     overflow: hidden;
     width: 500px;
-    min-height: 500px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35)
+    min-height: 400px;
 }
 
-.top-login-container p {
-    font-size: 20px;
-    line-height: 30px;
-    letter-spacing: 0.3px;
-    margin: 5px 0 20px 0;
-}
+    .top-login-container p {
+        font-size: 20px;
+        line-height: 30px;
+        letter-spacing: 0.3px;
+        margin: 5px 0 20px 0;
+    }
 
-.top-login-container button {
-    background-color: navy;
-    color: white;
-    font-size: 20px;
-    padding: 5px 20px;
-    border-radius: 15px;
-    margin: 20px auto;
-    cursor: pointer;
-    width: 100%;
-}
+    .top-login-container button {
+        background-color: navy;
+        color: white;
+        font-size: 20px;
+        padding: 5px 20px;
+        border-radius: 15px;
+        margin: 20px auto;
+        cursor: pointer;
+        width: 100%;
+    }
 
-.top-login-container form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100%;
-    padding: 0 40px;
-}
+    .top-login-container form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+        padding: 0 40px;
+    }
 
-.top-login-container input {
-    background-color: whitesmoke;
-    border: none;
-    width: 100%;
-    font-size: 18px;
-    outline: none;
-    margin: 5px 0px;
-    padding: 5px 20px;
-    border-radius: 10px;
-}
+    .top-login-container input {
+        background-color: whitesmoke;
+        border: none;
+        width: 100%;
+        font-size: 18px;
+        outline: none;
+        margin: 5px 0px;
+        padding: 5px 20px;
+        border-radius: 10px;
+    }
 
-.top-login-container .remember-forgot {
-    box-sizing: border-box;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px;
-}
+    .top-login-container .remember-forgot {
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px;
+    }
 
-.top-login-container label {
-    margin: 0 0 0 10px;
-    width: 150px;
-    font-size: 14px;
-}
+    .top-login-container label {
+        margin: 0 0 0 10px;
+        width: 150px;
+        font-size: 14px;
+    }
 
-.top-login-container input[type="checkbox"] {
-    width: 20px;
-}
+    .top-login-container input[type="checkbox"] {
+        width: 20px;
+    }
 
-.top-login-container #forgot-password-text {
-    text-decoration: none;
-    color: darkblue;
-    font-size: 14px;
-    cursor: pointer;
-}
+    .top-login-container #forgot-password-text {
+        text-decoration: none;
+        color: darkblue;
+        font-size: 14px;
+        cursor: pointer;
+    }
 
-.top-login-container .slide-container {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 200%;
-}
+    .top-login-container .slide-container {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 200%;
+    }
 
-.top-login-container .form-container {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 50%;
-    transition: all 0.7s ease-in-out;
-}
+    .top-login-container .form-container {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 50%;
+        transition: all 0.7s ease-in-out;
+    }
 
-.top-login-container .sign-in-container {
-    left: 0;
-}
+    .top-login-container .sign-in-container {
+        left: 0;
+    }
 
-.top-login-container .password-forgot-container {
-    right: 0;
-}
+    .top-login-container .password-forgot-container {
+        right: 0;
+    }
 
 .password-forgot-container .form-and-return {
     display: flex;
