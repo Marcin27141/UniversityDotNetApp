@@ -2,13 +2,16 @@
 @{
     Layout = Html.GetLayoutForUser(Context.User);
 }
-<form method="post">
-    @RenderBody()
-    <div class="form-group">
-        <button type="submit"
-                class="btn btn-success">
+<div class="outer-form-container">
+    <form method="post">
+        @RenderBody()
+        <div class="form-group">
+            <button type="submit"
+                    class="btn btn-success">
                 Submit
-        </button>
-    </div>
-</form>
+            </button>
+        </div>
+    </form>
+</div>
+
 
