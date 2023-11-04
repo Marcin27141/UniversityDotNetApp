@@ -1,6 +1,7 @@
 ﻿@using WebApplication1.HtmlHelpers;
 @{
-    Layout = Html.GetLayoutForUser(Context.User);
+    // Layout = Html.GetLayoutForUser(Context.User);
+    Layout = "/Pages/Shared/_Layout.cshtml";
 }
 @RenderSection("styles", false)
 

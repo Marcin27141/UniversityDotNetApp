@@ -2,8 +2,10 @@
 using Google.Api;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace WebApplication1.HtmlHelpers
 {
@@ -32,19 +34,16 @@ namespace WebApplication1.HtmlHelpers
             return new HtmlString(output);
         }
 
-        public static string GetLayoutForUser(this IHtmlHelper helper, ClaimsPrincipal user)
+        public static IHtmlContent GetNavbarForUser(this IHtmlHelper helper, ClaimsPrincipal user)
         {
-            switch (user.FindFirst("Status")?.Value)
+            var partialName = user.FindFirst("Status")?.Value switch
             {
-                case "Admin":
-                    return "/Pages/Shared/_AdminLayout.cshtml";
-                case "Student":
-                    return "/Pages/Shared/_StudentLayout.cshtml";
-                case "Professor":
-                    return "/Pages/Shared/_ProfessorLayout.cshtml";
-                default:
-                    return "/Pages/Shared/_Layout.cshtml";
-            }
+                "Admin" => "/Pages/Shared/Navbar/_AdminNavbarPartial.cshtml",
+                "Student" => "/Pages/Shared/Navbar/_StudentNavbarPartial.cshtml",
+                "Professor" => "/Pages/Shared/Navbar/_ProfessorNavbarPartial.cshtml",
+                _ => "/Pages/Shared/Navbar/_NoUserNavbarPartial.cshtml"
+            };
+            return helper.PartialAsync(partialName).Result;
         }
     }
 }
