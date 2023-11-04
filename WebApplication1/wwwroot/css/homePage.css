@@ -14,14 +14,19 @@
     height: auto;
 }
 
-.group-container {
-    background-color: white;
-    border: solid 2px gray;
-    border-radius: 20px;
-    min-width: 250px;
-    text-align: center;
-    cursor: pointer;
-}
+    .group-with-slider > a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .group-container {
+        background-color: white;
+        border: solid 2px gray;
+        border-radius: 20px;
+        min-width: 250px;
+        text-align: center;
+        cursor: pointer;
+    }
 
 .group-with-slider:hover .options-panel {
     transform: translateY(0%);

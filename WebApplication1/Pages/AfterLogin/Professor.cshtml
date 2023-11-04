@@ -1,14 +1,37 @@
 ﻿@page
 @model WebApplication1.Pages.AfterLogin.ProfessorModel
 @{
-    Layout = "_ProfessorLayout";
     ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <p><a asp-page="/ShowResults/ShowProfessor" asp-route-id="@Model.Professor?.EntityPersonID">Show Profile</a>.</p>
-</div>
 
-<div class="text-center">
-    <p><a asp-page="/EditElement/EditPerson/EditProfessor" asp-route-id="@Model.Professor?.EntityPersonID">Edit Profile</a>.</p>
+@section styles{
+    <link rel="Stylesheet" href="~/css/homePage.css" />
+}
+
+<div class="group-with-slider" id="slider-container">
+    <div class="group-container">
+        <h1>Your profile</h1>
+        <img src="~/lib/images/dean.png" />
+    </div>
+    <div class="options-panel">
+        <a asp-page="/ShowResults/ShowProfessor" asp-route-id="@Model.Professor?.EntityPersonID">Show</a>
+        <a asp-page="/EditElement/EditPerson/EditProfessor" asp-route-id="@Model.Professor?.EntityPersonID">Edit</a>
+    </div>
+</div>
+<div class="group-with-slider">
+    <a asp-page="/Notifications">
+    <div class="group-container">
+        <h1>Notifications</h1>
+        <img src="~/lib/images/email.png" />
+    </div>
+    </a>
+</div>
+<div class="group-with-slider">
+    <a asp-area="" asp-page="/ShowResults/ShowProfessorCourses">
+        <div class="group-container">
+            <h1>Your courses</h1>
+            <img src="~/lib/images/online-learning.png" />
+        </div>
+    </a>
 </div>
