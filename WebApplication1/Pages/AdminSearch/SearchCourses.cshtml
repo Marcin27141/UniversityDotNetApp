@@ -1,4 +1,5 @@
 ﻿@page
+@using WebApplication1.PartialModels
 @model WebApplication1.Pages.AdminSearch.SearchCoursesModel
 @{
     Layout = "_AdminLayout";
@@ -6,7 +7,7 @@
 }
 
 @section styles{
-    <link rel="Stylesheet" href="~/css/searchPage.css" />
+    <link rel="Stylesheet" href="~/css/searchPage_v2.css" />
 }
 
 <div class="outer-form-container">
@@ -43,7 +44,8 @@
 <div class="search-results">
     @foreach (var course in Model.CoursesToShow)
     {
-        <div class="single-search-result">
+        @await Html.PartialAsync("_ShowCoursePartial", new CoursePartialModel { Course = course, ShowStudents = false});
+        @* <div class="single-search-result">
             <h1>@course.Name</h1>
             <div class="key-value-result">
                 <h2>Name</h2>
@@ -69,6 +71,6 @@
                 <h2>Is finished with exam?</h2>
                 <h4>@course.IsFinishedWithExam</h4>
             </div>
-        </div>
+        </div> *@
     }
 </div>

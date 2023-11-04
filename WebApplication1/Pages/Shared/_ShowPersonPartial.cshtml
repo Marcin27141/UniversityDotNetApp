@@ -1,43 +1,23 @@
 ﻿@model Services.People.PersonalData
-<table class="table">
-    <tr>
-        <td>
-            First name
-        </td>
-        <td>
-            @Model.FirstName
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Last name
-        </td>
-        <td>
-            @Model.LastName
-        </td>
-    </tr>
-    <tr>
-        <td>
-            PESEL
-        </td>
-        <td>
-            @Model.PESEL
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Birthday
-        </td>
-        <td>
-            @Model.Birthday.ToShortDateString()
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Motherland
-        </td>
-        <td>
-            @Model.Motherland
-        </td>
-    </tr>
-</table>
+
+<h1>@Model.FirstName @Model.LastName</h1>
+<div class="key-value-result">
+    <h2>First name</h2>
+    <h4>@Model.FirstName</h4>
+</div>
+<div class="key-value-result">
+    <h2>Last name</h2>
+    <h4>@Model.LastName</h4>
+</div>
+<div class="key-value-result">
+    <h2>PESEL</h2>
+    <h4>@Model.PESEL</h4>
+</div>
+<div class="key-value-result">
+    <h2>Birthday</h2>
+    <h4>@Model.Birthday.ToShortDateString()</h4>
+</div>
+<div class="key-value-result">
+    <h2>Motherland</h2>
+    <h4>@Model.Motherland</h4>
+</div>

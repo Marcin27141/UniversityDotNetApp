@@ -6,7 +6,7 @@
 }
 
 @section styles{
-    <link rel="Stylesheet" href="~/css/searchPage.css" />
+    <link rel="Stylesheet" href="~/css/searchPage_v2.css" />
 }
 
 <div class="outer-form-container">
@@ -43,7 +43,8 @@
 <div class="search-results">
     @foreach (var professor in Model.ProfessorsToShow)
     {
-        <div class="single-search-result">
+        @await Html.PartialAsync("_ShowProfessorPartial", professor)
+        @* <div class="single-search-result">
             <h1>@professor.PersonalData.FirstName @professor.PersonalData.LastName</h1>
             <div class="key-value-result">
                 <h2>First name</h2>
@@ -81,7 +82,7 @@
                 <h2>Salary</h2>
                 <h4>@professor.Salary</h4>
             </div>
-        </div>
+        </div> *@
     }
 </div>
 

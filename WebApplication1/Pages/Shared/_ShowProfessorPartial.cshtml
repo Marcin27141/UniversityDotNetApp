@@ -1,0 +1,22 @@
+﻿@model Services.People.Professor
+
+
+<div class="single-result">
+    @await Html.PartialAsync("_ShowPersonPartial", Model.PersonalData)
+    <div class="key-value-result">
+        <h2>Id code</h2>
+        <h4>@Model.IdCode</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Subject</h2>
+        <h4>@Model.Subject</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>First day at job</h2>
+        <h4>@Model.FirstDayAtJob.ToShortDateString()</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Salary</h2>
+        <h4>@Model.Salary</h4>
+    </div>
+</div>

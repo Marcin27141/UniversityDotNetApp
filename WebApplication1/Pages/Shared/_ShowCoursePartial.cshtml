@@ -1,0 +1,67 @@
+﻿@model PartialModels.CoursePartialModel
+
+
+<div class="single-result">
+    <h1>@Model.Course.Name</h1>
+    <div class="key-value-result">
+        <h2>Name</h2>
+        <h4>@Model.Course.Name</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Code</h2>
+        <h4>@Model.Course.CourseCode</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Professor</h2>
+        <h4>@Model.Course.Professor?.ToString()</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Students enrolled</h2>
+        <h4>@Model.Course.Students.Count()</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>ECTS</h2>
+        <h4>@Model.Course.ECTS</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Is finished with exam?</h2>
+        <h4>@Model.Course.IsFinishedWithExam</h4>
+    </div>
+    @if (Model.ShowStudents)
+    {
+
+        <div class="key-table-result">
+            <h2>Enrolled students</h2>
+            <div class="table-container">
+                <table class="table">
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Index
+                        </th>
+                        <th></th>
+                    </tr>
+
+
+
+                    @foreach (var student in Model.Course.Students)
+                    {
+                        <tr>
+                            <td>
+                                @student.ToString()
+                            </td>
+                            <td>
+                                @student.Index
+                            </td>
+                            <td>
+                                <a asp-page="/ShowResults/ShowStudent" asp-route-id="@student.EntityPersonID">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+</div>

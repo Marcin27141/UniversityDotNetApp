@@ -1,4 +1,5 @@
 ﻿@page "{id}"
+@using WebApplication1.PartialModels
 @model WebApplication1.Pages.ShowResults.ShowCourseModel
 @{
     ViewData["Title"] = "Course";
@@ -8,67 +9,4 @@
     <link rel="Stylesheet" href="~/css/singleResult.css" />
 }
 
-<div class="single-result">
-    <h1>@Model.CourseToShow.Name</h1>
-    <div class="key-value-result">
-        <h2>Name</h2>
-        <h4>@Model.CourseToShow.Name</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Code</h2>
-        <h4>@Model.CourseToShow.CourseCode</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Professor</h2>
-        <h4>@Model.CourseToShow.Professor?.ToString()</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Students enrolled</h2>
-        <h4>@Model.CourseToShow.Students.Count()</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>ECTS</h2>
-        <h4>@Model.CourseToShow.ECTS</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Is finished with exam?</h2>
-        <h4>@Model.CourseToShow.IsFinishedWithExam</h4>
-    </div>
-    @if(Model.HasAdminRights) {
-
-        <div class="key-table-result">
-            <h2>Enrolled students</h2>
-            <div class="table-container">
-                <table class="table">
-                    <tr>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Index
-                        </th>
-                        <th></th>
-                    </tr>
-
-
-
-                    @foreach (var student in Model.CourseToShow.Students)
-                    {
-                        <tr>
-                            <td>
-                                @student.ToString()
-                            </td>
-                            <td>
-                                @student.Index
-                            </td>
-                            <td>
-                                <a asp-page="/ShowResults/ShowStudent" asp-route-id="@student.EntityPersonID">Details</a>
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
-        </div>
-}
-</div>
-
+@await Html.PartialAsync("_ShowCoursePartial", new CoursePartialModel { Course = Model.CourseToShow, ShowStudents = Model.HasAdminRights})

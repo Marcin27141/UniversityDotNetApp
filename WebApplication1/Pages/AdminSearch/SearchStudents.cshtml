@@ -1,4 +1,5 @@
 ﻿@page
+@using WebApplication1.PartialModels
 @model WebApplication1.Pages.AdminSearch.SearchStudentsModel
 @{
     Layout = "_AdminLayout";
@@ -6,7 +7,7 @@
 }
 
 @section styles{
-    <link rel="Stylesheet" href="~/css/searchPage.css" />
+    <link rel="Stylesheet" href="~/css/searchPage_v2.css" />
 }
 
 <div class="outer-form-container">
@@ -43,36 +44,6 @@
 <div class="search-results">
     @foreach (var student in Model.StudentsToShow)
     {
-        <div class="single-search-result">
-            <h1>@student.PersonalData.FirstName @student.PersonalData.LastName</h1>
-            <div class="key-value-result">
-                <h2>First name</h2>
-                <h4>@student.PersonalData.FirstName</h4>
-            </div>
-            <div class="key-value-result">
-                <h2>Last name</h2>
-                <h4>@student.PersonalData.LastName</h4>
-            </div>
-            <div class="key-value-result">
-                <h2>PESEL</h2>
-                <h4>@student.PersonalData.PESEL</h4>
-            </div>
-            <div class="key-value-result">
-                <h2>Birthday</h2>
-                <h4>@student.PersonalData.Birthday.ToShortDateString()</h4>
-            </div>
-            <div class="key-value-result">
-                <h2>Motherland</h2>
-                <h4>@student.PersonalData.Motherland</h4>
-            </div>
-            <div class="key-value-result">
-                <h2>Index</h2>
-                <h4>@student.Index</h4>
-            </div>
-            <div class="key-value-result">
-                <h2>Beginning of studies</h2>
-                <h4>@student.BeginningOfStudying.ToShortDateString()</h4>
-            </div>
-        </div>
+        @await Html.PartialAsync("_ShowStudentPartial", new StudentPartialModel { Student = student, ShowCourses = false})
     }
 </div>

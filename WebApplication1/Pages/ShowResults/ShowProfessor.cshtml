@@ -8,42 +8,4 @@
     <link rel="Stylesheet" href="~/css/singleResult.css" />
 }
 
-<div class="single-result">
-    <h1>@Model.ProfessorToShow.PersonalData.FirstName @Model.ProfessorToShow.PersonalData.LastName</h1>
-    <div class="key-value-result">
-        <h2>First name</h2>
-        <h4>@Model.ProfessorToShow.PersonalData.FirstName</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Last name</h2>
-        <h4>@Model.ProfessorToShow.PersonalData.LastName</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>PESEL</h2>
-        <h4>@Model.ProfessorToShow.PersonalData.PESEL</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Birthday</h2>
-        <h4>@Model.ProfessorToShow.PersonalData.Birthday.ToShortDateString()</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Motherland</h2>
-        <h4>@Model.ProfessorToShow.PersonalData.Motherland</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Id code</h2>
-        <h4>@Model.ProfessorToShow.IdCode</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Subject</h2>
-        <h4>@Model.ProfessorToShow.Subject</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>First day at job</h2>
-        <h4>@Model.ProfessorToShow.FirstDayAtJob.ToShortDateString()</h4>
-    </div>
-    <div class="key-value-result">
-        <h2>Salary</h2>
-        <h4>@Model.ProfessorToShow.Salary</h4>
-    </div>
-</div>
+@await Html.PartialAsync("_ShowProfessorPartial", Model.ProfessorToShow)
