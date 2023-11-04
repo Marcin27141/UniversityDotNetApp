@@ -4,40 +4,44 @@
     ViewData["Title"] = "Course Grades";
 }
 
-<h1>@Model.Course.Name</h1>
+@section styles{
+    <link rel="Stylesheet" href="~/css/listWithSearch_v2.css" />
+}
 
-<table class="table">
-    <tr>
-        <th>
-            Student
-        </th>
-        <th>
-            Grade
-        </th>
-        <th>
-            Date
-        </th>
-        <th></th>
-    </tr>
-
-
-
-    @foreach (var grade in Model.Grades)
-    {
+<div class="table-container">
+    <h1>@Model.Course.Name</h1>
+    <input type="search" id="searchbar" placeholder="Search.." name="query">
+    <table class="main-table" id="searchTable">
         <tr>
-            <td>
-                @Model.Students.FirstOrDefault(s => s.EntityPersonID == grade.StudentId)
-            </td>
-            <td>
-                @grade.GradeValue
-            </td>
-            <td>
-                @grade.TimeOfAdding
-            </td>
-            <td>
-                <a asp-page="/Grades/EditGrade" asp-page-handler="edit" asp-route-gradeId="@grade.GradeId">Edit</a> |
-                <a asp-page="/Grades/CourseGrades" asp-page-handler="delete" asp-route-gradeId="@grade.GradeId">Delete</a>
-            </td>
+            <th>
+                Student
+            </th>
+            <th>
+                Grade
+            </th>
+            <th>
+                Date
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+
+        @foreach (var grade in Model.Grades)
+        {
+            <tr>
+                <td>
+                    @Model.Students.FirstOrDefault(s => s.EntityPersonID == grade.StudentId)
+                </td>
+                <td>
+                    @grade.GradeValue
+                </td>
+                <td>
+                    @grade.TimeOfAdding
+                </td>
+                <td>
+                    <a asp-page="/Grades/EditGrade" asp-page-handler="edit" asp-route-gradeId="@grade.GradeId">Edit</a> |
+                    <a asp-page="/Grades/CourseGrades" asp-page-handler="delete" asp-route-gradeId="@grade.GradeId">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

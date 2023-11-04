@@ -4,35 +4,39 @@
     ViewData["Title"] = "Student Grades";
 }
 
-<h1>@Model.Student.PersonalData.FirstName @Model.Student.PersonalData.LastName</h1>
+@section styles{
+    <link rel="Stylesheet" href="~/css/listWithSearch_v2.css" />
+}
 
-<table class="table">
-    <tr>
-        <th>
-            Course
-        </th>
-        <th>
-            Grade
-        </th>
-        <th>
-            Date
-        </th>
-    </tr>
-
-
-
-    @foreach (var grade in Model.Grades)
-    {
+<div class="table-container">
+    <h1>@Model.Student.PersonalData.FirstName @Model.Student.PersonalData.LastName</h1>
+    <input type="search" id="searchbar" placeholder="Search.." name="query">
+    <table class="main-table" id="searchTable">
         <tr>
-            <td>
-                @Model.Courses.FirstOrDefault(c => c.EntityCourseID == grade.CourseId)?.Name
-            </td>
-            <td>
-                @grade.GradeValue
-            </td>
-            <td>
-                @grade.TimeOfAdding
-            </td>
+            <th>
+                Course
+            </th>
+            <th>
+                Grade
+            </th>
+            <th>
+                Date
+            </th>
         </tr>
-    }
-</table>
+
+        @foreach (var grade in Model.Grades)
+        {
+            <tr>
+                <td>
+                    @Model.Courses.FirstOrDefault(c => c.EntityCourseID == grade.CourseId)?.Name
+                </td>
+                <td>
+                    @grade.GradeValue
+                </td>
+                <td>
+                    @grade.TimeOfAdding
+                </td>
+            </tr>
+        }
+    </table>
+</div>

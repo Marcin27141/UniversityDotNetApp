@@ -5,15 +5,19 @@
     ViewData["Title"] = "Add Grade";
 }
 
-<h1>@Model.Course.Name</h1>
+@section styles{
+    <link rel="Stylesheet" href="~/css/formPage_v2.css" />
+}
 
+<h1 class="form-title">@Model.Course.Name</h1>
 <input type="hidden" asp-for="CourseId" />
 
-
-<div class="form-group">
-    <div>
+<div class="form-group outer-select-container">
+    <label>Student</label>
+    <div class="select-container">
         @Html.DropDownListFor(model => model.StudentId, Model.CourseStudents, "Choose a student")
     </div>
+    <span asp-validation-for="StudentId"></span>
 </div>
 <div class="form-group">
     <label asp-for="Grade.GradeValue">Grade</label>
