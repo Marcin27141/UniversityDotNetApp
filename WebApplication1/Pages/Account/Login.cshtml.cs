@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 using WebApplication1.Contracts;
 using WebApplication1.Services;
 
-namespace WebApplication1.Areas.Identity.Pages.Account
+namespace WebApplication1.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
@@ -80,7 +80,7 @@ namespace WebApplication1.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _authenticationRepository.GetExternalAuthenticationSchemesAsync()).ToList();
-        
+
             if (ModelState.IsValid)
             {
                 //TODO separate login pages for students and workers?
@@ -127,3 +127,4 @@ namespace WebApplication1.Areas.Identity.Pages.Account
         }
     }
 }
+

@@ -5,13 +5,12 @@
     @if (_userRepository.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link say-hello" asp-area="Identity"
-               asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+            <p class="nav-link say-hello">Hello @User.Identity.Name!</p>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-page="/Account/Logout"
                   asp-route-returnUrl="@Url.Page("/", new { area = "" })"
-                  asp-area="Identity" method="post">
+                  method="post">
                 <button class="nav-link btn btn-link text-dark"
                         type="submit">
                     Logout
@@ -22,7 +21,7 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity"
+            <a class="nav-link"
                asp-page="/Account/Login">Login</a>
         </li>
     }

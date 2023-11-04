@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using WebApplication1.GraphQLServices.QueryGenerators;
 using WebApplication1.Extensions;
 using WebApplication1.GrpcServices;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApplication1
 {
@@ -38,8 +39,9 @@ namespace WebApplication1
             var connectionString = Configuration.GetConnectionString("DefaultWebDbConnection");
             services.AddDbContext<WebAppDbContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddDefaultIdentity<WebAppUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<WebAppDbContext>();
+            services.AddIdentity<WebAppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddEntityFrameworkStores<WebAppDbContext>()
+            .AddDefaultTokenProviders();
 
             services.AddRazorPages();
 
@@ -69,6 +71,8 @@ namespace WebApplication1
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithRedirects("/errors/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
