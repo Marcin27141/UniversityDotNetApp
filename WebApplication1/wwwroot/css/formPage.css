@@ -55,6 +55,11 @@
     accent-color: #333399;
 }
 
+.outer-form-container input[readonly] {
+    background-color: lightgray;
+    font-style: italic;
+}
+
 .outer-form-container .course-select-container select {
     width: 100%;
     min-height: 100px;

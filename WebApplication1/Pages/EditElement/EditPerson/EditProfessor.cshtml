@@ -5,6 +5,9 @@
     ViewData["Title"] = "Edit Professor";
 }
 
+@section styles{
+    <link rel="Stylesheet" href="~/css/formPage.css" />
+}
 
 <input type="hidden" asp-for="Professor.EntityPersonID" />
 <input type="hidden" asp-for="Professor.ApplicationUserId" />
@@ -13,9 +16,7 @@
 
 <div class="form-group">
     <label asp-for="Professor.IdCode"></label>
-    <div>
-        @Html.TextBoxFor(m => m.Professor.IdCode, new { @readonly = "readonly" })
-    </div>
+    @Html.TextBoxFor(m => m.Professor.IdCode, new { @readonly = "readonly" })
 </div>
 <div class="form-group">
     <label asp-for="Professor.Subject"></label>
