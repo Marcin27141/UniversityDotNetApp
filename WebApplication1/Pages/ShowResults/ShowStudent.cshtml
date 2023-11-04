@@ -4,63 +4,72 @@
     ViewData["Title"] = "Student";
 }
 
-<h1>@Model.StudentToShow.PersonalData.FirstName @Model.StudentToShow.PersonalData.LastName</h1>
-<br />
+@section styles{
+    <link rel="Stylesheet" href="~/css/singleResult.css" />
+}
 
-<h2>Personal data: </h2>
-@await Html.PartialAsync("_ShowPersonPartial", Model.StudentToShow.PersonalData)
+<div class="single-result">
+    <h1>@Model.StudentToShow.PersonalData.FirstName @Model.StudentToShow.PersonalData.LastName</h1>
+    <div class="key-value-result">
+        <h2>First name</h2>
+        <h4>@Model.StudentToShow.PersonalData.FirstName</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Last name</h2>
+        <h4>@Model.StudentToShow.PersonalData.LastName</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>PESEL</h2>
+        <h4>@Model.StudentToShow.PersonalData.PESEL</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Birthday</h2>
+        <h4>@Model.StudentToShow.PersonalData.Birthday.ToShortDateString()</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Motherland</h2>
+        <h4>@Model.StudentToShow.PersonalData.Motherland</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Index</h2>
+        <h4>@Model.StudentToShow.Index</h4>
+    </div>
+    <div class="key-value-result">
+        <h2>Beginning of studies</h2>
+        <h4>@Model.StudentToShow.BeginningOfStudying.ToShortDateString()</h4>
+    </div>
+    <div class="key-table-result">
+        <h2>Student's courses (number of courses: @Model.StudentToShow.Courses.Count())</h2>
+        <div class="table-container">
+            <table class="table">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Code
+                    </th>
+                    <th></th>
+                </tr>
 
-<h2>Student data: </h2>
-<table class="table">
-    <tr>
-        <td>
-            Index
-        </td>
-        <td>
-            @Model.StudentToShow.Index
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Beginning of studies
-        </td>
-        <td>
-            @Model.StudentToShow.BeginningOfStudying.ToShortDateString()
-        </td>
-    </tr>
-</table>
-
-<br />
-<p><b>Student's courses (number of courses: @Model.StudentToShow.Courses.Count())</b></p>
-<br />
-
-<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Code
-        </th>
-        <th></th>
-    </tr>
 
 
-
-    @foreach (var course in Model.StudentToShow.Courses)
-    {
-        <tr>
-            <td>
-                @course.Name
-            </td>
-            <td>
-                @course.CourseCode
-            </td>
-            <td>
-                @*<a asp-page="/EditElement/EditCourse" asp-route-id="@course.EntityCourseID">Edit</a> |*@
-                <a asp-page="/ShowResults/ShowCourse" asp-route-id="@course.EntityCourseID">Details</a>
-                @*| <a asp-page="/ShowResults/ShowStudent" asp-page-handler="delete" asp-route-id="@Model.StudentToShow.EntityPersonId" asp-route-id="@course.CourseCode">Delete</a>*@
-            </td>
-        </tr>
-    }
-</table>
+                @foreach (var course in Model.StudentToShow.Courses)
+                {
+                    <tr>
+                        <td>
+                            @course.Name
+                        </td>
+                        <td>
+                            @course.CourseCode
+                        </td>
+                        <td>
+                            <a asp-page="/ShowResults/ShowCourse" asp-route-id="@course.EntityCourseID">Details</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        
+    </div>
+</div>
