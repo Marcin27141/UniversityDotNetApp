@@ -4,33 +4,44 @@
     ViewData["Title"] = "Courses";
 }
 
-<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Code
-        </th>
-        <th></th>
-    </tr>
 
+@section styles{
+    <link rel="Stylesheet" href="~/css/listWithSearch_v2.css" />
+}
 
-
-    @foreach (var course in Model.ProfessorCourses)
-    {
+<div class="table-container">
+    <h1>Your courses</h1>
+    <input type="search" id="searchbar" placeholder="Search.." name="query">
+    <table class="main-table" id="searchTable">
         <tr>
-            <td>
-                @course.Name
-            </td>
-            <td>
-                @course.CourseCode
-            </td>
-            <td>
-                <a asp-page="/ShowResults/ShowCourse" asp-route-id="@course.EntityCourseID">Details</a> |
-                <a asp-page="/Grades/CourseGrades" asp-route-courseId="@course.EntityCourseID">Show grades</a> |
-                <a asp-page="/Grades/AddGrade" asp-route-courseId="@course.EntityCourseID">Add grade</a>
-            </td>
+            <th>
+                Name
+            </th>
+            <th>
+                Code
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+
+        @foreach (var course in Model.ProfessorCourses)
+        {
+            <tr>
+                <td>
+                    @course.Name
+                </td>
+                <td>
+                    @course.CourseCode
+                </td>
+                <td>
+                    <a asp-page="/ShowResults/ShowCourse" asp-route-id="@course.EntityCourseID">Details</a> |
+                    <a asp-page="/Grades/CourseGrades" asp-route-courseId="@course.EntityCourseID">Show grades</a> |
+                    <a asp-page="/Grades/AddGrade" asp-route-courseId="@course.EntityCourseID">Add grade</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/listWithSearch.js"></script>
+}

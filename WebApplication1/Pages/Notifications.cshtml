@@ -4,27 +4,37 @@
     ViewData["Title"] = "Notifications";
 }
 
-<table class="table">
-    <tr>
-        <th>
-            Title
-        </th>
-        <th>
-            Message
-        </th>
-    </tr>
+@section styles{
+    <link rel="Stylesheet" href="~/css/listWithSearch_v2.css" />
+}
 
-
-
-    @foreach (var notification in Model.Notifications)
-    {
+<div class="table-container">
+    <h1>Notifications</h1>
+    <input type="search" id="searchbar" placeholder="Search.." name="query">
+    <table class="main-table" id="searchTable">
         <tr>
-            <td>
-                @notification.Title
-            </td>
-            <td>
-                @notification.Body
-            </td>
+            <th>
+                Title
+            </th>
+            <th>
+                Message
+            </th>
         </tr>
-    }
-</table>
+
+        @foreach (var notification in Model.Notifications)
+        {
+            <tr>
+                <td>
+                    @notification.Title
+                </td>
+                <td>
+                    @notification.Body
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/listWithSearch.js"></script>
+}
