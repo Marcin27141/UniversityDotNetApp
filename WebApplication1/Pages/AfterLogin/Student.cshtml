@@ -4,10 +4,34 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <p><a asp-page="/ShowResults/ShowStudent" asp-route-id="@Model.Student?.EntityPersonID">Show Profile</a>.</p>
-</div>
 
-<div class="text-center">
-    <p><a asp-page="/EditElement/EditPerson/EditStudent" asp-route-id="@Model.Student?.EntityPersonID">Edit Profile</a>.</p>
+@section styles{
+    <link rel="Stylesheet" href="~/css/homePage.css" />
+}
+
+<div class="group-with-slider" id="slider-container">
+    <div class="group-container">
+        <h1>Your profile</h1>
+        <img src="~/lib/images/graduated.png" />
+    </div>
+    <div class="options-panel">
+        <a asp-page="/ShowResults/ShowStudent" asp-route-id="@Model.Student?.EntityPersonID">Show</a>
+        <a asp-page="/EditElement/EditPerson/EditStudent" asp-route-id="@Model.Student?.EntityPersonID">Edit</a>
+    </div>
+</div>
+<div class="group-with-slider">
+    <a asp-page="/Notifications">
+        <div class="group-container">
+            <h1>Notifications</h1>
+            <img src="~/lib/images/email.png" />
+        </div>
+    </a>
+</div>
+<div class="group-with-slider">
+    <a asp-area="" asp-page="/Grades/StudentGrades">
+        <div class="group-container">
+            <h1>Your grades</h1>
+            <img src="~/lib/images/online-learning.png" />
+        </div>
+    </a>
 </div>
