@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiDtoLibrary", "ApiDtoLibr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcService", "GrpcService\GrpcService.csproj", "{3488BB57-EC66-45E9-ACBC-114826A5B708}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{AF705406-1AB6-42B4-B0DC-567463ADCEA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3488BB57-EC66-45E9-ACBC-114826A5B708}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3488BB57-EC66-45E9-ACBC-114826A5B708}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3488BB57-EC66-45E9-ACBC-114826A5B708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF705406-1AB6-42B4-B0DC-567463ADCEA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF705406-1AB6-42B4-B0DC-567463ADCEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF705406-1AB6-42B4-B0DC-567463ADCEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF705406-1AB6-42B4-B0DC-567463ADCEA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

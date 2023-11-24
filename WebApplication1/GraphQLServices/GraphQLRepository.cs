@@ -12,7 +12,7 @@ namespace WebApplication1.GraphQLServices
 {
     public abstract class GraphQLRepository
     {
-        private const string GRAPHQL_SERVER_ADDRESS = "https://localhost:7228/graphql/";
+        private const string GRAPHQL_SERVER_ADDRESS = "https://localhost:7778/graphql/";
         private GraphQLHttpClient _httpClient;
         protected readonly IMapper _mapper;
         protected IAuthenticationRepository _authenticationRepository;

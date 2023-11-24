@@ -7,7 +7,7 @@ namespace WebApplication1.ApiServices.BaseRepositories
 {
     public abstract class ApiRepository
     {
-        protected string _apiPath { get; set; } = "https://localhost:7228/api";
+        protected string _apiPath { get; set; } = "https://localhost:7778/api";
         protected readonly HttpClient _httpClient = new HttpClient();
         protected readonly IMapper _mapper;
 

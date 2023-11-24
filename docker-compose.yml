@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  universityapi.api:
+    image: ${DOCKER_REGISTRY-}universityapiapi
+    build:
+      context: .
+      dockerfile: UniversityApi.API/Dockerfile
+    ports:
+     - "7778:443"
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: P@ssw0rd
+    ports:
+     - "7777:1433"

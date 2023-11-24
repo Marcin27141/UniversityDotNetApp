@@ -52,8 +52,8 @@ namespace WebApplication1
             services.AddScoped<IGradesRepository, GradesRepository>();
             
             //either or
-            //services.AddRestApiServices();
-            services.AddGraphQLServices();
+            services.AddRestApiServices();
+            //services.AddGraphQLServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
