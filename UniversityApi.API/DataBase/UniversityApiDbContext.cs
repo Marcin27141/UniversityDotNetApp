@@ -37,7 +37,7 @@ namespace UniversityApi.API.DataBase
 
             //modelBuilder.ApplyConfiguration(new StudentConfiguration());
             //modelBuilder.ApplyConfiguration(new ProfessorConfiguration());
-            modelBuilder.ApplyConfiguration(new CourseConfiguration());
+            //modelBuilder.ApplyConfiguration(new CourseConfiguration());
         }
     }
 }

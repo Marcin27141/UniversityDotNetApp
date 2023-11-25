@@ -12,7 +12,7 @@ namespace UniversityApi.API.DataBase.Configuration
             builder.HasData(
                 new EntityStudent
                 {
-                    EntityPersonID = Guid.NewGuid(),
+                    EntityPersonID = Guid.Parse("5f20e76f-8f68-422d-e63d-08dbbf4015ce"),
                     FirstName = "Adam",
                     LastName = "Adamczyk",
                     PESEL = "01111111111",
@@ -23,7 +23,7 @@ namespace UniversityApi.API.DataBase.Configuration
                 },
                 new EntityStudent
                 {
-                    EntityPersonID = Guid.NewGuid(),
+                    EntityPersonID = Guid.Parse("1f20e76f-8f68-422d-e63d-08dbbf4015ce"),
                     FirstName = "Bartosz",
                     LastName = "Bednarek",
                     PESEL = "0222222222",
@@ -34,7 +34,7 @@ namespace UniversityApi.API.DataBase.Configuration
                 },
                 new EntityStudent
                 {
-                    EntityPersonID = Guid.NewGuid(),
+                    EntityPersonID = Guid.Parse("2f20e76f-8f68-422d-e63d-08dbbf4015ce"),
                     FirstName = "Celina",
                     LastName = "Czarna",
                     PESEL = "03333333333",

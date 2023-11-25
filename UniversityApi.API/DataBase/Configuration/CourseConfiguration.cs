@@ -14,7 +14,7 @@ namespace UniversityApi.API.DataBase.Configuration
                 {
                     EntityCourseID = Guid.NewGuid(),
                     CourseCode = "C01",
-                    Name = "Databases",
+                    Name = "Databases Seed",
                     ECTS = 2,
                     IsFinishedWithExam = false,
                 },
@@ -22,7 +22,7 @@ namespace UniversityApi.API.DataBase.Configuration
                 {
                     EntityCourseID = Guid.NewGuid(),
                     CourseCode = "C02",
-                    Name = "Algorithms",
+                    Name = "Algorithms Seed",
                     ECTS = 3,
                     IsFinishedWithExam = true,
                 },
@@ -30,7 +30,7 @@ namespace UniversityApi.API.DataBase.Configuration
                 {
                     EntityCourseID = Guid.NewGuid(),
                     CourseCode = "C03",
-                    Name = "Computer science",
+                    Name = "Computer science seed",
                     ECTS = 4,
                     IsFinishedWithExam = true,
                 }); ;

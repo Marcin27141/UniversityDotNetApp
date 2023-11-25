@@ -12,7 +12,7 @@ namespace UniversityApi.API.DataBase.Configuration
             builder.HasData(
                 new EntityProfessor
                 {
-                    EntityPersonID = Guid.NewGuid(),
+                    EntityPersonID = Guid.Parse("18b517f2-b789-4230-e63c-08dbbf4015ce"),
                     FirstName = "Danuta",
                     LastName = "Dobrzycka",
                     PESEL = "14444444444",
@@ -25,7 +25,7 @@ namespace UniversityApi.API.DataBase.Configuration
                 },
                 new EntityProfessor
                 {
-                    EntityPersonID = Guid.NewGuid(),
+                    EntityPersonID = Guid.Parse("28b517f2-b789-4230-e63c-08dbbf4015ce"),
                     FirstName = "Eustachy",
                     LastName = "Epoletnik",
                     PESEL = "15555555555",
@@ -35,19 +35,6 @@ namespace UniversityApi.API.DataBase.Configuration
                     Subject = "Science",
                     FirstDayAtJob = new DateTime(2018, 10, 1),
                     Salary = 9000
-                },
-                new EntityProfessor
-                {
-                    EntityPersonID = Guid.NewGuid(),
-                    FirstName = "Filomena",
-                    LastName = "Fomicz",
-                    PESEL = "16666666666",
-                    Birthday = new DateTime(1998, 3, 3),
-                    Motherland = "Poland",
-                    IdCode = "33333",
-                    Subject = "Philosophy",
-                    FirstDayAtJob = new DateTime(2017, 10, 1),
-                    Salary = 8000
                 });
         }
     }

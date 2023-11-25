@@ -54,6 +54,37 @@ namespace UniversityApi.API.Migrations
                 });
 
             migrationBuilder.InsertData(
+               table: "People",
+               columns: new[] { "EntityPersonID", "ApplicationUserId", "Birthday", "FirstName", "LastName", "Motherland", "PESEL", "PersonStatus"},
+               values: new object[,]
+               {
+                    { new Guid("18b517f2-b789-4230-e63c-08dbbf4015ce"), new Guid("1a4b454b-4911-40fd-8c60-576f4398dc0f"), new DateTime(1999, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Eustachy", "Epoletnik", "Poland", "15555555555", 2 },
+                    { new Guid("28b517f2-b789-4230-e63c-08dbbf4015ce"), new Guid("9ac971e2-4529-4aa6-bdd1-08c53e6e69cc"), new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Danuta", "Dobrzycka", "Poland", "14444444444", 2 },
+                    { new Guid("5f20e76f-8f68-422d-e63d-08dbbf4015ce"), new Guid("1b4fe74c-b5a3-42dc-9a42-50b904a47c62"), new DateTime(1998, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "Celina", "Czarna", "Poland", "03333333333", 1 },
+                    { new Guid("1f20e76f-8f68-422d-e63d-08dbbf4015ce"), new Guid("2e16b8b3-2dd6-4462-a10c-3d4fbac4098c"), new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Adam", "Adamczyk", "Poland", "01111111111", 1 },
+                    { new Guid("2f20e76f-8f68-422d-e63d-08dbbf4015ce"), new Guid("45d44738-8a71-4120-add0-e2882c2b44d8"), new DateTime(1999, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Bartosz", "Bednarek", "Poland", "0222222222", 1 },
+               });
+
+            migrationBuilder.InsertData(
+                table: "Professors",
+                columns: new[] { "EntityPersonID", "FirstDayAtJob", "IdCode", "Salary", "Subject" },
+                values: new object[,]
+                {
+                    { new Guid("18b517f2-b789-4230-e63c-08dbbf4015ce"), new DateTime(2018, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "22222", 9000, "Science" },
+                    { new Guid("28b517f2-b789-4230-e63c-08dbbf4015ce"), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "11111", 10000, "Programming" },
+                });
+
+            migrationBuilder.InsertData(
+                table: "Students",
+                columns: new[] { "EntityPersonID", "BeginningOfStudying", "Index" },
+                values: new object[,]
+                {
+                    { new Guid("5f20e76f-8f68-422d-e63d-08dbbf4015ce"), new DateTime(2017, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "333333" },
+                    { new Guid("1f20e76f-8f68-422d-e63d-08dbbf4015ce"), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "111111" },
+                    { new Guid("2f20e76f-8f68-422d-e63d-08dbbf4015ce"), new DateTime(2018, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "222222" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Courses",
                 columns: new[] { "EntityCourseID", "CourseCode", "ECTS", "IsFinishedWithExam", "Name", "ProfessorId" },
                 values: new object[,]

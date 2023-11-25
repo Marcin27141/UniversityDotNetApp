@@ -66,18 +66,19 @@ builder.Services.AddScoped<ICoursesRepository, CoursesRepository>();
 
 var app = builder.Build();
 
-//using (IServiceScope scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetService<UniversityApiDbContext>();
-//    dbContext.Database.Migrate();
-//    //dbContext.Database.ExecuteSqlRaw(File.ReadAllText("universityapi.bak"));
-//}
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using (IServiceScope scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetService<UniversityApiDbContext>();
+        dbContext.Database.EnsureDeleted();
+        dbContext.Database.Migrate();
+        //dbContext.Database.ExecuteSqlRaw(File.ReadAllText("universityapi.bak"));
+    }
 }
 
 app.UseWebSockets();
